@@ -46,19 +46,18 @@ class CVE:
     
     # Propriedade calculada posteriormente (Prioridade Final)
     final_priority_score: float = 0.0
+    
 
 # --- 4. OPERÁRIO ---
 @dataclass
 class Worker:
     id: str
-    # MUDANÇA AQUI: Em vez de start/end fixos, uma lista de turnos semanais
-    # Formato: [(DiaSemana, HoraInicio, HoraFim)]
     weekly_shifts: List[Tuple[int, int, int]] = field(default_factory=list)
     
-    accumulated_hours: int = 0  
-    
-    # Removemos o método can_work antigo porque a lógica agora é mais complexa
-    # e deve ser feita no logic.py ou numa função auxiliar que verifique o dia específico.
+    # NOVO CAMPO: Lista de IDs dos servidores onde este técnico PODE tocar
+    # Ex: ["Srv_Production", "Srv_Backup"]
+    authorized_server_ids: List[str] = field(default_factory=list)
+
 
 # --- 5. O OBJETO FINAL (O Plano) ---
 @dataclass
@@ -67,6 +66,6 @@ class PatchTask:
     cve: CVE
     server: Server
     software: Software
-    worker: Worker
+    workers: List[Worker]    
     start_time: int     # Hora absoluta na simulação (0 a 168)
     end_time: int

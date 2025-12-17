@@ -1,3 +1,4 @@
+from logging import log
 from src.repository import get_mock_data
 from src.logic import find_affected_servers, calculate_priority
 from src.planner import create_simple_schedule 
@@ -40,7 +41,7 @@ def main():
         log(f"Conseguimos agendar {len(final_schedule)} de {len(tasks_to_plan)} tarefas.\n")
         
         log("=== 3. PLANO FINAL ===")
-        # Ordenar cronologicamente para ser fácil de ler
+        # Ordenar cronologicamente
         final_schedule.sort(key=lambda x: x.start_time)
         
         for task in final_schedule:
@@ -48,9 +49,12 @@ def main():
             hour = task.start_time % 24
             day_name = DAYS_MAP[day_idx]
             
+            # MUDANÇA AQUI: Criar uma string com todos os nomes separados por vírgula
+            team_names = ", ".join([w.id for w in task.workers])
+            
             log(f"🗓️  [{day_name} {hour:02d}h] {task.cve.id} ({task.cve.severity})")
             log(f"    Maquina: {task.server.id} | Soft: {task.software.id}")
-            log(f"    Técnico: {task.worker.id}")
+            log(f"    Equipa:  {team_names}") # <--- Agora mostra todos!
             log("-" * 30)
 
     print(f"\n[SUCESSO] Relatório gerado em '{filename}'")

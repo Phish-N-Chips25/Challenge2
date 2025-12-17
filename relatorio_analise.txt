@@ -2,10 +2,14 @@
 Total de tarefas válidas para agendar: 2
 
 === 2. AGENDAMENTO (GREEDY) ===
-Conseguimos agendar 1 de 2 tarefas.
+Conseguimos agendar 2 de 2 tarefas.
 
 === 3. PLANO FINAL ===
 🗓️  [Seg 00h] CVE-2024-1111 (Low)
     Maquina: Srv_Development | Soft: Python
-    Técnico: Maria_Night
+    Equipa:  Maria_Night
+------------------------------
+🗓️  [Seg 02h] CVE-2024-9999 (Critical)
+    Maquina: Srv_Production | Soft: Apache
+    Equipa:  Maria_Night, Pedro_Night
 ------------------------------
