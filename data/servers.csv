@@ -1,0 +1,101 @@
+id,os_name,os_version,rto_hours
+Srv_DEV_001,Windows,Server 2016,24
+Srv_DEV_002,Windows,Server 2022,48
+Srv_PROD_003,Windows,Server 2019,8
+Srv_DEV_004,Windows,Server 2012 R2,48
+Srv_DEV_005,Windows,Server 2016,72
+Srv_DEV_006,Windows,Server 2019,48
+Srv_UAT_007,Windows,Server 2016,8
+Srv_PROD_008,Windows,Server 2022,8
+Srv_UAT_009,Windows,Server 2019,8
+Srv_UAT_010,Windows,Server 2016,8
+Srv_DEV_011,Windows,Server 2016,48
+Srv_UAT_012,Windows,Server 2016,24
+Srv_DEV_013,Windows,Server 2022,48
+Srv_PROD_014,Windows,Server 2012 R2,2
+Srv_PROD_015,Windows,Server 2012 R2,4
+Srv_PROD_016,Windows,Server 2022,4
+Srv_PROD_017,Windows,Server 2016,4
+Srv_DEV_018,Windows,Server 2012 R2,72
+Srv_PROD_019,Windows,Server 2019,2
+Srv_UAT_020,Windows,Server 2016,12
+Srv_DEV_021,Windows,Server 2019,72
+Srv_UAT_022,Windows,Server 2019,24
+Srv_UAT_023,Windows,Server 2019,12
+Srv_DEV_024,Windows,Server 2022,24
+Srv_UAT_025,Windows,Server 2012 R2,12
+Srv_UAT_026,Windows,Server 2016,12
+Srv_DEV_027,Windows,Server 2019,72
+Srv_DEV_028,Windows,Server 2016,72
+Srv_DEV_029,Windows,Server 2016,48
+Srv_DEV_030,Windows,Server 2016,72
+Srv_UAT_031,Windows,Server 2016,8
+Srv_DEV_032,Windows,Server 2012 R2,72
+Srv_DEV_033,Windows,Server 2012 R2,48
+Srv_UAT_034,Windows,Server 2016,8
+Srv_PROD_035,Windows,Server 2019,2
+Srv_DEV_036,Windows,Server 2012 R2,72
+Srv_UAT_037,Windows,Server 2012 R2,12
+Srv_DEV_038,Windows,Server 2012 R2,72
+Srv_UAT_039,Windows,Server 2012 R2,24
+Srv_PROD_040,Windows,Server 2019,2
+Srv_PROD_041,Windows,Server 2022,8
+Srv_PROD_042,Windows,Server 2019,2
+Srv_PROD_043,Windows,Server 2016,8
+Srv_UAT_044,Windows,Server 2022,8
+Srv_PROD_045,Windows,Server 2019,8
+Srv_DEV_046,Windows,Server 2012 R2,72
+Srv_DEV_047,Windows,Server 2012 R2,72
+Srv_PROD_048,Windows,Server 2012 R2,4
+Srv_PROD_049,Windows,Server 2022,4
+Srv_DEV_050,Windows,Server 2022,48
+Srv_UAT_051,Windows,Server 2019,24
+Srv_DEV_052,Windows,Server 2016,48
+Srv_PROD_053,Windows,Server 2016,2
+Srv_UAT_054,Windows,Server 2016,24
+Srv_DEV_055,Windows,Server 2016,48
+Srv_UAT_056,Windows,Server 2012 R2,12
+Srv_DEV_057,Windows,Server 2012 R2,72
+Srv_DEV_058,Windows,Server 2022,48
+Srv_UAT_059,Windows,Server 2019,12
+Srv_DEV_060,Windows,Server 2012 R2,24
+Srv_DEV_061,Windows,Server 2012 R2,24
+Srv_UAT_062,Windows,Server 2022,12
+Srv_DEV_063,Windows,Server 2016,48
+Srv_PROD_064,Windows,Server 2012 R2,8
+Srv_PROD_065,Windows,Server 2016,8
+Srv_PROD_066,Windows,Server 2012 R2,2
+Srv_DEV_067,Windows,Server 2016,72
+Srv_PROD_068,Windows,Server 2019,4
+Srv_PROD_069,Windows,Server 2019,2
+Srv_UAT_070,Windows,Server 2019,8
+Srv_UAT_071,Windows,Server 2016,12
+Srv_PROD_072,Windows,Server 2019,8
+Srv_UAT_073,Windows,Server 2012 R2,24
+Srv_PROD_074,Windows,Server 2012 R2,2
+Srv_PROD_075,Windows,Server 2022,2
+Srv_DEV_076,Windows,Server 2019,72
+Srv_PROD_077,Windows,Server 2022,8
+Srv_UAT_078,Windows,Server 2022,24
+Srv_DEV_079,Windows,Server 2019,24
+Srv_UAT_080,Windows,Server 2022,24
+Srv_DEV_081,Windows,Server 2016,48
+Srv_PROD_082,Windows,Server 2022,2
+Srv_UAT_083,Windows,Server 2016,12
+Srv_PROD_084,Windows,Server 2019,4
+Srv_UAT_085,Windows,Server 2012 R2,8
+Srv_PROD_086,Windows,Server 2016,2
+Srv_PROD_087,Windows,Server 2022,8
+Srv_PROD_088,Windows,Server 2012 R2,2
+Srv_PROD_089,Windows,Server 2019,4
+Srv_PROD_090,Windows,Server 2019,2
+Srv_UAT_091,Windows,Server 2012 R2,24
+Srv_DEV_092,Windows,Server 2022,24
+Srv_UAT_093,Windows,Server 2022,24
+Srv_DEV_094,Windows,Server 2012 R2,24
+Srv_UAT_095,Windows,Server 2019,8
+Srv_DEV_096,Windows,Server 2012 R2,24
+Srv_UAT_097,Windows,Server 2016,8
+Srv_PROD_098,Windows,Server 2022,8
+Srv_UAT_099,Windows,Server 2016,12
+Srv_UAT_100,Windows,Server 2012 R2,8

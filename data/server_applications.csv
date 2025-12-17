@@ -1,0 +1,119 @@
+server_id,affected_software,affected_version
+Srv_DEV_001,SQL Server,2019
+Srv_DEV_002,IIS,10.0
+Srv_DEV_002,SharePoint,Subscription
+Srv_PROD_003,Active Directory,2016+
+Srv_DEV_004,Active Directory,2016+
+Srv_DEV_005,SQL Server,2019
+Srv_DEV_006,SQL Server,2019
+Srv_UAT_007,Active Directory,2016+
+Srv_PROD_008,Active Directory,2016+
+Srv_UAT_009,Active Directory,2016+
+Srv_UAT_010,SQL Server,2019
+Srv_DEV_011,Active Directory,2016+
+Srv_UAT_012,Active Directory,2016+
+Srv_DEV_013,Exchange,2016
+Srv_PROD_014,SQL Server,2019
+Srv_PROD_015,Exchange,2016
+Srv_PROD_016,SQL Server,2019
+Srv_PROD_017,SQL Server,2019
+Srv_DEV_018,IIS,10.0
+Srv_DEV_018,SharePoint,Subscription
+Srv_PROD_019,Exchange,2016
+Srv_UAT_020,Exchange,2016
+Srv_DEV_021,Active Directory,2016+
+Srv_UAT_022,Active Directory,2016+
+Srv_UAT_023,SQL Server,2019
+Srv_DEV_024,SQL Server,2019
+Srv_UAT_025,Active Directory,2016+
+Srv_UAT_026,Active Directory,2016+
+Srv_DEV_027,IIS,10.0
+Srv_DEV_027,SharePoint,Subscription
+Srv_DEV_028,Exchange,2016
+Srv_DEV_029,SQL Server,2019
+Srv_DEV_030,IIS,10.0
+Srv_DEV_030,SharePoint,Subscription
+Srv_UAT_031,SQL Server,2019
+Srv_DEV_032,Active Directory,2016+
+Srv_DEV_033,IIS,10.0
+Srv_DEV_033,SharePoint,Subscription
+Srv_UAT_034,Exchange,2016
+Srv_PROD_035,SQL Server,2019
+Srv_DEV_036,Active Directory,2016+
+Srv_UAT_037,IIS,10.0
+Srv_UAT_037,SharePoint,Subscription
+Srv_DEV_038,IIS,10.0
+Srv_DEV_038,SharePoint,Subscription
+Srv_UAT_039,SQL Server,2019
+Srv_PROD_040,SQL Server,2019
+Srv_PROD_041,SQL Server,2019
+Srv_PROD_042,IIS,10.0
+Srv_PROD_042,SharePoint,Subscription
+Srv_PROD_043,Active Directory,2016+
+Srv_UAT_044,SQL Server,2019
+Srv_PROD_045,Exchange,2016
+Srv_DEV_046,SQL Server,2019
+Srv_DEV_047,Active Directory,2016+
+Srv_PROD_048,Active Directory,2016+
+Srv_PROD_049,Active Directory,2016+
+Srv_DEV_050,IIS,10.0
+Srv_DEV_050,SharePoint,Subscription
+Srv_UAT_051,Exchange,2016
+Srv_DEV_052,SQL Server,2019
+Srv_PROD_053,IIS,10.0
+Srv_PROD_053,SharePoint,Subscription
+Srv_UAT_054,Exchange,2016
+Srv_DEV_055,SQL Server,2019
+Srv_UAT_056,SQL Server,2019
+Srv_DEV_057,Active Directory,2016+
+Srv_DEV_058,Exchange,2016
+Srv_UAT_059,SQL Server,2019
+Srv_DEV_060,IIS,10.0
+Srv_DEV_060,SharePoint,Subscription
+Srv_DEV_061,Exchange,2016
+Srv_UAT_062,Active Directory,2016+
+Srv_DEV_063,IIS,10.0
+Srv_DEV_063,SharePoint,Subscription
+Srv_PROD_064,Exchange,2016
+Srv_PROD_065,Exchange,2016
+Srv_PROD_066,Exchange,2016
+Srv_DEV_067,SQL Server,2019
+Srv_PROD_068,IIS,10.0
+Srv_PROD_068,SharePoint,Subscription
+Srv_PROD_069,Exchange,2016
+Srv_UAT_070,Active Directory,2016+
+Srv_UAT_071,Exchange,2016
+Srv_PROD_072,SQL Server,2019
+Srv_UAT_073,SQL Server,2019
+Srv_PROD_074,Active Directory,2016+
+Srv_PROD_075,IIS,10.0
+Srv_PROD_075,SharePoint,Subscription
+Srv_DEV_076,SQL Server,2019
+Srv_PROD_077,Exchange,2016
+Srv_UAT_078,Active Directory,2016+
+Srv_DEV_079,Exchange,2016
+Srv_UAT_080,Active Directory,2016+
+Srv_DEV_081,Exchange,2016
+Srv_PROD_082,SQL Server,2019
+Srv_UAT_083,IIS,10.0
+Srv_UAT_083,SharePoint,Subscription
+Srv_PROD_084,Active Directory,2016+
+Srv_UAT_085,SQL Server,2019
+Srv_PROD_086,Exchange,2016
+Srv_PROD_087,Active Directory,2016+
+Srv_PROD_088,Exchange,2016
+Srv_PROD_089,IIS,10.0
+Srv_PROD_089,SharePoint,Subscription
+Srv_PROD_090,SQL Server,2019
+Srv_UAT_091,Active Directory,2016+
+Srv_DEV_092,IIS,10.0
+Srv_DEV_092,SharePoint,Subscription
+Srv_UAT_093,Exchange,2016
+Srv_DEV_094,SQL Server,2019
+Srv_UAT_095,SQL Server,2019
+Srv_DEV_096,Active Directory,2016+
+Srv_UAT_097,Active Directory,2016+
+Srv_PROD_098,Exchange,2016
+Srv_UAT_099,SQL Server,2019
+Srv_UAT_100,IIS,10.0
+Srv_UAT_100,SharePoint,Subscription

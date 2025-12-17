@@ -1,0 +1,11 @@
+tech_id,tech_name,level,skills,work_start_h,lunch_start_h,lunch_end_h,work_end_h,on_call
+Tech_01,Ana Silva,Mid,Patch Management;Security Hardening;Active Directory;Exchange;SQL Server,8.0,12.0,13.0,17.0,0
+Tech_02,João Pereira,Senior,Active Directory;Patch Management;Exchange,10.0,14.0,15.0,19.0,1
+Tech_03,Maria Costa,Junior,Exchange;SharePoint;IIS;Patch Management,10.0,14.0,15.0,19.0,0
+Tech_04,Pedro Santos,Junior,Active Directory;Security Hardening;SQL Server;IIS;Windows Server,8.0,12.0,13.0,17.0,1
+Tech_05,Inês Rodrigues,Mid,Backup & Recovery;IIS;Exchange;SharePoint,11.0,15.0,16.0,20.0,1
+Tech_06,Ricardo Fernandes,Mid,SharePoint;Windows Server;Patch Management;Security Hardening,10.0,14.0,15.0,19.0,0
+Tech_07,Sofia Almeida,Senior,IIS;Security Hardening;Active Directory,11.0,15.0,16.0,20.0,0
+Tech_08,Miguel Teixeira,Senior,Exchange;Windows Server;Backup & Recovery;Security Hardening,7.5,11.5,12.5,16.5,0
+Tech_09,Carla Nunes,Senior,Exchange;Patch Management;SharePoint;Backup & Recovery;IIS,7.5,11.5,12.5,16.5,1
+Tech_10,Tiago Lopes,Mid,Security Hardening;SharePoint;Backup & Recovery;Active Directory,8.0,12.0,13.0,17.0,1
