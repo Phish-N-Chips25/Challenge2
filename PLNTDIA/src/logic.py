@@ -12,6 +12,50 @@ def find_affected_servers(cve: CVE, servers: List[Server]) -> List[Tuple[Server,
                 targets.append((srv, soft))
     return targets
 
+def calculate_estimate_fix_time(cve: CVE, software: Software) -> int:
+    """Estima tempo de correção (horas) baseado em CVSS v3 + contexto operacional. """
+
+    # --- 1. Base time via CVSS ---
+    base_score = getattr(cve, "base_score", None)
+    if base_score is None:
+        base_time = 2.0
+    else:
+        base_time = base_score / 2
+
+    multiplier = 1.0
+
+    # --- 2. Complexidade técnica ---
+    attack_vector = getattr(cve, "attack_vector", "NETWORK")
+    if attack_vector == "NETWORK":
+        multiplier += 0.3
+    elif attack_vector == "ADJACENT_NETWORK":
+        multiplier += 0.2
+    elif attack_vector == "LOCAL":
+        multiplier += 0.1
+
+    if getattr(cve, "attack_complexity", "LOW") == "HIGH":
+        multiplier += 0.25
+
+    privs = getattr(cve, "privileges_required", "NONE")
+    if privs == "NONE":
+        multiplier += 0.2
+    elif privs == "LOW":
+        multiplier += 0.1
+
+    if getattr(cve, "user_interaction", "NONE") == "REQUIRED":
+        multiplier += 0.15
+
+    if getattr(cve, "scope", "UNCHANGED") == "CHANGED":
+        multiplier += 0.25
+
+    # --- 3. Software criticality ---
+    multiplier += (software.criticality / 10) * 0.5
+
+    # --- 4. Resultado final ---
+    estimated = base_time * multiplier
+
+    return max(1, int(round(estimated)))
+
 def calculate_priority(cve: CVE, software: Software) -> float:
     """Calcula urgência baseada no EPSS, Severidade e Criticalidade do Software."""
     
