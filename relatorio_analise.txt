@@ -1,0 +1,11 @@
+=== 1. CARREGAMENTO E ANÁLISE ===
+Total de tarefas válidas para agendar: 2
+
+=== 2. AGENDAMENTO (GREEDY) ===
+Conseguimos agendar 1 de 2 tarefas.
+
+=== 3. PLANO FINAL ===
+🗓️  [Seg 00h] CVE-2024-1111 (Low)
+    Maquina: Srv_Development | Soft: Python
+    Técnico: Maria_Night
+------------------------------
