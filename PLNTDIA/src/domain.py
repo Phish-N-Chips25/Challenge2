@@ -41,7 +41,6 @@ class CVE:
     affected_software_version: str # Ex: "2.4.50" (Simplificado, num real seria um range)
     
     # Restrições de Patching
-    estimated_fix_time: int # Duração em horas
     operators_required: int # Nº de pessoas
     
     # Propriedade calculada posteriormente (Prioridade Final)
@@ -52,10 +51,14 @@ class CVE:
 @dataclass
 class Worker:
     id: str
+    name: str # Adicionámos o nome para ficar bonito no relatório
+    level: str # 'Junior', 'Mid', 'Senior'
+    skills: List[str] = field(default_factory=list) # Novidade
+    
     weekly_shifts: List[Tuple[int, int, int]] = field(default_factory=list)
     
-    # NOVO CAMPO: Lista de IDs dos servidores onde este técnico PODE tocar
-    # Ex: ["Srv_Production", "Srv_Backup"]
+    # Este campo continua a ser crucial para o algoritmo saber onde ele pode tocar.
+    # Mas agora será preenchido automaticamente pelo código!
     authorized_server_ids: List[str] = field(default_factory=list)
 
 

@@ -54,3 +54,11 @@ O objetivo é maximizar o aproveitamento.
 O output esperado seria algo do genero de sequencias:
 
 Patch para CVE x com risco x e severidade x, aplicada ao servidor x no software x com criticalidade x. A aplicação foi realizada em x durante x tempo pelos operarios x.
+
+
+
+Severidade,Duração Estimada (h),Justificação
+Critical,4h,"Requer backup, coordenação de equipa e testes extensos."
+High,2h,Requer validação e aplicação cuidadosa.
+Medium,1h,Patch padrão de rotina.
+Low,1h,Atualização simples de configuração ou biblioteca.

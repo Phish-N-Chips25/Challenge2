@@ -1,0 +1,13 @@
+id,severity,epss,software,version,ops
+CVE-2024-SQL01,Critical,0.95,SQL Server,2019,2
+CVE-2024-SQL02,High,0.70,SQL Server,2019,1
+CVE-2024-EXC01,Critical,0.92,Exchange,2016,2
+CVE-2024-EXC02,High,0.65,Exchange,2016,1
+CVE-2024-IIS01,Medium,0.45,IIS,10.0,1
+CVE-2024-AD01,Critical,0.98,Active Directory,2016+,2
+CVE-2024-AD02,High,0.80,Active Directory,2016+,1
+CVE-2024-WIN01,Low,0.15,Windows,Server 2019,1
+CVE-2024-WIN02,Medium,0.40,Windows,Server 2016,1
+CVE-2024-SHP01,High,0.75,SharePoint,Subscription,1
+CVE-2024-NGINX01,Medium,0.30,Nginx,1.18,1
+CVE-2024-PY01,Low,0.10,Python,3.9,1
