@@ -12,8 +12,9 @@ import os
 import sys
 import json
 import logging
+import re
 from datetime import datetime, date, timedelta
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple, Optional, Any
 from flask import Flask, jsonify, request, render_template, send_from_directory
 from flask_cors import CORS
 
@@ -35,6 +36,124 @@ app = Flask(__name__,
             static_folder='static',
             template_folder='templates')
 CORS(app)
+
+# ============================================================
+# VALIDATION & PAGINATION HELPERS
+# ============================================================
+
+class ValidationError(Exception):
+    """Custom validation error with status code."""
+    def __init__(self, message: str, status_code: int = 400):
+        self.message = message
+        self.status_code = status_code
+        super().__init__(self.message)
+
+
+def validate_pagination(page: Any, per_page: Any, max_per_page: int = 100) -> Tuple[int, int]:
+    """Validate and return pagination parameters."""
+    try:
+        page = int(page) if page else 1
+        per_page = int(per_page) if per_page else 20
+    except (ValueError, TypeError):
+        raise ValidationError("page and per_page must be integers")
+    
+    if page < 1:
+        raise ValidationError("page must be >= 1")
+    if per_page < 1 or per_page > max_per_page:
+        raise ValidationError(f"per_page must be between 1 and {max_per_page}")
+    
+    return page, per_page
+
+
+def paginate(items: List, page: int, per_page: int) -> Dict:
+    """Paginate a list of items."""
+    total = len(items)
+    total_pages = (total + per_page - 1) // per_page
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    return {
+        "items": items[start:end],
+        "pagination": {
+            "page": page,
+            "per_page": per_page,
+            "total": total,
+            "total_pages": total_pages,
+            "has_next": page < total_pages,
+            "has_prev": page > 1
+        }
+    }
+
+
+def validate_severity(severity: str) -> str:
+    """Validate CVE severity level."""
+    valid = ['critical', 'high', 'medium', 'low']
+    if severity and severity.lower() not in valid:
+        raise ValidationError(f"Invalid severity. Must be one of: {', '.join(valid)}")
+    return severity.lower() if severity else None
+
+
+def validate_environment(env: str) -> str:
+    """Validate server environment."""
+    valid = ['dev', 'test', 'prod']
+    if env and env.lower() not in valid:
+        raise ValidationError(f"Invalid environment. Must be one of: {', '.join(valid)}")
+    return env.upper() if env else None
+
+
+def validate_date(date_str: str, param_name: str = 'date') -> date:
+    """Validate and parse date string (YYYY-MM-DD)."""
+    if not date_str:
+        return None
+    try:
+        return datetime.strptime(date_str, '%Y-%m-%d').date()
+    except ValueError:
+        raise ValidationError(f"{param_name} must be in YYYY-MM-DD format")
+
+
+def validate_positive_int(value: Any, param_name: str, max_value: int = None) -> int:
+    """Validate positive integer parameter."""
+    try:
+        value = int(value)
+    except (ValueError, TypeError):
+        raise ValidationError(f"{param_name} must be an integer")
+    
+    if value < 1:
+        raise ValidationError(f"{param_name} must be positive")
+    if max_value and value > max_value:
+        raise ValidationError(f"{param_name} must be <= {max_value}")
+    
+    return value
+
+
+@app.errorhandler(ValidationError)
+def handle_validation_error(error):
+    """Handle validation errors."""
+    return jsonify({"error": error.message}), error.status_code
+
+
+@app.errorhandler(400)
+def handle_bad_request(error):
+    """Handle bad request errors."""
+    return jsonify({"error": "Bad request"}), 400
+
+
+@app.errorhandler(404)
+def handle_not_found(error):
+    """Handle not found errors."""
+    return jsonify({"error": "Resource not found"}), 404
+
+
+@app.errorhandler(500)
+def handle_server_error(error):
+    """Handle internal server errors."""
+    logger.error(f"Internal server error: {error}")
+    return jsonify({"error": "Internal server error"}), 500
+
+
+# ============================================================
+# DATA CACHE
+# ============================================================
 
 # Global data cache
 _data_cache = {
@@ -346,31 +465,188 @@ def favicon():
 
 @app.route('/api/status')
 def api_status():
-    """API health check."""
+    """Basic API health check."""
     return jsonify({
         "status": "ok",
         "timestamp": datetime.now().isoformat(),
         "cached_data": _data_cache["last_load"].isoformat() if _data_cache["last_load"] else None
     })
 
+
+@app.route('/api/health')
+def api_health():
+    """Comprehensive health check endpoint.
+    
+    Returns detailed status of all system components.
+    """
+    health = {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "version": "1.0.0",
+        "components": {}
+    }
+    
+    # Check data cache
+    try:
+        servers, workers, availability_manager = load_data()
+        health["components"]["data_cache"] = {
+            "status": "healthy",
+            "servers_count": len(servers),
+            "workers_count": len(workers),
+            "last_load": _data_cache["last_load"].isoformat() if _data_cache["last_load"] else None
+        }
+    except Exception as e:
+        health["status"] = "degraded"
+        health["components"]["data_cache"] = {
+            "status": "unhealthy",
+            "error": str(e)
+        }
+    
+    # Check CVE data
+    try:
+        if _data_cache["cves"] is not None:
+            health["components"]["cve_data"] = {
+                "status": "healthy",
+                "cves_count": len(_data_cache["cves"]),
+                "source": "cached"
+            }
+        else:
+            health["components"]["cve_data"] = {
+                "status": "healthy",
+                "cves_count": 0,
+                "source": "not_loaded"
+            }
+    except Exception as e:
+        health["components"]["cve_data"] = {
+            "status": "unhealthy",
+            "error": str(e)
+        }
+    
+    # Check CSV files
+    csv_path = os.path.join(os.path.dirname(__file__), 'csv')
+    required_files = ['servers.csv', 'team.csv', 'holidays.csv']
+    csv_status = "healthy"
+    missing_files = []
+    
+    for f in required_files:
+        if not os.path.exists(os.path.join(csv_path, f)):
+            csv_status = "degraded"
+            missing_files.append(f)
+    
+    health["components"]["csv_files"] = {
+        "status": csv_status,
+        "path": csv_path,
+        "missing_files": missing_files if missing_files else None
+    }
+    
+    # Check dataset
+    dataset_path = os.path.join(os.path.dirname(__file__), 'dataset', 'merged_cve_data.csv')
+    if os.path.exists(dataset_path):
+        file_size = os.path.getsize(dataset_path)
+        health["components"]["cve_dataset"] = {
+            "status": "healthy",
+            "path": dataset_path,
+            "size_mb": round(file_size / (1024 * 1024), 2)
+        }
+    else:
+        health["components"]["cve_dataset"] = {
+            "status": "missing",
+            "path": dataset_path
+        }
+    
+    # Overall status
+    if any(c.get("status") == "unhealthy" for c in health["components"].values()):
+        health["status"] = "unhealthy"
+    elif any(c.get("status") in ["degraded", "missing"] for c in health["components"].values()):
+        health["status"] = "degraded"
+    
+    status_code = 200 if health["status"] == "healthy" else 503 if health["status"] == "unhealthy" else 200
+    
+    return jsonify(health), status_code
+
+
+@app.route('/api/metrics')
+def api_metrics():
+    """Get system metrics for monitoring.
+    
+    Returns counts and statistics useful for monitoring dashboards.
+    """
+    servers, workers, availability_manager = load_data()
+    
+    if _data_cache["cves"] is None:
+        load_cves_from_csv(servers, 200)
+    
+    cves = _data_cache["cves"] or []
+    
+    # Calculate severity distribution
+    severity_counts = {"Critical": 0, "High": 0, "Medium": 0, "Low": 0}
+    for cve in cves:
+        severity_counts[cve.severity] = severity_counts.get(cve.severity, 0) + 1
+    
+    # Calculate environment distribution
+    env_counts = {"DEV": 0, "TEST": 0, "PROD": 0}
+    for server in servers:
+        env_counts[server.environment] = env_counts.get(server.environment, 0) + 1
+    
+    # Calculate worker level distribution
+    level_counts = {"Junior": 0, "Mid": 0, "Senior": 0}
+    for worker in workers:
+        level_counts[worker.level] = level_counts.get(worker.level, 0) + 1
+    
+    return jsonify({
+        "timestamp": datetime.now().isoformat(),
+        "totals": {
+            "servers": len(servers),
+            "cves": len(cves),
+            "workers": len(workers),
+            "holidays": len(availability_manager.holidays) if availability_manager else 0
+        },
+        "distributions": {
+            "cves_by_severity": severity_counts,
+            "servers_by_environment": env_counts,
+            "workers_by_level": level_counts
+        },
+        "cache": {
+            "is_loaded": _data_cache["last_load"] is not None,
+            "last_load": _data_cache["last_load"].isoformat() if _data_cache["last_load"] else None
+        }
+    })
+
 @app.route('/api/servers')
 def api_servers():
-    """Get all servers."""
+    """Get all servers with pagination and filtering.
+    
+    Query params:
+        - environment: Filter by env (DEV, TEST, PROD)
+        - application_group: Filter by app group
+        - page: Page number (default: 1)
+        - per_page: Items per page (default: 20, max: 100)
+    """
     servers, _, _ = load_data()
     
-    # Filter by environment if provided
+    # Validate and filter by environment
     env = request.args.get('environment')
     if env:
-        servers = [s for s in servers if s.environment == env.upper()]
+        env = validate_environment(env)
+        servers = [s for s in servers if s.environment == env]
     
-    # Filter by application group if provided
+    # Filter by application group
     app_group = request.args.get('application_group')
     if app_group:
         servers = [s for s in servers if s.application_group == app_group]
     
+    # Pagination
+    page, per_page = validate_pagination(
+        request.args.get('page'),
+        request.args.get('per_page')
+    )
+    
+    result = paginate([server_to_dict(s) for s in servers], page, per_page)
+    
     return jsonify({
-        "count": len(servers),
-        "servers": [server_to_dict(s) for s in servers]
+        "count": result["pagination"]["total"],
+        "servers": result["items"],
+        "pagination": result["pagination"]
     })
 
 
@@ -404,11 +680,23 @@ def api_workers():
 
 @app.route('/api/cves')
 def api_cves():
-    """Get all CVEs from the real dataset."""
+    """Get all CVEs from the real dataset with pagination.
+    
+    Query params:
+        - severity: Filter by severity (Critical, High, Medium, Low)
+        - software: Filter by software name (partial match)
+        - sort: Sort by 'priority', 'severity', or 'epss' (default: priority)
+        - page: Page number (default: 1)
+        - per_page: Items per page (default: 20, max: 100)
+        - count: Max CVEs to load from dataset (default: 200)
+    """
     servers, _, _ = load_data()
     
-    # Get count parameter (default 200 for real CVEs)
-    count = int(request.args.get('count', 200))
+    # Validate count parameter
+    count = request.args.get('count', 200)
+    if count:
+        count = validate_positive_int(count, 'count', max_value=1000)
+    
     use_real = request.args.get('real', 'true').lower() == 'true'
     
     # Load real CVEs from CSV or generate
@@ -418,20 +706,27 @@ def api_cves():
         else:
             generate_cves(servers, count)
     
-    cves = _data_cache["cves"]
+    cves = list(_data_cache["cves"])  # Create copy to avoid modifying cache
     
     # Filter by severity if provided
     severity = request.args.get('severity')
     if severity:
-        cves = [c for c in cves if c.severity.lower() == severity.lower()]
+        severity = validate_severity(severity)
+        cves = [c for c in cves if c.severity.lower() == severity]
     
     # Filter by software if provided
     software = request.args.get('software')
     if software:
+        # Sanitize input to prevent injection
+        software = re.sub(r'[^\w\s.-]', '', software)
         cves = [c for c in cves if software.lower() in c.affected_software_id.lower()]
     
-    # Sort options
+    # Validate and apply sorting
     sort_by = request.args.get('sort', 'priority')
+    valid_sorts = ['priority', 'severity', 'epss', 'cve_id']
+    if sort_by not in valid_sorts:
+        raise ValidationError(f"Invalid sort. Must be one of: {', '.join(valid_sorts)}")
+    
     if sort_by == 'priority':
         cves = sorted(cves, key=lambda c: c.final_priority_score, reverse=True)
     elif sort_by == 'severity':
@@ -439,10 +734,21 @@ def api_cves():
         cves = sorted(cves, key=lambda c: severity_order.get(c.severity, 0), reverse=True)
     elif sort_by == 'epss':
         cves = sorted(cves, key=lambda c: c.epss_score, reverse=True)
+    elif sort_by == 'cve_id':
+        cves = sorted(cves, key=lambda c: c.id)
+    
+    # Pagination
+    page, per_page = validate_pagination(
+        request.args.get('page'),
+        request.args.get('per_page')
+    )
+    
+    result = paginate([cve_to_dict(c) for c in cves], page, per_page)
     
     return jsonify({
-        "count": len(cves),
-        "cves": [cve_to_dict(c) for c in cves]
+        "count": result["pagination"]["total"],
+        "cves": result["items"],
+        "pagination": result["pagination"]
     })
 
 
