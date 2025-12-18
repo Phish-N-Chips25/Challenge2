@@ -1,0 +1,224 @@
+============================================================
+         PLNTDIA - Relatório de Planeamento
+         Gerado em: 2025-12-17 21:30:30
+============================================================
+
+=== 1. DADOS CARREGADOS (CSV) ===
+📂 Fonte dados: csv/
+🖥️  Servidores: 100
+    - PROD: 33 | UAT: 32 | DEV: 35
+🔒 CVEs:       11 (dataset real)
+    - Período: 2025-10-18 a 2025-12-17
+    - Total no ficheiro: 206,794
+    - Total no período: 6,936
+    - Match infraestrutura: 11
+👷 Equipa:     10 técnicos
+    - Senior: 4 | Mid: 4 | Junior: 2
+✅ Tarefas válidas identificadas: 139
+
+📋 Histórico de Patches:
+    - Total registados: 87
+    - Com sucesso: 0
+    - Agendados: 87
+    - Servidores únicos: 42
+
+=== 2. RESULTADO DO AGENDAMENTO ===
+✅ Agendadas:     87
+⚠️  Falhadas:      52
+📈 Taxa de Sucesso: 62.6%
+
+=== 3. UTILIZAÇÃO DE RECURSOS ===
+
+👷 Técnicos:
+   Ana Silva            [███████░░░░░░░░░░░░░]  35.7%
+   João Pereira         [███████░░░░░░░░░░░░░]  35.7%
+   Inês Rodrigues       [███████░░░░░░░░░░░░░]  35.7%
+   Ricardo Fernandes    [███████░░░░░░░░░░░░░]  35.7%
+   Sofia Almeida        [███████░░░░░░░░░░░░░]  35.7%
+   Miguel Teixeira      [███████░░░░░░░░░░░░░]  35.7%
+   Carla Nunes          [███████░░░░░░░░░░░░░]  35.7%
+   Tiago Lopes          [███████░░░░░░░░░░░░░]  35.7%
+   Maria Costa          [████░░░░░░░░░░░░░░░░]  21.4%
+   Pedro Santos         [███░░░░░░░░░░░░░░░░░]  18.2%
+
+   Média de utilização: 32.5%
+
+🖥️  Servidores (top 10):
+   Srv_PROD_014         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_016         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_017         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_035         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_040         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_041         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_072         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_082         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_PROD_090         [██░░░░░░░░░░░░░░░░░░]  10.3%
+   Srv_DEV_001          [█░░░░░░░░░░░░░░░░░░░]   8.3%
+
+=== 4. PLANO FINAL (Primeiras 20 Tarefas) ===
+
+🗓️  [Ter 00h-02h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_014
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 00h-02h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_016
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 00h-02h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_017
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Sofia Almeida (Senior), Miguel Teixeira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 00h-02h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_035
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 02h-04h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_040
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 02h-04h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_041
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 02h-04h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_072
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Sofia Almeida (Senior), Miguel Teixeira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 02h-04h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_082
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 04h-06h] CVE-2025-10702
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_090
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 04h-06h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_014
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 04h-06h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_016
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Sofia Almeida (Senior), Miguel Teixeira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Ter 04h-06h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_017
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 00h-02h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_035
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 00h-02h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_040
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 00h-02h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_041
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Sofia Almeida (Senior), Miguel Teixeira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 00h-02h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_072
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 02h-04h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_082
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 02h-04h] CVE-2025-10703
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_090
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 02h-04h] CVE-2025-59499
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_014
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Sofia Almeida (Senior), Miguel Teixeira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+🗓️  [Qua 02h-04h] CVE-2025-59499
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: Srv_PROD_016
+    📦 Software: SQL Server v2019 (Criticidade: 10.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 5.10
+--------------------------------------------------
+
+... e mais 67 tarefas não mostradas
+
+============================================================
+                    FIM DO RELATÓRIO
+============================================================

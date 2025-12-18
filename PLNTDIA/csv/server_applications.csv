@@ -1,0 +1,181 @@
+server_id,affected_software,affected_version,criticality
+DEV_WebPortal_01,IIS,10.0,6.0
+DEV_WebPortal_01,.NET Framework,4.8,7.0
+DEV_WebPortal_01,ASP.NET Core,6.0,7.0
+DEV_WebPortal_02,IIS,10.0,6.0
+DEV_WebPortal_02,.NET Framework,4.8,7.0
+DEV_WebPortal_02,Redis,7.0,5.0
+DEV_ERP_01,Java,17,8.0
+DEV_ERP_01,Apache Tomcat,10.0,7.0
+DEV_ERP_01,MySQL Server,8.0,9.0
+DEV_ERP_02,Java,17,8.0
+DEV_ERP_02,Apache Tomcat,10.0,7.0
+DEV_ERP_02,MySQL Server,8.0,9.0
+DEV_Analytics_01,Elasticsearch,8.0,7.0
+DEV_Analytics_01,Python,3.11,5.0
+DEV_Analytics_01,Redis,7.0,5.0
+DEV_Analytics_02,Elasticsearch,8.0,7.0
+DEV_Analytics_02,Grafana,10.0,6.0
+DEV_Analytics_02,Python,3.11,5.0
+DEV_Email_01,Exchange,2019,9.0
+DEV_Email_01,Active Directory,2019,10.0
+DEV_Email_01,IIS,10.0,6.0
+DEV_Email_02,Exchange,2019,9.0
+DEV_Email_02,Active Directory,2019,10.0
+DEV_Email_02,SQL Server,2019,10.0
+DEV_FileServices_01,SharePoint,2019,7.0
+DEV_FileServices_01,SQL Server,2019,10.0
+DEV_FileServices_01,IIS,10.0,6.0
+DEV_FileServices_02,SharePoint,2019,7.0
+DEV_FileServices_02,SQL Server,2019,10.0
+DEV_FileServices_02,.NET Framework,4.8,7.0
+DEV_CRM_01,Dynamics 365,9.2,8.0
+DEV_CRM_01,SQL Server,2019,10.0
+DEV_CRM_01,.NET Framework,4.8,7.0
+DEV_CRM_02,Dynamics 365,9.2,8.0
+DEV_CRM_02,SQL Server,2019,10.0
+DEV_CRM_02,IIS,10.0,6.0
+DEV_Database_01,Oracle Database,19c,10.0
+DEV_Database_01,Java,17,8.0
+DEV_Database_01,WebLogic Server,14.1,8.0
+DEV_Database_02,MySQL Server,8.0,9.0
+DEV_Database_02,PostgreSQL,15,9.0
+DEV_Database_02,Redis,7.0,5.0
+DEV_Security_01,Fortinet FortiGate,7.2,9.0
+DEV_Security_01,CrowdStrike Falcon,6.0,9.0
+DEV_Security_01,Active Directory,2022,10.0
+DEV_Security_02,Fortinet FortiGate,7.2,9.0
+DEV_Security_02,Zabbix,6.0,6.0
+DEV_Security_02,Active Directory,2022,10.0
+DEV_Integration_01,Kong Gateway,3.0,7.0
+DEV_Integration_01,Node.js,18,6.0
+DEV_Integration_01,Redis,7.0,5.0
+DEV_Integration_02,Kong Gateway,3.0,7.0
+DEV_Integration_02,Nginx,1.24,6.0
+DEV_Integration_02,RabbitMQ,3.12,7.0
+DEV_Monitoring_01,Prometheus,2.45,6.0
+DEV_Monitoring_01,Grafana,10.0,6.0
+DEV_Monitoring_01,Node.js,18,6.0
+DEV_Monitoring_02,Zabbix,6.0,6.0
+DEV_Monitoring_02,Elasticsearch,8.0,7.0
+DEV_Monitoring_02,PostgreSQL,15,9.0
+TEST_WebPortal_01,IIS,10.0,7.0
+TEST_WebPortal_01,.NET Framework,4.8,8.0
+TEST_WebPortal_01,ASP.NET Core,6.0,8.0
+TEST_WebPortal_02,IIS,10.0,7.0
+TEST_WebPortal_02,.NET Framework,4.8,8.0
+TEST_WebPortal_02,Redis,7.0,6.0
+TEST_ERP_01,Java,17,9.0
+TEST_ERP_01,Apache Tomcat,10.0,8.0
+TEST_ERP_01,MySQL Server,8.0,10.0
+TEST_ERP_02,Java,17,9.0
+TEST_ERP_02,Apache Tomcat,10.0,8.0
+TEST_ERP_02,MySQL Server,8.0,10.0
+TEST_Analytics_01,Elasticsearch,8.0,8.0
+TEST_Analytics_01,Python,3.11,6.0
+TEST_Analytics_01,Redis,7.0,6.0
+TEST_Analytics_02,Elasticsearch,8.0,8.0
+TEST_Analytics_02,Grafana,10.0,7.0
+TEST_Analytics_02,Python,3.11,6.0
+TEST_Email_01,Exchange,2019,10.0
+TEST_Email_01,Active Directory,2019,10.0
+TEST_Email_01,IIS,10.0,7.0
+TEST_Email_02,Exchange,2019,10.0
+TEST_Email_02,Active Directory,2019,10.0
+TEST_Email_02,SQL Server,2019,10.0
+TEST_FileServices_01,SharePoint,2019,8.0
+TEST_FileServices_01,SQL Server,2019,10.0
+TEST_FileServices_01,IIS,10.0,7.0
+TEST_FileServices_02,SharePoint,2019,8.0
+TEST_FileServices_02,SQL Server,2019,10.0
+TEST_FileServices_02,.NET Framework,4.8,8.0
+TEST_CRM_01,Dynamics 365,9.2,9.0
+TEST_CRM_01,SQL Server,2019,10.0
+TEST_CRM_01,.NET Framework,4.8,8.0
+TEST_CRM_02,Dynamics 365,9.2,9.0
+TEST_CRM_02,SQL Server,2019,10.0
+TEST_CRM_02,IIS,10.0,7.0
+TEST_Database_01,Oracle Database,19c,10.0
+TEST_Database_01,Java,17,9.0
+TEST_Database_01,WebLogic Server,14.1,9.0
+TEST_Database_02,MySQL Server,8.0,10.0
+TEST_Database_02,PostgreSQL,15,10.0
+TEST_Database_02,Redis,7.0,6.0
+TEST_Security_01,Fortinet FortiGate,7.2,10.0
+TEST_Security_01,CrowdStrike Falcon,6.0,10.0
+TEST_Security_01,Active Directory,2022,10.0
+TEST_Security_02,Fortinet FortiGate,7.2,10.0
+TEST_Security_02,Zabbix,6.0,7.0
+TEST_Security_02,Active Directory,2022,10.0
+TEST_Integration_01,Kong Gateway,3.0,8.0
+TEST_Integration_01,Node.js,18,7.0
+TEST_Integration_01,Redis,7.0,6.0
+TEST_Integration_02,Kong Gateway,3.0,8.0
+TEST_Integration_02,Nginx,1.24,7.0
+TEST_Integration_02,RabbitMQ,3.12,8.0
+TEST_Monitoring_01,Prometheus,2.45,7.0
+TEST_Monitoring_01,Grafana,10.0,7.0
+TEST_Monitoring_01,Node.js,18,7.0
+TEST_Monitoring_02,Zabbix,6.0,7.0
+TEST_Monitoring_02,Elasticsearch,8.0,8.0
+TEST_Monitoring_02,PostgreSQL,15,10.0
+PROD_WebPortal_01,IIS,10.0,9.0
+PROD_WebPortal_01,.NET Framework,4.8,9.0
+PROD_WebPortal_01,ASP.NET Core,6.0,9.0
+PROD_WebPortal_02,IIS,10.0,9.0
+PROD_WebPortal_02,.NET Framework,4.8,9.0
+PROD_WebPortal_02,Redis,7.0,8.0
+PROD_ERP_01,Java,17,10.0
+PROD_ERP_01,Apache Tomcat,10.0,9.0
+PROD_ERP_01,MySQL Server,8.0,10.0
+PROD_ERP_02,Java,17,10.0
+PROD_ERP_02,Apache Tomcat,10.0,9.0
+PROD_ERP_02,MySQL Server,8.0,10.0
+PROD_Analytics_01,Elasticsearch,8.0,9.0
+PROD_Analytics_01,Python,3.11,7.0
+PROD_Analytics_01,Redis,7.0,8.0
+PROD_Analytics_02,Elasticsearch,8.0,9.0
+PROD_Analytics_02,Grafana,10.0,8.0
+PROD_Analytics_02,Python,3.11,7.0
+PROD_Email_01,Exchange,2019,10.0
+PROD_Email_01,Active Directory,2019,10.0
+PROD_Email_01,IIS,10.0,9.0
+PROD_Email_02,Exchange,2019,10.0
+PROD_Email_02,Active Directory,2019,10.0
+PROD_Email_02,SQL Server,2019,10.0
+PROD_FileServices_01,SharePoint,2019,9.0
+PROD_FileServices_01,SQL Server,2019,10.0
+PROD_FileServices_01,IIS,10.0,9.0
+PROD_FileServices_02,SharePoint,2019,9.0
+PROD_FileServices_02,SQL Server,2019,10.0
+PROD_FileServices_02,.NET Framework,4.8,9.0
+PROD_CRM_01,Dynamics 365,9.2,10.0
+PROD_CRM_01,SQL Server,2019,10.0
+PROD_CRM_01,.NET Framework,4.8,9.0
+PROD_CRM_02,Dynamics 365,9.2,10.0
+PROD_CRM_02,SQL Server,2019,10.0
+PROD_CRM_02,IIS,10.0,9.0
+PROD_Database_01,Oracle Database,19c,10.0
+PROD_Database_01,Java,17,10.0
+PROD_Database_01,WebLogic Server,14.1,10.0
+PROD_Database_02,MySQL Server,8.0,10.0
+PROD_Database_02,PostgreSQL,15,10.0
+PROD_Database_02,Redis,7.0,8.0
+PROD_Security_01,Fortinet FortiGate,7.2,10.0
+PROD_Security_01,CrowdStrike Falcon,6.0,10.0
+PROD_Security_01,Active Directory,2022,10.0
+PROD_Security_02,Fortinet FortiGate,7.2,10.0
+PROD_Security_02,Zabbix,6.0,8.0
+PROD_Security_02,Active Directory,2022,10.0
+PROD_Integration_01,Kong Gateway,3.0,9.0
+PROD_Integration_01,Node.js,18,8.0
+PROD_Integration_01,Redis,7.0,8.0
+PROD_Integration_02,Kong Gateway,3.0,9.0
+PROD_Integration_02,Nginx,1.24,8.0
+PROD_Integration_02,RabbitMQ,3.12,9.0
+PROD_Monitoring_01,Prometheus,2.45,8.0
+PROD_Monitoring_01,Grafana,10.0,8.0
+PROD_Monitoring_01,Node.js,18,8.0
+PROD_Monitoring_02,Zabbix,6.0,8.0
+PROD_Monitoring_02,Elasticsearch,8.0,9.0
+PROD_Monitoring_02,PostgreSQL,15,10.0

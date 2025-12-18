@@ -1,0 +1,61 @@
+id,os_name,os_version,rto_hours,environment,application_group,dependency_group
+DEV_WebPortal_01,Windows Server,2019,24,DEV,WebPortal,GRP_WebPortal
+DEV_WebPortal_02,Windows Server,2019,24,DEV,WebPortal,GRP_WebPortal
+DEV_ERP_01,Windows Server,2019,24,DEV,ERP,GRP_ERP
+DEV_ERP_02,Windows Server,2019,24,DEV,ERP,GRP_ERP
+DEV_Analytics_01,CentOS,8,24,DEV,Analytics,GRP_Analytics
+DEV_Analytics_02,CentOS,8,24,DEV,Analytics,GRP_Analytics
+DEV_Email_01,Windows Server,2019,24,DEV,Email,GRP_Email
+DEV_Email_02,Windows Server,2019,24,DEV,Email,GRP_Email
+DEV_FileServices_01,Windows Server,2022,24,DEV,FileServices,GRP_FileServices
+DEV_FileServices_02,Windows Server,2022,24,DEV,FileServices,GRP_FileServices
+DEV_CRM_01,Windows Server,2019,24,DEV,CRM,GRP_CRM
+DEV_CRM_02,Windows Server,2019,24,DEV,CRM,GRP_CRM
+DEV_Database_01,Oracle Linux,8,24,DEV,Database,GRP_Database
+DEV_Database_02,CentOS,8,24,DEV,Database,GRP_Database
+DEV_Security_01,Windows Server,2022,24,DEV,Security,GRP_Security
+DEV_Security_02,Windows Server,2022,24,DEV,Security,GRP_Security
+DEV_Integration_01,Ubuntu,22.04,24,DEV,Integration,GRP_Integration
+DEV_Integration_02,Ubuntu,22.04,24,DEV,Integration,GRP_Integration
+DEV_Monitoring_01,CentOS,8,24,DEV,Monitoring,GRP_Monitoring
+DEV_Monitoring_02,CentOS,8,24,DEV,Monitoring,GRP_Monitoring
+TEST_WebPortal_01,Windows Server,2019,12,TEST,WebPortal,GRP_WebPortal
+TEST_WebPortal_02,Windows Server,2019,12,TEST,WebPortal,GRP_WebPortal
+TEST_ERP_01,Windows Server,2019,12,TEST,ERP,GRP_ERP
+TEST_ERP_02,Windows Server,2019,12,TEST,ERP,GRP_ERP
+TEST_Analytics_01,CentOS,8,12,TEST,Analytics,GRP_Analytics
+TEST_Analytics_02,CentOS,8,12,TEST,Analytics,GRP_Analytics
+TEST_Email_01,Windows Server,2019,12,TEST,Email,GRP_Email
+TEST_Email_02,Windows Server,2019,12,TEST,Email,GRP_Email
+TEST_FileServices_01,Windows Server,2022,12,TEST,FileServices,GRP_FileServices
+TEST_FileServices_02,Windows Server,2022,12,TEST,FileServices,GRP_FileServices
+TEST_CRM_01,Windows Server,2019,12,TEST,CRM,GRP_CRM
+TEST_CRM_02,Windows Server,2019,12,TEST,CRM,GRP_CRM
+TEST_Database_01,Oracle Linux,8,12,TEST,Database,GRP_Database
+TEST_Database_02,CentOS,8,12,TEST,Database,GRP_Database
+TEST_Security_01,Windows Server,2022,12,TEST,Security,GRP_Security
+TEST_Security_02,Windows Server,2022,12,TEST,Security,GRP_Security
+TEST_Integration_01,Ubuntu,22.04,12,TEST,Integration,GRP_Integration
+TEST_Integration_02,Ubuntu,22.04,12,TEST,Integration,GRP_Integration
+TEST_Monitoring_01,CentOS,8,12,TEST,Monitoring,GRP_Monitoring
+TEST_Monitoring_02,CentOS,8,12,TEST,Monitoring,GRP_Monitoring
+PROD_WebPortal_01,Windows Server,2019,4,PROD,WebPortal,GRP_WebPortal
+PROD_WebPortal_02,Windows Server,2019,4,PROD,WebPortal,GRP_WebPortal
+PROD_ERP_01,Windows Server,2019,4,PROD,ERP,GRP_ERP
+PROD_ERP_02,Windows Server,2019,4,PROD,ERP,GRP_ERP
+PROD_Analytics_01,CentOS,8,4,PROD,Analytics,GRP_Analytics
+PROD_Analytics_02,CentOS,8,4,PROD,Analytics,GRP_Analytics
+PROD_Email_01,Windows Server,2019,4,PROD,Email,GRP_Email
+PROD_Email_02,Windows Server,2019,4,PROD,Email,GRP_Email
+PROD_FileServices_01,Windows Server,2022,4,PROD,FileServices,GRP_FileServices
+PROD_FileServices_02,Windows Server,2022,4,PROD,FileServices,GRP_FileServices
+PROD_CRM_01,Windows Server,2019,4,PROD,CRM,GRP_CRM
+PROD_CRM_02,Windows Server,2019,4,PROD,CRM,GRP_CRM
+PROD_Database_01,Oracle Linux,8,4,PROD,Database,GRP_Database
+PROD_Database_02,CentOS,8,4,PROD,Database,GRP_Database
+PROD_Security_01,Windows Server,2022,4,PROD,Security,GRP_Security
+PROD_Security_02,Windows Server,2022,4,PROD,Security,GRP_Security
+PROD_Integration_01,Ubuntu,22.04,4,PROD,Integration,GRP_Integration
+PROD_Integration_02,Ubuntu,22.04,4,PROD,Integration,GRP_Integration
+PROD_Monitoring_01,CentOS,8,4,PROD,Monitoring,GRP_Monitoring
+PROD_Monitoring_02,CentOS,8,4,PROD,Monitoring,GRP_Monitoring

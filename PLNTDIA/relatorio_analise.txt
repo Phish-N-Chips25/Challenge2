@@ -1,1330 +1,214 @@
-=== 1. STRESS TEST (GERAÇÃO AUTOMÁTICA) ===
--> Cenário Gerado: 20 Servidores | 50 CVEs | 5 Técnicos
+============================================================
+         PLNTDIA - Relatório de Planeamento
+         Gerado em: 2025-12-18 09:51:12
+============================================================
 
--> A calcular prioridades e verificar RTO...
--> Total de tarefas válidas identificadas: 341
+=== 1. DADOS CARREGADOS (CSV) ===
+📂 Fonte dados: csv/
+🖥️  Servidores: 60
+    - PROD: 20 | UAT: 0 | DEV: 20
+🔒 CVEs:       5 (sintético)
+👷 Equipa:     10 técnicos
+    - Senior: 4 | Mid: 4 | Junior: 2
+✅ Tarefas válidas identificadas: 33
 
-=== 2. AGENDAMENTO (GREEDY) ===
+=== 2. RESULTADO DO AGENDAMENTO ===
+✅ Agendadas:     33
+⚠️  Falhadas:      0
+📈 Taxa de Sucesso: 100.0%
 
-RESUMO DO PLANEAMENTO:
-✅ Agendadas: 329
-⚠️  Falhadas:  12
-📊 Taxa de Sucesso: 96.5%
+=== 3. UTILIZAÇÃO DE RECURSOS ===
 
-=== 3. PLANO FINAL (Amostra) ===
-🗓️  [Seg 00h-02h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-04h] CVE-2025-1040 (Critical)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1008 (High)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1008 (High)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1008 (High)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1029 (High)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1029 (High)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1029 (High)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1039 (High)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1039 (High)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1039 (High)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1037 (High)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1037 (High)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1037 (High)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1030 (Low)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1032 (Low)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1032 (Low)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1032 (Low)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1012 (Medium)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1012 (Medium)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1012 (Medium)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-04h] CVE-2025-1043 (Critical)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-04h] CVE-2025-1043 (Critical)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-04h] CVE-2025-1043 (Critical)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1024 (High)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1024 (High)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1024 (High)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1031 (High)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1034 (Medium)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1004 (High)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1004 (High)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1004 (High)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1005 (Low)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1005 (Low)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1027 (Critical)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1027 (Critical)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1027 (Critical)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1015 (Low)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1015 (Low)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1015 (Low)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1028 (Low)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1028 (Low)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1028 (Low)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1011 (Low)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1011 (Low)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1011 (Low)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1020 (High)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1020 (High)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1038 (High)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-03h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1044 (High)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1044 (High)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1044 (High)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1035 (High)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1035 (High)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1035 (High)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1033 (High)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1003 (High)
-    Maquina: Srv_Dev_03 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1003 (High)
-    Maquina: Srv_Dev_11 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1003 (High)
-    Maquina: Srv_Dev_12 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1014 (Low)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1014 (Low)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1019 (Low)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1019 (Low)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1019 (Low)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1026 (Low)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1016 (High)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1016 (High)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-04h] CVE-2025-1018 (Critical)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-04h] CVE-2025-1018 (Critical)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1045 (Medium)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1013 (Low)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1013 (Low)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1013 (Low)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1017 (Low)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1017 (Low)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1017 (Low)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1010 (Low)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1010 (Low)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1010 (Low)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1049 (Low)
-    Maquina: Srv_Dev_01 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1049 (Low)
-    Maquina: Srv_Dev_04 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1049 (Low)
-    Maquina: Srv_Dev_11 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1023 (Medium)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1036 (High)
-    Maquina: Srv_Dev_12 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1036 (High)
-    Maquina: Srv_Dev_17 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1046 (Low)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1046 (Low)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-01h] CVE-2025-1046 (Low)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1025 (Low)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1022 (Low)
-    Maquina: Srv_Dev_01 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1022 (Low)
-    Maquina: Srv_Dev_17 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1022 (Low)
-    Maquina: Srv_Dev_18 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Seg 00h-02h] CVE-2025-1000 (Low)
-    Maquina: Srv_Dev_00 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1007 (Critical)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1042 (Medium)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1041 (Medium)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1008 (High)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1008 (High)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1008 (High)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1008 (High)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1008 (High)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1008 (High)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1021 (Critical)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1029 (High)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1029 (High)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1029 (High)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1029 (High)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1039 (High)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1039 (High)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1039 (High)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1039 (High)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1037 (High)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1037 (High)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1030 (Low)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1030 (Low)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1030 (Low)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1009 (Critical)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1032 (Low)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1032 (Low)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1012 (Medium)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1012 (Medium)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1048 (Medium)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1024 (High)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1024 (High)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1024 (High)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1024 (High)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1024 (High)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1024 (High)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1031 (High)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1031 (High)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1031 (High)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1034 (Medium)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1034 (Medium)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1034 (Medium)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1001 (Critical)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1004 (High)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1004 (High)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1004 (High)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1004 (High)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1004 (High)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1004 (High)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1005 (Low)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1027 (Critical)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1027 (Critical)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1015 (Low)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1015 (Low)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1015 (Low)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1015 (Low)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1015 (Low)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1015 (Low)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1006 (Medium)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1047 (Medium)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1028 (Low)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1028 (Low)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1028 (Low)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1028 (Low)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1028 (Low)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1028 (Low)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1011 (Low)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1011 (Low)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1020 (High)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1038 (High)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1038 (High)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1038 (High)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-05h] CVE-2025-1002 (Critical)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior, Op_4_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1044 (High)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1044 (High)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1044 (High)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1044 (High)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1044 (High)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1044 (High)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1035 (High)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1035 (High)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1033 (High)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1033 (High)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1033 (High)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1003 (High)
-    Maquina: Srv_Prod_02 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1003 (High)
-    Maquina: Srv_Prod_05 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1003 (High)
-    Maquina: Srv_Prod_07 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1003 (High)
-    Maquina: Srv_Prod_10 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1003 (High)
-    Maquina: Srv_Prod_14 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1003 (High)
-    Maquina: Srv_Prod_19 | Soft: PostgreSQL
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1014 (Low)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1019 (Low)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1019 (Low)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1019 (Low)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1019 (Low)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1026 (Low)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1026 (Low)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1026 (Low)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1016 (High)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1045 (Medium)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1045 (Medium)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1045 (Medium)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1013 (Low)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1013 (Low)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1013 (Low)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1013 (Low)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1017 (Low)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1017 (Low)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1017 (Low)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1017 (Low)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1010 (Low)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1010 (Low)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1010 (Low)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1010 (Low)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1049 (Low)
-    Maquina: Srv_Prod_14 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1049 (Low)
-    Maquina: Srv_Prod_15 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1049 (Low)
-    Maquina: Srv_Prod_16 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1049 (Low)
-    Maquina: Srv_Prod_19 | Soft: Apache
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1023 (Medium)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1023 (Medium)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1023 (Medium)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_02 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_05 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_06 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_08 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_09 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_10 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1036 (High)
-    Maquina: Srv_Prod_13 | Soft: Python
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1046 (Low)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-03h] CVE-2025-1046 (Low)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1025 (Low)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1025 (Low)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1025 (Low)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1022 (Low)
-    Maquina: Srv_Prod_08 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1022 (Low)
-    Maquina: Srv_Prod_16 | Soft: Redis
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1000 (Low)
-    Maquina: Srv_Prod_09 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1000 (Low)
-    Maquina: Srv_Prod_13 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
-🗓️  [Ter 02h-04h] CVE-2025-1000 (Low)
-    Maquina: Srv_Prod_15 | Soft: Nginx
-    Equipa:  Op_3_Senior
-------------------------------
+👷 Técnicos:
+   Inês Rodrigues       [░░░░░░░░░░░░░░░░░░░░]   4.0%
+   Sofia Almeida        [░░░░░░░░░░░░░░░░░░░░]   4.0%
+   Ana Silva            [░░░░░░░░░░░░░░░░░░░░]   3.0%
+   Ricardo Fernandes    [░░░░░░░░░░░░░░░░░░░░]   3.0%
+   João Pereira         [░░░░░░░░░░░░░░░░░░░░]   2.0%
+   Carla Nunes          [░░░░░░░░░░░░░░░░░░░░]   2.0%
+   Maria Costa          [░░░░░░░░░░░░░░░░░░░░]   1.8%
+   Miguel Teixeira      [░░░░░░░░░░░░░░░░░░░░]   1.0%
+   Tiago Lopes          [░░░░░░░░░░░░░░░░░░░░]   1.0%
+   Pedro Santos         [░░░░░░░░░░░░░░░░░░░░]   0.0%
+
+   Média de utilização: 2.2%
+
+🖥️  Servidores (top 10):
+   PROD_Integration_02  [██░░░░░░░░░░░░░░░░░░]  14.3%
+   PROD_CRM_01          [██░░░░░░░░░░░░░░░░░░]  14.3%
+   PROD_Email_01        [██░░░░░░░░░░░░░░░░░░]  14.3%
+   PROD_Email_02        [██░░░░░░░░░░░░░░░░░░]  14.3%
+   PROD_CRM_02          [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   PROD_WebPortal_01    [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   PROD_WebPortal_02    [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   PROD_FileServices_02 [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   PROD_Analytics_01    [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   PROD_Analytics_02    [█░░░░░░░░░░░░░░░░░░░]   7.1%
+
+=== 4. PLANO FINAL (Primeiras 20 Tarefas) ===
+
+🗓️  [Seg 18h-20h] CVE-2025-1004
+    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
+    🖥️  Servidor: DEV_Email_01
+    📦 Software: Exchange v2019 (Criticidade: 9.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  2h | Prioridade: 7.26
+--------------------------------------------------
+
+🗓️  [Seg 18h-20h] CVE-2025-1004
+    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
+    🖥️  Servidor: DEV_Email_02
+    📦 Software: Exchange v2019 (Criticidade: 9.0)
+    👷 Equipa:   Sofia Almeida (Senior)
+    ⏱️  Duração:  2h | Prioridade: 7.26
+--------------------------------------------------
+
+🗓️  [Seg 18h-19h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: DEV_WebPortal_01
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Seg 18h-19h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: DEV_WebPortal_02
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   Maria Costa (Junior)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Seg 18h-19h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: DEV_FileServices_02
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   Ricardo Fernandes (Mid)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Ter 18h-19h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: DEV_CRM_01
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Ter 18h-19h] CVE-2025-1001
+    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
+    🖥️  Servidor: DEV_CRM_02
+    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
+    👷 Equipa:   Maria Costa (Junior)
+    ⏱️  Duração:  1h | Prioridade: 4.13
+--------------------------------------------------
+
+🗓️  [Ter 18h-19h] CVE-2025-1003
+    🟢 Severidade: Low | EPSS: 0.22 | Risco: BAIXO
+    🖥️  Servidor: DEV_Analytics_01
+    📦 Software: Python v3.11 (Criticidade: 5.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.02
+--------------------------------------------------
+
+🗓️  [Ter 18h-19h] CVE-2025-1003
+    🟢 Severidade: Low | EPSS: 0.22 | Risco: BAIXO
+    🖥️  Servidor: DEV_Analytics_02
+    📦 Software: Python v3.11 (Criticidade: 5.0)
+    👷 Equipa:   Ricardo Fernandes (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.02
+--------------------------------------------------
+
+🗓️  [Ter 18h-20h] CVE-2025-1000
+    🟢 Severidade: Low | EPSS: 0.04 | Risco: BAIXO
+    🖥️  Servidor: DEV_Integration_02
+    📦 Software: RabbitMQ v3.12 (Criticidade: 7.0)
+    👷 Equipa:   Sofia Almeida (Senior)
+    ⏱️  Duração:  2h | Prioridade: 2.67
+--------------------------------------------------
+
+🗓️  [Ter 19h-20h] CVE-2025-1001
+    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
+    🖥️  Servidor: DEV_CRM_01
+    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 4.13
+--------------------------------------------------
+
+🗓️  [Qua 02h-04h] CVE-2025-1004
+    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
+    🖥️  Servidor: PROD_Email_01
+    📦 Software: Exchange v2019 (Criticidade: 9.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  2h | Prioridade: 7.26
+--------------------------------------------------
+
+🗓️  [Qua 02h-04h] CVE-2025-1004
+    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
+    🖥️  Servidor: PROD_Email_02
+    📦 Software: Exchange v2019 (Criticidade: 9.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 7.26
+--------------------------------------------------
+
+🗓️  [Qua 02h-03h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: PROD_WebPortal_01
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Qua 02h-03h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: PROD_WebPortal_02
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   Ricardo Fernandes (Mid)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Qua 02h-03h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: PROD_FileServices_02
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   Sofia Almeida (Senior)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Qua 02h-03h] CVE-2025-1002
+    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+    🖥️  Servidor: PROD_CRM_01
+    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
+    👷 Equipa:   Carla Nunes (Senior)
+    ⏱️  Duração:  1h | Prioridade: 5.45
+--------------------------------------------------
+
+🗓️  [Qua 02h-03h] CVE-2025-1001
+    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
+    🖥️  Servidor: PROD_CRM_02
+    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
+    👷 Equipa:   Tiago Lopes (Mid)
+    ⏱️  Duração:  1h | Prioridade: 4.13
+--------------------------------------------------
+
+🗓️  [Qua 03h-04h] CVE-2025-1001
+    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
+    🖥️  Servidor: PROD_CRM_01
+    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 4.13
+--------------------------------------------------
+
+🗓️  [Qua 03h-04h] CVE-2025-1003
+    🟢 Severidade: Low | EPSS: 0.22 | Risco: BAIXO
+    🖥️  Servidor: PROD_Analytics_01
+    📦 Software: Python v3.11 (Criticidade: 5.0)
+    👷 Equipa:   Ricardo Fernandes (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.02
+--------------------------------------------------
+
+... e mais 13 tarefas não mostradas
+
+============================================================
+                    FIM DO RELATÓRIO
+============================================================

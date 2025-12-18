@@ -2,3 +2,6 @@ numpy
 pandas
 scikit-learn
 joblib
+pytest>=7.0.0
+flask>=3.0.0
+flask-cors>=4.0.0

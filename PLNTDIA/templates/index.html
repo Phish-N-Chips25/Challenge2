@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PLNTDIA - Gestão de Patches</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🔐</span>
+                <h1>PLNTDIA</h1>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-item active" data-tab="dashboard">Dashboard</a>
+                <a href="#" class="nav-item" data-tab="cves">CVEs</a>
+                <a href="#" class="nav-item" data-tab="servers">Servidores</a>
+                <a href="#" class="nav-item" data-tab="schedule">Planeamento</a>
+                <a href="#" class="nav-item" data-tab="calendar">Calendário</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <section id="dashboard" class="tab-content active">
+            <div class="page-header">
+                <h2>Dashboard</h2>
+                <p>Visão geral do sistema de gestão de patches</p>
+            </div>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon servers">🖥️</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-servers">-</span>
+                        <span class="stat-label">Servidores</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon cves">🛡️</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-cves">-</span>
+                        <span class="stat-label">CVEs</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon workers">👥</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-workers">-</span>
+                        <span class="stat-label">Operadores</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon holidays">📅</div>
+                    <div class="stat-info">
+                        <span class="stat-value" id="total-holidays">-</span>
+                        <span class="stat-label">Feriados</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3>Servidores por Ambiente</h3>
+                    <div class="env-chart" id="env-chart">
+                        <div class="env-bar dev">
+                            <span class="env-label">DEV</span>
+                            <div class="bar-container">
+                                <div class="bar" id="dev-bar"></div>
+                            </div>
+                            <span class="env-count" id="dev-count">0</span>
+                        </div>
+                        <div class="env-bar test">
+                            <span class="env-label">TEST</span>
+                            <div class="bar-container">
+                                <div class="bar" id="test-bar"></div>
+                            </div>
+                            <span class="env-count" id="test-count">0</span>
+                        </div>
+                        <div class="env-bar prod">
+                            <span class="env-label">PROD</span>
+                            <div class="bar-container">
+                                <div class="bar" id="prod-bar"></div>
+                            </div>
+                            <span class="env-count" id="prod-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>CVEs por Severidade</h3>
+                    <div class="severity-chart" id="severity-chart">
+                        <div class="severity-item critical">
+                            <span class="severity-badge">Critical</span>
+                            <span class="severity-count" id="critical-count">0</span>
+                        </div>
+                        <div class="severity-item high">
+                            <span class="severity-badge">High</span>
+                            <span class="severity-count" id="high-count">0</span>
+                        </div>
+                        <div class="severity-item medium">
+                            <span class="severity-badge">Medium</span>
+                            <span class="severity-count" id="medium-count">0</span>
+                        </div>
+                        <div class="severity-item low">
+                            <span class="severity-badge">Low</span>
+                            <span class="severity-count" id="low-count">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card full-width">
+                    <h3>Próximos Feriados</h3>
+                    <div class="holidays-list" id="holidays-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CVEs Tab -->
+        <section id="cves" class="tab-content">
+            <div class="page-header">
+                <h2>CVEs</h2>
+                <p>Gestão de vulnerabilidades e priorização</p>
+            </div>
+
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label>Severidade:</label>
+                    <select id="cve-severity-filter">
+                        <option value="">Todas</option>
+                        <option value="Critical">Critical</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Software:</label>
+                    <input type="text" id="cve-software-filter" placeholder="Pesquisar software...">
+                </div>
+                <div class="filter-group">
+                    <label>Ordenar por:</label>
+                    <select id="cve-sort">
+                        <option value="priority">Prioridade</option>
+                        <option value="severity">Severidade</option>
+                        <option value="epss">EPSS Score</option>
+                    </select>
+                </div>
+                <button class="btn btn-secondary" id="refresh-cves">🔄 Atualizar</button>
+            </div>
+
+            <div class="cve-table-container">
+                <table class="data-table" id="cve-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="select-all-cves"></th>
+                            <th>CVE ID</th>
+                            <th>Severidade</th>
+                            <th>EPSS</th>
+                            <th>Software</th>
+                            <th>Tempo Est.</th>
+                            <th>Ops. Req.</th>
+                            <th>Prioridade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cve-table-body">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Servers Tab -->
+        <section id="servers" class="tab-content">
+            <div class="page-header">
+                <h2>Servidores</h2>
+                <p>Infraestrutura e janelas de manutenção</p>
+            </div>
+
+            <div class="filters-bar">
+                <div class="filter-group">
+                    <label>Ambiente:</label>
+                    <select id="server-env-filter">
+                        <option value="">Todos</option>
+                        <option value="DEV">DEV</option>
+                        <option value="TEST">TEST</option>
+                        <option value="PROD">PROD</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Aplicação:</label>
+                    <select id="server-app-filter">
+                        <option value="">Todas</option>
+                        <!-- Populated by JavaScript -->
+                    </select>
+                </div>
+                <button class="btn btn-secondary" id="refresh-servers">🔄 Atualizar</button>
+            </div>
+
+            <div class="servers-grid" id="servers-grid">
+                <!-- Populated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Schedule Tab -->
+        <section id="schedule" class="tab-content">
+            <div class="page-header">
+                <h2>Planeamento de Patches</h2>
+                <p>Identificação automática e agendamento de patches para toda a infraestrutura</p>
+            </div>
+
+            <div class="schedule-layout">
+                <div class="card selection-panel">
+                    <h3>🔍 Patches Identificados Automaticamente</h3>
+                    <p class="subtitle">O sistema identifica automaticamente quais patches aplicar a cada servidor</p>
+                    
+                    <div class="auto-patches-summary" id="auto-patches-summary">
+                        <div class="loading-indicator">A carregar patches identificados...</div>
+                    </div>
+                    
+                    <div class="patches-list-container" id="patches-list-container">
+                        <!-- Auto-filled with recommended patches -->
+                    </div>
+                    
+                    <h3>⚙️ Configuração do Planeamento</h3>
+                    <div class="config-form">
+                        <div class="form-group">
+                            <label>Data Início:</label>
+                            <input type="date" id="plan-start-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Duração (dias):</label>
+                            <input type="number" id="plan-days" value="30" min="7" max="90">
+                        </div>
+                        <div class="form-group">
+                            <label>Severidade Mínima:</label>
+                            <select id="plan-min-severity">
+                                <option value="Low">Todas (Low+)</option>
+                                <option value="Medium">Medium+</option>
+                                <option value="High">High+</option>
+                                <option value="Critical">Apenas Critical</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Gerações GA:</label>
+                            <input type="number" id="plan-generations" value="100" min="50" max="500">
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-large" id="auto-generate-plan">
+                        🧬 Gerar Planeamento Automático
+                    </button>
+                </div>
+
+                <div class="card results-panel">
+                    <h3>📊 Resultados do Planeamento</h3>
+                    <div class="plan-results" id="plan-results">
+                        <p class="empty-state">Execute o algoritmo genético para gerar o planeamento otimizado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Calendar Tab -->
+        <section id="calendar" class="tab-content">
+            <div class="page-header">
+                <h2>📅 Calendário de Planeamento</h2>
+                <p>Visualização mensal tipo turnos - Servidores, Equipas e CVEs</p>
+            </div>
+
+            <div class="calendar-toolbar">
+                <div class="calendar-nav">
+                    <button class="btn btn-secondary" id="prev-month">◀ Mês Anterior</button>
+                    <h3 id="calendar-month-title">Janeiro 2026</h3>
+                    <button class="btn btn-secondary" id="next-month">Mês Seguinte ▶</button>
+                </div>
+                <div class="calendar-filters">
+                    <select id="calendar-env-filter">
+                        <option value="">Todos os Ambientes</option>
+                        <option value="DEV">DEV</option>
+                        <option value="TEST">TEST</option>
+                        <option value="PROD">PROD</option>
+                    </select>
+                    <button class="btn btn-primary" id="export-calendar">📥 Exportar</button>
+                </div>
+            </div>
+
+            <div class="monthly-calendar-container">
+                <table class="monthly-calendar" id="monthly-calendar">
+                    <thead>
+                        <tr>
+                            <th>Seg</th>
+                            <th>Ter</th>
+                            <th>Qua</th>
+                            <th>Qui</th>
+                            <th>Sex</th>
+                            <th class="weekend">Sáb</th>
+                            <th class="weekend">Dom</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                        <!-- Calendar cells populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="calendar-legend">
+                <span class="legend-item"><span class="legend-color critical"></span> Critical</span>
+                <span class="legend-item"><span class="legend-color high"></span> High</span>
+                <span class="legend-item"><span class="legend-color medium"></span> Medium</span>
+                <span class="legend-item"><span class="legend-color low"></span> Low</span>
+                <span class="legend-item"><span class="legend-color holiday"></span> Feriado</span>
+            </div>
+
+            <!-- Day Detail Panel -->
+            <div class="day-detail-panel" id="day-detail-panel" style="display: none;">
+                <div class="day-detail-header">
+                    <h3 id="day-detail-title">Detalhes do Dia</h3>
+                    <button class="btn btn-secondary" id="close-day-detail">✕</button>
+                </div>
+                <div class="day-detail-content" id="day-detail-content">
+                    <!-- Day details populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Server Detail Modal -->
+    <div class="modal" id="server-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-server-title">Detalhes do Servidor</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-server-body">
+                <!-- Populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- CVE Selection Modal -->
+    <div class="modal" id="cve-servers-modal">
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="modal-cve-title">Selecionar Servidores</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-cve-body">
+                <!-- Populated by JavaScript -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Cancelar</button>
+                <button class="btn btn-primary" id="confirm-server-selection">Confirmar Seleção</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
