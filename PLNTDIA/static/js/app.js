@@ -897,10 +897,21 @@ async function generatePlan() {
             body: JSON.stringify({ tasks })
         });
         
-        appState.planData = result;
-        showNotification(`Plano gerado: ${result.tasks.length} tarefas agendadas`, 'success');
+        // Normalizar formato dos dados (API retorna schedule, não tasks)
+        const schedule = result?.schedule || result?.tasks || [];
+        appState.planData = {
+            ...result,
+            tasks: schedule.map(t => ({
+                ...t,
+                start_time: t.date || t.start_time  // Garantir que start_time existe
+            }))
+        };
         
-        // Ir para o calendário
+        const tasksCount = schedule.length;
+        showNotification(`Plano gerado: ${tasksCount} tarefas agendadas`, 'success');
+        
+        // Mostrar resultados e ir para o calendário
+        renderPlanResults(result);
         showTab('calendar');
         
     } catch (error) {
@@ -1013,15 +1024,29 @@ function renderCellTasks(tasks) {
     if (tasks.length === 0) return '';
     
     return tasks.slice(0, 3).map(task => {
-        const env = task.environment?.toLowerCase() || 'dev';
-        const startTime = new Date(task.start_time);
-        const timeStr = startTime.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
-        const severity = task.severity?.toLowerCase() || 'medium';
+        const env = (task.environment || 'DEV').toLowerCase();
+        
+        // Suportar diferentes formatos de hora
+        let timeStr;
+        if (task.hour_start !== undefined) {
+            // Formato da API: hour_start é um número (0-23)
+            timeStr = `${String(task.hour_start).padStart(2, '0')}:00`;
+        } else if (task.start_time) {
+            // Formato antigo: start_time é timestamp
+            const startTime = new Date(task.start_time);
+            timeStr = startTime.toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' });
+        } else {
+            timeStr = '--:--';
+        }
+        
+        const severity = (task.severity || 'Medium').toLowerCase();
+        const serverId = task.server_id || 'Unknown';
+        const cveId = task.cve_id || 'N/A';
         
         return `
-            <div class="task-block ${severity}" title="${task.server_id} - ${task.cve_id} (${timeStr})">
+            <div class="task-block ${severity}" title="${serverId} - ${cveId} (${timeStr})">
                 <span class="task-time">${timeStr}</span>
-                <span class="task-server">${task.server_id}</span>
+                <span class="task-server">${serverId}</span>
                 <span class="task-env env-${env}">${env.toUpperCase()}</span>
             </div>
         `;
@@ -1037,7 +1062,17 @@ function getTasksForDate(date) {
     const dateStr = formatDateISO(date);
     
     return appState.planData.tasks.filter(task => {
-        const taskDate = new Date(task.start_time);
+        // Suportar diferentes formatos de data
+        const taskDateValue = task.date || task.start_time || task.scheduled_date;
+        if (!taskDateValue) return false;
+        
+        // Se já é uma string ISO (YYYY-MM-DD)
+        if (typeof taskDateValue === 'string' && taskDateValue.length >= 10) {
+            return taskDateValue.substring(0, 10) === dateStr;
+        }
+        
+        // Se é timestamp ou Date
+        const taskDate = new Date(taskDateValue);
         return formatDateISO(taskDate) === dateStr;
     });
 }
@@ -1085,24 +1120,43 @@ function showDayDetails(dateStr) {
     } else {
         html += `<div class="day-tasks-list">`;
         tasks.forEach(task => {
-            const startTime = new Date(task.start_time);
-            const endTime = new Date(task.end_time);
-            const env = task.environment?.toLowerCase() || 'dev';
+            // Suportar diferentes formatos de hora
+            let timeStartStr, timeEndStr;
+            if (task.hour_start !== undefined) {
+                timeStartStr = `${String(task.hour_start).padStart(2, '0')}:00`;
+                timeEndStr = `${String(task.hour_end || task.hour_start + (task.duration || 1)).padStart(2, '0')}:00`;
+            } else if (task.start_time) {
+                const startTime = new Date(task.start_time);
+                const endTime = task.end_time ? new Date(task.end_time) : new Date(startTime.getTime() + 3600000);
+                timeStartStr = startTime.toLocaleTimeString('pt-PT', {hour: '2-digit', minute: '2-digit'});
+                timeEndStr = endTime.toLocaleTimeString('pt-PT', {hour: '2-digit', minute: '2-digit'});
+            } else {
+                timeStartStr = '--:--';
+                timeEndStr = '--:--';
+            }
+            
+            const env = (task.environment || 'DEV').toLowerCase();
+            const severity = (task.severity || 'Medium').toLowerCase();
+            const duration = task.duration || task.duration_hours || 1;
+            const workers = task.workers || [];
             
             html += `
-                <div class="day-task-item ${env}">
+                <div class="day-task-item ${env} ${severity}">
                     <div class="task-header">
-                        <span class="task-time">${startTime.toLocaleTimeString('pt-PT', {hour: '2-digit', minute: '2-digit'})} - ${endTime.toLocaleTimeString('pt-PT', {hour: '2-digit', minute: '2-digit'})}</span>
-                        <span class="task-env env-${env}">${task.environment}</span>
+                        <span class="task-time">${timeStartStr} - ${timeEndStr}</span>
+                        <span class="task-env env-${env}">${(task.environment || 'DEV').toUpperCase()}</span>
+                        <span class="severity-badge severity-${severity}">${task.severity || 'Medium'}</span>
                     </div>
                     <div class="task-info">
-                        <div><strong>Servidor:</strong> ${task.server_id}</div>
-                        <div><strong>CVE:</strong> ${task.cve_id}</div>
-                        <div><strong>Duração:</strong> ${task.duration_hours}h</div>
+                        <div><strong>Servidor:</strong> ${task.server_id || 'N/A'}</div>
+                        <div><strong>CVE:</strong> ${task.cve_id || 'N/A'}</div>
+                        <div><strong>Software:</strong> ${task.software_id || 'N/A'} ${task.software_version || ''}</div>
+                        <div><strong>Duração:</strong> ${duration}h</div>
+                        <div><strong>Prioridade:</strong> ${task.priority || 'N/A'}</div>
                     </div>
                     <div class="task-team">
                         <strong>Equipa:</strong>
-                        ${(task.workers || []).map(w => `<span class="worker-tag">${w}</span>`).join('')}
+                        ${workers.length > 0 ? workers.map(w => `<span class="worker-tag">${w}</span>`).join('') : '<span class="no-workers">Não atribuída</span>'}
                     </div>
                 </div>
             `;
