@@ -310,7 +310,9 @@ class GeneticScheduler:
         Considera:
         - Número de tarefas agendadas (mais é melhor)
         - Prioridade das CVEs agendadas
-        - Respeito às dependências DEV -> TEST -> PROD
+        - Prioridade por ambiente: DEV -> TEST -> PROD (DEV primeiro)
+        - Respeito às dependências DEV -> TEST -> PROD (ordem temporal)
+        - Servidores relacionados NÃO podem ser actualizados no mesmo dia
         - Distribuição de carga entre workers
         - Utilização eficiente das janelas
         """
@@ -318,6 +320,8 @@ class GeneticScheduler:
             return 0.0
         
         fitness = 0.0
+        env_priority = {"DEV": 3, "TEST": 2, "PROD": 1}  # DEV tem maior prioridade
+        env_order = {"DEV": 0, "TEST": 1, "PROD": 2}
         
         # 1. Bonus por tarefa agendada (peso alto)
         tasks_scheduled = len(chromosome.genes)
@@ -325,24 +329,38 @@ class GeneticScheduler:
         coverage_score = (tasks_scheduled / max_tasks) * 100 if max_tasks > 0 else 0
         fitness += coverage_score * 2  # Peso 2
         
-        # 2. Soma das prioridades das CVEs agendadas
+        # 2. Soma das prioridades das CVEs agendadas + bonus por ambiente
         priority_sum = 0.0
+        env_bonus = 0.0
         for gene in chromosome.genes:
             cve = self.cves.get(gene.cve_id)
+            server = self.servers.get(gene.server_id)
             if cve:
                 priority_sum += cve.final_priority_score
+            if server:
+                # Bonus por ambiente - DEV mais cedo ganha mais pontos
+                env_weight = env_priority.get(server.environment, 1)
+                days_from_start = gene.day
+                max_days = self.config.planning_weeks * 7
+                # DEV cedo = mais pontos, PROD tarde = ok
+                if server.environment == "DEV":
+                    env_bonus += (1 - days_from_start / max_days) * env_weight * 3
+                elif server.environment == "TEST":
+                    env_bonus += (1 - days_from_start / max_days) * env_weight * 2
+                else:  # PROD
+                    env_bonus += env_weight  # PROD pode ser mais tarde
         
         # Normalizar (assumindo prioridade máxima ~10)
         max_priority = max_tasks * 10 if max_tasks > 0 else 1
         priority_score = (priority_sum / max_priority) * 50
         fitness += priority_score
+        fitness += env_bonus
         
-        # 3. Penalização por violação de dependências
-        env_order = {"DEV": 0, "TEST": 1, "PROD": 2}
+        # 3. Penalização por violação de ordem temporal DEV -> TEST -> PROD
         dep_violations = 0
         
         # Agrupar por CVE e dependency_group
-        cve_schedules: Dict[str, Dict[str, int]] = defaultdict(dict)  # cve_id -> {env -> day}
+        cve_schedules: Dict[str, Dict[str, int]] = defaultdict(dict)  # key -> {env -> day}
         
         for gene in chromosome.genes:
             server = self.servers.get(gene.server_id)
@@ -358,15 +376,35 @@ class GeneticScheduler:
                     order1, order2 = env_order.get(env1, 0), env_order.get(env2, 0)
                     day1, day2 = env_days[env1], env_days[env2]
                     
-                    # Se env1 deve vir antes de env2, mas está agendado depois
-                    if order1 < order2 and day1 > day2:
+                    # Se env1 deve vir antes de env2, mas está agendado depois ou no mesmo dia
+                    if order1 < order2 and day1 >= day2:
                         dep_violations += 1
-                    elif order2 < order1 and day2 > day1:
+                    elif order2 < order1 and day2 >= day1:
                         dep_violations += 1
         
-        fitness -= dep_violations * 10  # Penalização forte
+        fitness -= dep_violations * 15  # Penalização forte
         
-        # 4. Distribuição de carga (desvio padrão baixo é melhor)
+        # 4. NOVA RESTRIÇÃO: Servidores relacionados NÃO podem ser actualizados no mesmo dia
+        same_day_violations = 0
+        
+        # Agrupar por dependency_group e dia
+        group_by_day: Dict[str, Dict[int, List[str]]] = defaultdict(lambda: defaultdict(list))
+        
+        for gene in chromosome.genes:
+            server = self.servers.get(gene.server_id)
+            if server and server.dependency_group:
+                group_by_day[server.dependency_group][gene.day].append(server.id)
+        
+        # Verificar se há mais de um servidor do mesmo grupo no mesmo dia
+        for group, days in group_by_day.items():
+            for day, servers_on_day in days.items():
+                if len(servers_on_day) > 1:
+                    # Penalização por cada par de servidores relacionados no mesmo dia
+                    same_day_violations += len(servers_on_day) - 1
+        
+        fitness -= same_day_violations * 20  # Penalização muito forte
+        
+        # 5. Distribuição de carga (desvio padrão baixo é melhor)
         worker_hours: Dict[str, int] = defaultdict(int)
         for gene in chromosome.genes:
             for w in gene.worker_ids:
@@ -379,16 +417,19 @@ class GeneticScheduler:
             balance_score = max(0, 10 - std_dev)
             fitness += balance_score
         
-        # 5. Bonus por agendar CVEs críticas cedo
+        # 6. Bonus por agendar CVEs críticas cedo (em DEV primeiro)
         early_critical_bonus = 0.0
         for gene in chromosome.genes:
             cve = self.cves.get(gene.cve_id)
+            server = self.servers.get(gene.server_id)
             if cve and cve.severity in ["Critical", "High"]:
                 # Quanto mais cedo, maior o bonus
                 days_from_start = gene.day
                 max_days = self.config.planning_weeks * 7
                 early_factor = 1 - (days_from_start / max_days)
-                early_critical_bonus += early_factor * 5
+                # Bonus extra se é DEV
+                env_mult = 1.5 if server and server.environment == "DEV" else 1.0
+                early_critical_bonus += early_factor * 5 * env_mult
         
         fitness += early_critical_bonus
         

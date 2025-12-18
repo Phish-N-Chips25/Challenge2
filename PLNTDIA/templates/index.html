@@ -129,7 +129,7 @@
                 <p>Gestão de vulnerabilidades e priorização</p>
             </div>
 
-            <div class="filters-bar">
+            <div class="filters-bar cve-filters">
                 <div class="filter-group">
                     <label>Severidade:</label>
                     <select id="cve-severity-filter">
@@ -150,9 +150,38 @@
                         <option value="priority">Prioridade</option>
                         <option value="severity">Severidade</option>
                         <option value="epss">EPSS Score</option>
+                        <option value="date">Data Publicação</option>
                     </select>
                 </div>
                 <button class="btn btn-secondary" id="refresh-cves">🔄 Atualizar</button>
+            </div>
+            
+            <div class="filters-bar cve-date-filters">
+                <div class="filter-group">
+                    <label>📅 Período:</label>
+                    <select id="cve-date-period">
+                        <option value="">Todas as datas</option>
+                        <option value="7">Última semana</option>
+                        <option value="30">Último mês</option>
+                        <option value="90">Últimos 3 meses</option>
+                        <option value="180">Últimos 6 meses</option>
+                        <option value="365">Último ano</option>
+                        <option value="custom">Personalizado</option>
+                    </select>
+                </div>
+                <div class="filter-group date-range-group" id="cve-custom-date-range" style="display: none;">
+                    <label>De:</label>
+                    <input type="date" id="cve-date-from">
+                    <label>Até:</label>
+                    <input type="date" id="cve-date-to">
+                </div>
+                <div class="filter-group">
+                    <span class="cve-filter-count" id="cve-filter-count">0 CVEs selecionadas</span>
+                </div>
+                <div class="filter-actions">
+                    <button class="btn btn-secondary" id="select-filtered-cves" title="Selecionar todas CVEs filtradas">☑️ Selecionar Filtradas</button>
+                    <button class="btn btn-primary" id="plan-selected-cves" disabled title="Criar planeamento com CVEs selecionadas">📋 Planear Selecionadas (<span id="selected-cve-count">0</span>)</button>
+                </div>
             </div>
 
             <div class="cve-table-container">
@@ -162,10 +191,11 @@
                             <th><input type="checkbox" id="select-all-cves"></th>
                             <th>CVE ID</th>
                             <th>Severidade</th>
+                            <th>CVSS</th>
                             <th>EPSS</th>
                             <th>Software</th>
+                            <th>Data Pub.</th>
                             <th>Tempo Est.</th>
-                            <th>Ops. Req.</th>
                             <th>Prioridade</th>
                             <th>Ações</th>
                         </tr>
@@ -174,6 +204,23 @@
                         <!-- Populated by JavaScript -->
                     </tbody>
                 </table>
+            </div>
+            
+            <!-- Modal para selecionar servidores para planeamento -->
+            <div id="plan-servers-modal" class="modal" style="display: none;">
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <h3>📋 Criar Planeamento de Patches</h3>
+                        <button class="modal-close" onclick="closePlanServersModal()">&times;</button>
+                    </div>
+                    <div class="modal-body" id="plan-servers-body">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" onclick="closePlanServersModal()">Cancelar</button>
+                        <button class="btn btn-primary" id="confirm-plan-btn" onclick="executePlanFromCVEs()">🚀 Gerar Planeamento</button>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -232,7 +279,28 @@
                     <h3>⚙️ Configuração do Planeamento</h3>
                     <div class="config-form">
                         <div class="form-group">
-                            <label>Data Início:</label>
+                            <label>📆 Período dos CVEs:</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <select id="plan-cve-period">
+                                    <option value="all">Todos os CVEs</option>
+                                    <option value="7">Última semana</option>
+                                    <option value="30" selected>Último mês</option>
+                                    <option value="90">Últimos 3 meses</option>
+                                    <option value="180">Últimos 6 meses</option>
+                                    <option value="365">Último ano</option>
+                                    <option value="custom">Período personalizado</option>
+                                </select>
+                                <span id="period-patch-count" class="period-indicator">--</span>
+                            </div>
+                        </div>
+                        <div class="form-group date-range-group" id="custom-date-range" style="display: none;">
+                            <label>De:</label>
+                            <input type="date" id="plan-cve-from-date">
+                            <label>Até:</label>
+                            <input type="date" id="plan-cve-to-date">
+                        </div>
+                        <div class="form-group">
+                            <label>Data Início Planeamento:</label>
                             <input type="date" id="plan-start-date">
                         </div>
                         <div class="form-group">

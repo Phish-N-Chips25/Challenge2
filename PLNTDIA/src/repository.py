@@ -199,10 +199,14 @@ def load_workers_from_csv(
                 if lunch_end < work_end:
                     weekly_shifts.append((day, int(lunch_end), int(work_end)))
             
-            # Trabalhadores on_call também trabalham fins-de-semana
-            # para cobrir janelas de TEST/DEV (dias 5-6, 0h-24h)
+            # Trabalhadores on_call também trabalham fins-de-semana e turnos noturnos
+            # para cobrir janelas de manutenção (TEST/DEV: 18h-24h dias úteis, 8h-24h fins de semana)
             if on_call:
-                # FIM-DE-SEMANA: Turnos completos para TEST/DEV (0h-24h disponível)
+                # DIAS ÚTEIS NOTURNO: Cobrir janelas de manutenção 18h-24h (Segunda a Sexta)
+                for day in range(5):  # Segunda (0) a Sexta (4)
+                    weekly_shifts.append((day, 18, 24))  # Turno noturno 18h-24h
+                
+                # FIM-DE-SEMANA: Turnos completos para TEST/DEV (8h-24h disponível)
                 # Sábado (dia 5) e Domingo (dia 6)
                 for day in [5, 6]:
                     # Turno da madrugada

@@ -162,6 +162,7 @@ _data_cache = {
     "servers": None,
     "workers": None,
     "cves": None,
+    "cve_metadata": {},  # Cache for additional CVE info like published_date
     "availability_manager": None,
     "last_load": None
 }
@@ -318,6 +319,9 @@ def load_cves_from_csv(servers: List[Server], max_cves: int = 200) -> List[CVE]:
                 except (ValueError, TypeError):
                     base_score = 5.0
                 
+                # Get published date (try both file1 and file2 columns)
+                published_date = row.get('published_date_file1', '') or row.get('published_date_file2', '') or row.get('datePublished', '')
+                
                 # Calculate estimated fix time based on severity
                 fix_time_map = {"Critical": 4, "High": 6, "Medium": 8, "Low": 12}
                 estimated_fix_time = fix_time_map.get(severity, 8)
@@ -338,6 +342,12 @@ def load_cves_from_csv(servers: List[Server], max_cves: int = 200) -> List[CVE]:
                 
                 # Set calculated priority score
                 cve.final_priority_score = base_score * (1 + epss_score) * (1.5 if severity == "Critical" else 1.2 if severity == "High" else 1.0)
+                
+                # Store metadata (published_date) in cache
+                _data_cache["cve_metadata"][cve_id] = {
+                    "published_date": published_date,
+                    "base_score": base_score
+                }
                 
                 cves.append(cve)
         
@@ -770,37 +780,133 @@ def api_cve_detail(cve_id: str):
 
 @app.route('/api/cves/<cve_id>/affected-servers')
 def api_cve_affected_servers(cve_id: str):
-    """Get servers affected by a CVE."""
+    """Get servers affected by a CVE.
+    
+    Supports both:
+    - Generated CVEs (in memory cache) - have affected_software_id
+    - Database CVEs (from real dataset) - match by vendor/product name
+    """
     servers, _, _ = load_data()
     
-    if _data_cache["cves"] is None:
-        generate_cves(servers, 50)
+    # First try to find in generated CVEs cache
+    cve = None
+    if _data_cache["cves"]:
+        cve = next((c for c in _data_cache["cves"] if c.id == cve_id), None)
     
-    cve = next((c for c in _data_cache["cves"] if c.id == cve_id), None)
-    if not cve:
-        return jsonify({"error": "CVE not found"}), 404
+    if cve:
+        # Generated CVE - use affected_software_id matching
+        affected = []
+        for server in servers:
+            for sw in server.installed_software:
+                if sw.id == cve.affected_software_id:
+                    affected.append({
+                        "server": server_to_dict(server),
+                        "software": {
+                            "id": sw.id,
+                            "version": sw.version,
+                            "criticality": sw.criticality
+                        }
+                    })
+                    break
+        
+        return jsonify({
+            "cve_id": cve_id,
+            "count": len(affected),
+            "servers": [a["server"] for a in affected],
+            "affected_servers": affected
+        })
     
-    # Find affected servers
-    affected = []
-    for server in servers:
-        for sw in server.installed_software:
-            if sw.id == cve.affected_software_id:
-                affected.append({
-                    "server": server_to_dict(server),
-                    "software": {
-                        "id": sw.id,
-                        "version": sw.version,
-                        "criticality": sw.criticality
-                    }
-                })
-                break
-    
-    return jsonify({
-        "cve_id": cve_id,
-        "count": len(affected),
-        "servers": [a["server"] for a in affected],
-        "affected_servers": affected
-    })
+    # Try database CVE - match by vendor/product name
+    try:
+        db = get_database()
+        db_cve = db.get_cve_by_id(cve_id)
+        
+        if not db_cve:
+            return jsonify({"error": "CVE not found"}), 404
+        
+        # Extract vendor and product from database CVE (try multiple field names)
+        vendor = (db_cve.get('impacted_vendor') or db_cve.get('vendor') or '').lower()
+        product = (db_cve.get('impacted_products') or db_cve.get('product') or '').lower()
+        description = (db_cve.get('cwe_description') or '').lower()
+        
+        # Find affected servers by matching software name
+        affected = []
+        for server in servers:
+            for sw in server.installed_software:
+                sw_name = sw.id.lower()
+                # Match if software name contains vendor or product name
+                if (vendor and vendor in sw_name) or (product and product in sw_name):
+                    affected.append({
+                        "server": server_to_dict(server),
+                        "software": {
+                            "id": sw.id,
+                            "version": sw.version,
+                            "criticality": sw.criticality
+                        },
+                        "match_type": "vendor_product"
+                    })
+                    break
+        
+        # If no matches by vendor/product, try broader matching
+        if not affected:
+            # Try to match common software patterns
+            software_patterns = {
+                'microsoft': ['IIS', '.NET Framework', 'ASP.NET Core', 'Exchange', 'Active Directory', 'SQL Server', 'SharePoint'],
+                'apache': ['Apache Tomcat'],
+                'oracle': ['Oracle Database', 'Java', 'WebLogic Server'],
+                'mysql': ['MySQL Server'],
+                'postgresql': ['PostgreSQL'],
+                'redis': ['Redis'],
+                'elasticsearch': ['Elasticsearch'],
+                'nginx': ['Nginx'],
+                'python': ['Python'],
+                'node': ['Node.js'],
+                'grafana': ['Grafana'],
+                'fortinet': ['Fortinet FortiGate'],
+                'crowdstrike': ['CrowdStrike Falcon'],
+                'zabbix': ['Zabbix'],
+                'kong': ['Kong Gateway'],
+                'rabbitmq': ['RabbitMQ'],
+                'prometheus': ['Prometheus']
+            }
+            
+            matched_software = set()
+            search_terms = [vendor, product, db_cve.get('description', '').lower()[:100]]
+            
+            for term in search_terms:
+                if not term:
+                    continue
+                for pattern_key, software_list in software_patterns.items():
+                    if pattern_key in term:
+                        matched_software.update(software_list)
+            
+            for server in servers:
+                for sw in server.installed_software:
+                    if sw.id in matched_software:
+                        affected.append({
+                            "server": server_to_dict(server),
+                            "software": {
+                                "id": sw.id,
+                                "version": sw.version,
+                                "criticality": sw.criticality
+                            },
+                            "match_type": "pattern"
+                        })
+                        break
+        
+        return jsonify({
+            "cve_id": cve_id,
+            "count": len(affected),
+            "servers": [a["server"] for a in affected],
+            "affected_servers": affected,
+            "source": "database",
+            "vendor": vendor,
+            "product": product
+        })
+        
+    except Exception as e:
+        logger.error(f"Error finding affected servers for {cve_id}: {e}")
+        return jsonify({"error": f"Error processing CVE: {str(e)}"}), 500
 
 
 @app.route('/api/holidays')
@@ -1159,16 +1265,21 @@ def api_generate_plan():
     
     servers, workers, availability_manager = load_data()
     
-    # Get parameters
-    start_date_str = data.get('start_date')
+    # Get config object if present (from frontend)
+    config_data = data.get('config', {})
+    
+    # Get parameters - check both root level and config object
+    start_date_str = data.get('start_date') or config_data.get('start_date')
     if start_date_str:
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
     else:
         start_date = date.today()
     
-    days = int(data.get('days', 14))
-    population_size = int(data.get('population_size', 50))
-    generations = int(data.get('generations', 100))
+    days = int(data.get('days') or config_data.get('planning_days') or 14)
+    population_size = int(data.get('population_size') or config_data.get('population_size') or 50)
+    generations = int(data.get('generations') or config_data.get('generations') or 100)
+    
+    logger.info(f"Plan config: start_date={start_date}, days={days}, generations={generations}")
     
     # Get or generate CVEs
     if _data_cache["cves"] is None:
@@ -1178,19 +1289,31 @@ def api_generate_plan():
     cves_dict = {c.id: c for c in cves}
     servers_dict = {s.id: s for s in servers}
     
-    # Build tasks from selected patches
+    # Build tasks from selected patches or frontend tasks
     tasks = []
     selected_patches = data.get('selected_patches', [])
+    frontend_tasks = data.get('tasks', [])  # Tasks from frontend autoGeneratePlan
     
-    if not selected_patches:
-        # If no selection, create tasks for all CVEs on affected servers
-        for cve in cves:
-            for server in servers:
-                for sw in server.installed_software:
-                    if sw.id == cve.affected_software_id:
-                        tasks.append((cve, server, sw))
-    else:
-        # Build tasks from selection
+    if frontend_tasks:
+        # Build tasks from frontend format (cve_id, server_id pairs)
+        for task_data in frontend_tasks:
+            cve_id = task_data.get('cve_id')
+            server_id = task_data.get('server_id')
+            
+            cve = cves_dict.get(cve_id)
+            server = servers_dict.get(server_id)
+            
+            if not cve or not server:
+                continue
+            
+            # Find matching software
+            for sw in server.installed_software:
+                if sw.id == cve.affected_software_id:
+                    tasks.append((cve, server, sw))
+                    break
+        logger.info(f"Built {len(tasks)} tasks from frontend format")
+    elif selected_patches:
+        # Build tasks from selection format
         for patch in selected_patches:
             cve_id = patch.get('cve_id')
             server_ids = patch.get('server_ids', [])
@@ -1209,6 +1332,15 @@ def api_generate_plan():
                     if sw.id == cve.affected_software_id:
                         tasks.append((cve, server, sw))
                         break
+        logger.info(f"Built {len(tasks)} tasks from selected_patches format")
+    else:
+        # If no selection, create tasks for all CVEs on affected servers
+        for cve in cves:
+            for server in servers:
+                for sw in server.installed_software:
+                    if sw.id == cve.affected_software_id:
+                        tasks.append((cve, server, sw))
+        logger.info(f"Built {len(tasks)} tasks from all CVEs")
     
     if not tasks:
         return jsonify({"error": "No valid tasks to schedule"}), 400
@@ -1450,13 +1582,24 @@ def api_patches_required():
     """
     Get patches required for each server based on installed software.
     Returns data organized by server with CVE details.
+    
+    Query params:
+        max_cves: Maximum CVEs to load (default: 10000, use 0 for unlimited)
     """
     servers, _, _ = load_data()
     
-    if _data_cache["cves"] is None:
-        load_cves_from_csv(servers, 200)
+    # Get max_cves parameter (default 10000 for better coverage)
+    max_cves = request.args.get('max_cves', 10000, type=int)
+    if max_cves == 0:
+        max_cves = 999999  # Effectively unlimited
+    
+    # Reload CVEs if needed or if requesting more than currently loaded
+    current_cves_count = len(_data_cache["cves"]) if _data_cache["cves"] else 0
+    if _data_cache["cves"] is None or current_cves_count < max_cves:
+        load_cves_from_csv(servers, max_cves)
     
     cves = _data_cache["cves"]
+    cve_metadata = _data_cache.get("cve_metadata", {})
     
     # Build list of required patches by server
     result = []
@@ -1466,6 +1609,10 @@ def api_patches_required():
         for cve in cves:
             for sw in server.installed_software:
                 if sw.id == cve.affected_software_id:
+                    # Get published_date from metadata cache
+                    metadata = cve_metadata.get(cve.id, {})
+                    published_date = metadata.get("published_date", "")
+                    
                     server_patches.append({
                         "cve_id": cve.id,
                         "severity": cve.severity,
@@ -1473,7 +1620,8 @@ def api_patches_required():
                         "software": sw.id,
                         "software_version": sw.version,
                         "duration_hours": cve.estimated_fix_time,
-                        "operators_required": cve.operators_required
+                        "operators_required": cve.operators_required,
+                        "published_date": published_date
                     })
                     break
         

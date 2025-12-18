@@ -11,6 +11,7 @@ let appState = {
     workers: [],
     holidays: [],
     selectedPatches: new Map(), // server_id -> [cve_ids]
+    selectedCVEsForPlan: new Set(), // CVE IDs selecionadas na página de CVEs
     planData: null,
     currentMonth: new Date(),
     requiredPatches: [],
@@ -21,7 +22,7 @@ let appState = {
 const API_BASE = '';
 
 /**
- * Fetch helper com tratamento de erros
+ * Fetch helper com tratamento de erros detalhado
  */
 async function fetchAPI(endpoint, options = {}) {
     try {
@@ -34,37 +35,110 @@ async function fetchAPI(endpoint, options = {}) {
         });
         
         if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Erro na API');
+            let errorMessage = `Erro ${response.status}`;
+            try {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorData.message || errorMessage;
+            } catch (e) {
+                // Se não conseguir parsear JSON, usar mensagem padrão
+                errorMessage = getHttpErrorMessage(response.status);
+            }
+            throw new Error(errorMessage);
         }
         
         return await response.json();
     } catch (error) {
         console.error(`API Error (${endpoint}):`, error);
-        showNotification(error.message, 'error');
+        
+        // Detectar tipo de erro e mostrar mensagem apropriada
+        if (error.name === 'TypeError' && error.message.includes('fetch')) {
+            showNotification('❌ Servidor não está acessível. Verifique se o servidor está a correr.', 'error');
+        } else if (error.message.includes('NetworkError') || error.message.includes('Failed to fetch')) {
+            showNotification('🌐 Erro de rede. Verifique a sua ligação à internet.', 'error');
+        } else {
+            showNotification(`❌ ${error.message}`, 'error');
+        }
         throw error;
     }
 }
 
 /**
- * Mostrar notificação
+ * Obter mensagem de erro HTTP legível
  */
-function showNotification(message, type = 'info') {
+function getHttpErrorMessage(status) {
+    const messages = {
+        400: 'Pedido inválido. Verifique os dados enviados.',
+        401: 'Não autorizado. Faça login novamente.',
+        403: 'Acesso negado. Sem permissões suficientes.',
+        404: 'Recurso não encontrado.',
+        408: 'Tempo de espera excedido. Tente novamente.',
+        422: 'Dados inválidos. Verifique os campos preenchidos.',
+        429: 'Demasiados pedidos. Aguarde um momento.',
+        500: 'Erro interno do servidor. Tente mais tarde.',
+        502: 'Gateway inválido. Servidor temporariamente indisponível.',
+        503: 'Serviço indisponível. Tente mais tarde.',
+        504: 'Tempo de gateway excedido. Tente novamente.'
+    };
+    return messages[status] || `Erro do servidor (${status})`;
+}
+
+/**
+ * Mostrar notificação com ícones e duração ajustável
+ */
+function showNotification(message, type = 'info', duration = null) {
     const container = document.getElementById('notification-container') || createNotificationContainer();
+    
+    // Definir ícone e duração baseado no tipo
+    const config = {
+        success: { icon: '✅', duration: 4000 },
+        error: { icon: '❌', duration: 8000 },
+        warning: { icon: '⚠️', duration: 6000 },
+        info: { icon: 'ℹ️', duration: 5000 }
+    };
+    
+    const { icon, duration: defaultDuration } = config[type] || config.info;
+    const finalDuration = duration || defaultDuration;
+    
+    // Verificar se já existe uma notificação igual (evitar duplicados)
+    const existingNotifications = container.querySelectorAll('.notification');
+    for (const existing of existingNotifications) {
+        if (existing.textContent.includes(message.replace(/^[\p{Emoji}\s]+/u, ''))) {
+            return; // Não mostrar duplicado
+        }
+    }
     
     const notification = document.createElement('div');
     notification.className = `notification notification-${type}`;
+    
+    // Adicionar ícone apenas se a mensagem não começar com emoji
+    const hasEmoji = /^[\p{Emoji}]/u.test(message);
+    const displayMessage = hasEmoji ? message : `${icon} ${message}`;
+    
     notification.innerHTML = `
-        <span>${message}</span>
-        <button onclick="this.parentElement.remove()">×</button>
+        <div class="notification-content">
+            <span class="notification-message">${displayMessage}</span>
+            <span class="notification-time">${new Date().toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span>
+        </div>
+        <button class="notification-close" onclick="this.parentElement.remove()" title="Fechar">×</button>
     `;
     
     container.appendChild(notification);
     
+    // Limitar número de notificações visíveis
+    const maxNotifications = 5;
+    while (container.children.length > maxNotifications) {
+        container.firstChild.remove();
+    }
+    
+    // Auto-remover após duração
     setTimeout(() => {
         notification.classList.add('fade-out');
-        setTimeout(() => notification.remove(), 300);
-    }, 5000);
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.remove();
+            }
+        }, 300);
+    }, finalDuration);
 }
 
 function createNotificationContainer() {
@@ -154,6 +228,7 @@ async function loadStats() {
         
     } catch (error) {
         console.error('Erro ao carregar estatísticas:', error);
+        showNotification('Não foi possível carregar estatísticas do dashboard. Verifique a ligação ao servidor.', 'warning');
     }
 }
 
@@ -217,7 +292,7 @@ async function loadCVEs() {
         
         // Fallback para a API legacy se o banco não tiver dados
         if (!appState.cves || appState.cves.length === 0) {
-            data = await fetchAPI('/api/cves?sort=priority');
+            data = await fetchAPI('/api/cves?sort=priority&per_page=200');
             appState.cves = data.cves || [];
             appState.cveSource = 'api';
         }
@@ -256,10 +331,11 @@ async function initDatabase(clearExisting = false) {
             // Atualizar stats
             loadStats();
         } else {
-            showNotification('Erro ao inicializar banco de dados', 'error');
+            showNotification('Falha ao inicializar banco de dados. Verifique os ficheiros de dados.', 'error');
         }
     } catch (error) {
         console.error('Erro ao inicializar banco:', error);
+        showNotification('Erro ao inicializar banco de dados: ' + (error.message || 'verifique se o servidor está a correr'), 'error');
     }
 }
 
@@ -300,6 +376,7 @@ async function loadDBStats() {
         return stats;
     } catch (error) {
         console.error('Erro ao carregar stats DB:', error);
+        showNotification('Não foi possível carregar estatísticas da base de dados.', 'warning');
         return null;
     }
 }
@@ -311,52 +388,423 @@ function renderCVETable() {
     const tbody = document.getElementById('cve-table-body');
     if (!tbody) return;
     
-    if (appState.cves.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="11" class="no-data">Nenhuma CVE encontrada</td></tr>';
+    // Aplicar filtros
+    const filteredCVEs = filterCVEs(appState.cves);
+    
+    if (filteredCVEs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="10" class="no-data">Nenhuma CVE encontrada com os filtros aplicados</td></tr>';
+        updateCVEFilterCount(0);
         return;
     }
     
-    tbody.innerHTML = appState.cves.map(cve => {
+    tbody.innerHTML = filteredCVEs.map(cve => {
         // Suportar ambos os formatos (DB e API)
         const cveId = cve.cve_id;
         const severity = cve.severity || cve.base_severity || 'MEDIUM';
         const cvssScore = cve.cvss_score || cve.base_score || 0;
         const epssScore = cve.epss_score || 0;
         const software = cve.affected_software || cve.software || cve.impacted_products || 'Unknown';
-        const vendor = cve.vendor || cve.impacted_vendor || '-';
-        const attackVector = cve.attack_vector || 'NETWORK';
-        const cwe = cve.cwe || cve.cwe_number || '';
-        const cisaKev = cve.cisa_kev;
-        const ssvcDecision = cve.ssvc_decision || '';
+        const publishedDate = cve.published_date || '';
+        const priority = cve.priority || cvssScore || 0;
         const duration = cve.patch_duration_hours || Math.ceil(cvssScore / 2) || 4;
+        const isSelected = appState.selectedCVEsForPlan?.has(cveId) || false;
+        
+        // Formatar data de publicação
+        let dateDisplay = '-';
+        if (publishedDate) {
+            try {
+                const d = new Date(publishedDate);
+                dateDisplay = d.toLocaleDateString('pt-PT', { year: 'numeric', month: 'short', day: 'numeric' });
+            } catch (e) {
+                dateDisplay = publishedDate.substring(0, 10);
+            }
+        }
         
         return `
-            <tr data-severity="${severity}" data-software="${software}" data-vendor="${vendor}">
-                <td><input type="checkbox" class="cve-checkbox" data-cve="${cveId}"></td>
+            <tr data-severity="${severity}" data-software="${software}" data-cve="${cveId}" data-date="${publishedDate}" class="${isSelected ? 'selected' : ''}">
+                <td><input type="checkbox" class="cve-checkbox" data-cve="${cveId}" ${isSelected ? 'checked' : ''}></td>
                 <td>
                     <strong>${cveId}</strong>
-                    ${cisaKev ? '<span class="kev-badge" title="CISA KEV">⚠️</span>' : ''}
+                    ${cve.cisa_kev ? '<span class="kev-badge" title="CISA KEV">⚠️</span>' : ''}
                 </td>
                 <td><span class="severity-badge ${severity.toLowerCase()}">${severity}</span></td>
                 <td><strong>${cvssScore?.toFixed(1) || '-'}</strong></td>
                 <td>${epssScore ? (epssScore * 100).toFixed(2) + '%' : '-'}</td>
-                <td class="vendor-cell" title="${software}">${vendor}</td>
-                <td><span class="attack-vector av-${attackVector.toLowerCase()}">${attackVector.substring(0, 3)}</span></td>
-                <td>${cwe || '-'}</td>
-                <td>${ssvcDecision ? `<span class="ssvc-badge ssvc-${ssvcDecision.toLowerCase()}">${ssvcDecision}</span>` : '-'}</td>
+                <td class="vendor-cell" title="${software}">${software.substring(0, 25)}${software.length > 25 ? '...' : ''}</td>
+                <td class="date-cell">${dateDisplay}</td>
                 <td>${duration}h</td>
+                <td><strong>${priority.toFixed ? priority.toFixed(1) : priority}</strong></td>
                 <td>
                     <button class="btn btn-sm" onclick="showCVEDetails('${cveId}')" title="Ver detalhes">🔍</button>
-                    <button class="btn btn-sm" onclick="showCVEServers('${cveId}')" title="Selecionar servidores">🖥️</button>
                 </td>
             </tr>
         `;
     }).join('');
     
-    // Atualizar contador
-    const counter = document.getElementById('cve-count');
-    if (counter) {
-        counter.textContent = `${appState.cves.length} CVEs`;
+    // Atualizar contadores
+    updateCVEFilterCount(filteredCVEs.length);
+    
+    // Adicionar listeners aos checkboxes
+    tbody.querySelectorAll('.cve-checkbox').forEach(cb => {
+        cb.addEventListener('change', handleCVECheckboxChange);
+    });
+}
+
+/**
+ * Filtrar CVEs com base nos filtros ativos
+ */
+function filterCVEs(cves) {
+    const severityFilter = document.getElementById('cve-severity-filter')?.value || '';
+    const softwareFilter = document.getElementById('cve-software-filter')?.value?.toLowerCase() || '';
+    const sortBy = document.getElementById('cve-sort')?.value || 'priority';
+    const datePeriod = document.getElementById('cve-date-period')?.value || '';
+    const dateFrom = document.getElementById('cve-date-from')?.value || '';
+    const dateTo = document.getElementById('cve-date-to')?.value || '';
+    
+    let filtered = [...cves];
+    
+    // Filtro de severidade
+    if (severityFilter) {
+        filtered = filtered.filter(cve => {
+            const sev = cve.severity || cve.base_severity || '';
+            return sev.toUpperCase() === severityFilter.toUpperCase();
+        });
+    }
+    
+    // Filtro de software
+    if (softwareFilter) {
+        filtered = filtered.filter(cve => {
+            const sw = cve.affected_software || cve.software || cve.impacted_products || '';
+            const vendor = cve.vendor || cve.impacted_vendor || '';
+            return sw.toLowerCase().includes(softwareFilter) || vendor.toLowerCase().includes(softwareFilter);
+        });
+    }
+    
+    // Filtro de data
+    if (datePeriod && datePeriod !== 'custom') {
+        const days = parseInt(datePeriod);
+        const cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        
+        filtered = filtered.filter(cve => {
+            const pubDate = cve.published_date;
+            if (!pubDate) return false;
+            return new Date(pubDate) >= cutoffDate;
+        });
+    } else if (datePeriod === 'custom' && (dateFrom || dateTo)) {
+        const fromDate = dateFrom ? new Date(dateFrom) : null;
+        const toDate = dateTo ? new Date(dateTo + 'T23:59:59') : null;
+        
+        filtered = filtered.filter(cve => {
+            const pubDate = cve.published_date;
+            if (!pubDate) return false;
+            const d = new Date(pubDate);
+            if (fromDate && d < fromDate) return false;
+            if (toDate && d > toDate) return false;
+            return true;
+        });
+    }
+    
+    // Ordenação
+    filtered.sort((a, b) => {
+        switch (sortBy) {
+            case 'severity':
+                const sevOrder = { 'CRITICAL': 4, 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
+                return (sevOrder[(b.severity || b.base_severity || '').toUpperCase()] || 0) - 
+                       (sevOrder[(a.severity || a.base_severity || '').toUpperCase()] || 0);
+            case 'epss':
+                return (b.epss_score || 0) - (a.epss_score || 0);
+            case 'date':
+                const dateA = a.published_date ? new Date(a.published_date) : new Date(0);
+                const dateB = b.published_date ? new Date(b.published_date) : new Date(0);
+                return dateB - dateA;
+            case 'priority':
+            default:
+                return (b.priority || b.cvss_score || b.base_score || 0) - (a.priority || a.cvss_score || a.base_score || 0);
+        }
+    });
+    
+    return filtered;
+}
+
+/**
+ * Atualizar contador de CVEs filtradas
+ */
+function updateCVEFilterCount(count) {
+    const countEl = document.getElementById('cve-filter-count');
+    if (countEl) {
+        countEl.textContent = `${count} CVEs ${count === 1 ? 'encontrada' : 'encontradas'}`;
+    }
+}
+
+/**
+ * Handler para mudança de checkbox de CVE
+ */
+function handleCVECheckboxChange(event) {
+    const checkbox = event.target;
+    const cveId = checkbox.dataset.cve;
+    const row = checkbox.closest('tr');
+    
+    if (!appState.selectedCVEsForPlan) {
+        appState.selectedCVEsForPlan = new Set();
+    }
+    
+    if (checkbox.checked) {
+        appState.selectedCVEsForPlan.add(cveId);
+        row?.classList.add('selected');
+    } else {
+        appState.selectedCVEsForPlan.delete(cveId);
+        row?.classList.remove('selected');
+    }
+    
+    updateSelectedCVECount();
+}
+
+/**
+ * Atualizar contador de CVEs selecionadas para planeamento
+ */
+function updateSelectedCVECount() {
+    const count = appState.selectedCVEsForPlan?.size || 0;
+    const countEl = document.getElementById('selected-cve-count');
+    const planBtn = document.getElementById('plan-selected-cves');
+    
+    if (countEl) {
+        countEl.textContent = count;
+    }
+    
+    if (planBtn) {
+        planBtn.disabled = count === 0;
+    }
+    
+    // Atualizar checkbox "selecionar todos"
+    const selectAllCb = document.getElementById('select-all-cves');
+    if (selectAllCb) {
+        const allCheckboxes = document.querySelectorAll('#cve-table-body .cve-checkbox');
+        const checkedCheckboxes = document.querySelectorAll('#cve-table-body .cve-checkbox:checked');
+        selectAllCb.checked = allCheckboxes.length > 0 && allCheckboxes.length === checkedCheckboxes.length;
+        selectAllCb.indeterminate = checkedCheckboxes.length > 0 && checkedCheckboxes.length < allCheckboxes.length;
+    }
+}
+
+/**
+ * Selecionar todas as CVEs filtradas
+ */
+function selectAllFilteredCVEs() {
+    if (!appState.selectedCVEsForPlan) {
+        appState.selectedCVEsForPlan = new Set();
+    }
+    
+    const checkboxes = document.querySelectorAll('#cve-table-body .cve-checkbox');
+    checkboxes.forEach(cb => {
+        cb.checked = true;
+        appState.selectedCVEsForPlan.add(cb.dataset.cve);
+        cb.closest('tr')?.classList.add('selected');
+    });
+    
+    updateSelectedCVECount();
+    showNotification(`✅ ${checkboxes.length} CVEs selecionadas`, 'success');
+}
+
+/**
+ * Abrir modal para criar planeamento com CVEs selecionadas
+ */
+async function openPlanFromCVEsModal() {
+    if (!appState.selectedCVEsForPlan || appState.selectedCVEsForPlan.size === 0) {
+        showNotification('⚠️ Selecione pelo menos uma CVE para o planeamento', 'warning');
+        return;
+    }
+    
+    const modal = document.getElementById('plan-servers-modal');
+    const body = document.getElementById('plan-servers-body');
+    
+    // Mostrar loading
+    body.innerHTML = '<div class="loading-spinner">A carregar servidores...</div>';
+    modal.style.display = 'flex';
+    
+    try {
+        // Carregar servidores
+        const serversData = await fetchAPI('/api/servers');
+        const servers = serversData.servers || [];
+        
+        // Obter CVEs selecionadas
+        const selectedCVEIds = Array.from(appState.selectedCVEsForPlan);
+        const selectedCVEs = appState.cves.filter(cve => selectedCVEIds.includes(cve.cve_id));
+        
+        // Calcular estatísticas
+        const severityCounts = { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
+        selectedCVEs.forEach(cve => {
+            const sev = (cve.severity || cve.base_severity || 'MEDIUM').toUpperCase();
+            severityCounts[sev] = (severityCounts[sev] || 0) + 1;
+        });
+        
+        body.innerHTML = `
+            <div class="plan-summary">
+                <div class="plan-summary-item">
+                    <span class="value">${selectedCVEIds.length}</span>
+                    <span class="label">CVEs Selecionadas</span>
+                </div>
+                <div class="plan-summary-item">
+                    <span class="value" style="color: var(--danger)">${severityCounts.CRITICAL}</span>
+                    <span class="label">Critical</span>
+                </div>
+                <div class="plan-summary-item">
+                    <span class="value" style="color: var(--warning)">${severityCounts.HIGH}</span>
+                    <span class="label">High</span>
+                </div>
+                <div class="plan-summary-item">
+                    <span class="value">${severityCounts.MEDIUM + severityCounts.LOW}</span>
+                    <span class="label">Medium/Low</span>
+                </div>
+            </div>
+            
+            <h4>📋 Selecione os servidores para aplicar patches:</h4>
+            <div class="filter-group" style="margin-bottom: var(--spacing-md);">
+                <label><input type="checkbox" id="select-all-servers" checked> Selecionar todos os servidores</label>
+            </div>
+            
+            <div class="servers-selection-grid">
+                ${servers.map(server => `
+                    <div class="server-selection-card selected" data-server="${server.id}">
+                        <input type="checkbox" class="server-checkbox" data-server="${server.id}" checked>
+                        <div class="server-selection-info">
+                            <div class="server-name">${server.id}</div>
+                            <div class="server-meta">
+                                <span class="env-badge env-${server.environment?.toLowerCase()}">${server.environment}</span>
+                                ${server.application_group || ''}
+                            </div>
+                            <div class="server-cves">${(server.installed_software || []).length} software instalado</div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+            
+            <div class="plan-options">
+                <h4>⚙️ Opções do Planeamento</h4>
+                <div class="plan-options-grid">
+                    <div class="filter-group">
+                        <label>Data de início:</label>
+                        <input type="date" id="plan-start-date" value="${new Date().toISOString().split('T')[0]}">
+                    </div>
+                    <div class="filter-group">
+                        <label>Prioridade ambiente:</label>
+                        <select id="plan-env-priority">
+                            <option value="DEV,TEST,PROD">DEV → TEST → PROD</option>
+                            <option value="PROD,TEST,DEV">PROD → TEST → DEV</option>
+                            <option value="">Sem prioridade</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Adicionar listeners
+        document.getElementById('select-all-servers').addEventListener('change', (e) => {
+            document.querySelectorAll('.server-checkbox').forEach(cb => {
+                cb.checked = e.target.checked;
+                cb.closest('.server-selection-card')?.classList.toggle('selected', e.target.checked);
+            });
+        });
+        
+        document.querySelectorAll('.server-selection-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.target.type !== 'checkbox') {
+                    const cb = card.querySelector('.server-checkbox');
+                    cb.checked = !cb.checked;
+                    card.classList.toggle('selected', cb.checked);
+                }
+            });
+        });
+        
+    } catch (error) {
+        body.innerHTML = `<div class="error-message">Erro ao carregar servidores: ${error.message}</div>`;
+    }
+}
+
+/**
+ * Fechar modal de planeamento
+ */
+function closePlanServersModal() {
+    const modal = document.getElementById('plan-servers-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+/**
+ * Executar planeamento com CVEs e servidores selecionados
+ */
+async function executePlanFromCVEs() {
+    const selectedServers = Array.from(document.querySelectorAll('.server-checkbox:checked')).map(cb => cb.dataset.server);
+    const selectedCVEIds = Array.from(appState.selectedCVEsForPlan || []);
+    const startDate = document.getElementById('plan-start-date')?.value || new Date().toISOString().split('T')[0];
+    const envPriority = document.getElementById('plan-env-priority')?.value || '';
+    
+    if (selectedServers.length === 0) {
+        showNotification('⚠️ Selecione pelo menos um servidor', 'warning');
+        return;
+    }
+    
+    if (selectedCVEIds.length === 0) {
+        showNotification('⚠️ Nenhuma CVE selecionada', 'warning');
+        return;
+    }
+    
+    const confirmBtn = document.getElementById('confirm-plan-btn');
+    if (confirmBtn) {
+        confirmBtn.disabled = true;
+        confirmBtn.innerHTML = '⏳ A gerar planeamento...';
+    }
+    
+    try {
+        // Construir patches manualmente
+        const patches = [];
+        const selectedCVEs = appState.cves.filter(cve => selectedCVEIds.includes(cve.cve_id));
+        
+        selectedServers.forEach(serverId => {
+            selectedCVEs.forEach(cve => {
+                patches.push({
+                    server_id: serverId,
+                    cve_id: cve.cve_id,
+                    priority: cve.priority || cve.cvss_score || cve.base_score || 5,
+                    duration_hours: cve.patch_duration_hours || Math.ceil((cve.cvss_score || cve.base_score || 5) / 2) || 4,
+                    operators_required: cve.operators_required || (cve.severity?.toUpperCase() === 'CRITICAL' ? 2 : 1)
+                });
+            });
+        });
+        
+        // Chamar API de planeamento
+        const result = await fetchAPI('/api/plan', {
+            method: 'POST',
+            body: JSON.stringify({
+                patches: patches,
+                start_date: startDate,
+                environment_priority: envPriority ? envPriority.split(',') : null
+            })
+        });
+        
+        if (result.schedule && result.schedule.length > 0) {
+            appState.planData = result;
+            closePlanServersModal();
+            
+            // Ir para a tab de planeamento
+            showTab('schedule');
+            
+            // Atualizar visualização
+            renderPlanResults(result);
+            
+            showNotification(`✅ Planeamento gerado: ${result.schedule.length} tarefas agendadas`, 'success');
+        } else {
+            showNotification('⚠️ Nenhuma tarefa foi agendada. Verifique os dados.', 'warning');
+        }
+        
+    } catch (error) {
+        console.error('Erro ao gerar planeamento:', error);
+        showNotification(`❌ Erro ao gerar planeamento: ${error.message}`, 'error');
+    } finally {
+        if (confirmBtn) {
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '🚀 Gerar Planeamento';
+        }
     }
 }
 
@@ -467,7 +915,7 @@ async function showCVEDetails(cveId) {
         
     } catch (error) {
         console.error('Erro ao carregar detalhes CVE:', error);
-        showNotification('Erro ao carregar detalhes', 'error');
+        showNotification(`Não foi possível carregar detalhes do CVE. ${error.message || ''}`, 'error');
     }
 }
 
@@ -508,7 +956,7 @@ function closeCVEDetailsModal() {
 async function showCVEServers(cveId) {
     try {
         const data = await fetchAPI(`/api/cves/${cveId}/affected-servers`);
-        const cve = appState.cves.find(c => c.cve_id === cveId);
+        const cve = appState.cves.find(c => c.cve_id === cveId || c.id === cveId);
         
         const modal = document.getElementById('cve-servers-modal');
         const modalTitle = document.getElementById('modal-cve-title');
@@ -518,18 +966,44 @@ async function showCVEServers(cveId) {
         
         modalTitle.textContent = `${cveId} - Servidores Afetados`;
         
+        // Verificar se há servidores afectados
+        if (!data.servers || data.servers.length === 0) {
+            modalBody.innerHTML = `
+                <div class="no-servers-message">
+                    <p>⚠️ Nenhum servidor afectado encontrado para esta CVE.</p>
+                    <p class="info-text">
+                        ${data.source === 'database' ? 
+                            `<small>Vendor: ${data.vendor || 'N/A'} | Product: ${data.product || 'N/A'}</small>` : 
+                            ''}
+                    </p>
+                    <p class="info-text">
+                        <small>Isto pode acontecer se o software afectado não está instalado em nenhum servidor da infraestrutura.</small>
+                    </p>
+                </div>
+            `;
+            modal.classList.add('active');
+            return;
+        }
+        
         // Agrupar por ambiente
         const byEnv = { DEV: [], TEST: [], PROD: [] };
         data.servers.forEach(s => {
-            if (byEnv[s.environment]) byEnv[s.environment].push(s);
+            const env = s.environment || 'DEV';
+            if (byEnv[env]) byEnv[env].push(s);
         });
+        
+        // Obter info do CVE (suporta ambos formatos)
+        const severity = cve?.severity || cve?.base_severity || 'N/A';
+        const software = cve?.software || cve?.product || cve?.vendor || data.product || 'N/A';
+        const duration = cve?.patch_duration_hours || cve?.duration_hours || 4;
         
         modalBody.innerHTML = `
             <div class="cve-modal-info">
-                <span class="severity-badge ${cve.severity.toLowerCase()}">${cve.severity}</span>
-                <span><strong>Software:</strong> ${cve.software}</span>
-                <span><strong>Duração:</strong> ${cve.patch_duration_hours}h</span>
+                <span class="severity-badge ${severity.toLowerCase()}">${severity}</span>
+                <span><strong>Software:</strong> ${software}</span>
+                <span><strong>Duração Est.:</strong> ${duration}h</span>
             </div>
+            <p class="servers-count">${data.count} servidor(es) afectado(s)</p>
             <div class="servers-by-env">
                 ${Object.entries(byEnv).map(([env, servers]) => servers.length > 0 ? `
                     <div class="env-group">
@@ -541,7 +1015,7 @@ async function showCVEServers(cveId) {
                                            data-server="${s.server_id}" data-cve="${cveId}"
                                            ${isServerSelectedForCVE(s.server_id, cveId) ? 'checked' : ''}>
                                     <span class="server-name">${s.server_id}</span>
-                                    <span class="server-app">${s.application_group}</span>
+                                    <span class="server-app">${s.application_group || ''}</span>
                                 </label>
                             `).join('')}
                         </div>
@@ -560,6 +1034,7 @@ async function showCVEServers(cveId) {
         
     } catch (error) {
         console.error('Erro ao carregar servidores:', error);
+        showNotification('Não foi possível carregar servidores afectados para esta CVE.', 'error');
     }
 }
 
@@ -603,12 +1078,14 @@ function saveServerSelections(cveId) {
  */
 async function loadServers() {
     try {
-        const data = await fetchAPI('/api/servers');
+        // Pedir todos os servidores (per_page=100 para garantir que todos são retornados)
+        const data = await fetchAPI('/api/servers?per_page=100');
         appState.servers = data.servers || [];
         renderServersGrid();
         populateAppFilter();
     } catch (error) {
         console.error('Erro ao carregar servidores:', error);
+        showNotification('Não foi possível carregar a lista de servidores.', 'warning');
     }
 }
 
@@ -726,8 +1203,9 @@ async function loadScheduleData() {
  */
 async function loadRequiredPatches() {
     try {
-        showNotification('A detetar patches necessários...', 'info');
-        const data = await fetchAPI('/api/patches/required');
+        showNotification('A detetar todos os patches necessários...', 'info');
+        // Load all CVEs for complete patch detection (max_cves=0 means unlimited)
+        const data = await fetchAPI('/api/patches/required?max_cves=0');
         appState.requiredPatches = data.servers || [];
         
         // Atualizar seleções automaticamente
@@ -741,9 +1219,10 @@ async function loadRequiredPatches() {
         
         updateSelectedCount();
         renderRequiredPatchesView();
-        showNotification(`Detetados patches para ${appState.requiredPatches.length} servidores`, 'success');
+        showNotification(`Detetados ${data.total_patches} patches em ${appState.requiredPatches.length} servidores`, 'success');
     } catch (error) {
         console.error('Erro ao detetar patches:', error);
+        showNotification('Erro ao identificar patches necessários. Verifique se existem CVEs e servidores carregados.', 'error');
     }
 }
 
@@ -916,6 +1395,7 @@ async function generatePlan() {
         
     } catch (error) {
         console.error('Erro ao gerar plano:', error);
+        showNotification('Falha ao gerar planeamento. ' + (error.message || 'Tente novamente.'), 'error');
     }
 }
 
@@ -1356,9 +1836,48 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('auto-generate-plan')?.addEventListener('click', autoGeneratePlan);
     
     // Setup filtros de CVE
-    document.getElementById('cve-severity-filter')?.addEventListener('change', filterCVETable);
-    document.getElementById('cve-software-filter')?.addEventListener('input', filterCVETable);
+    document.getElementById('cve-severity-filter')?.addEventListener('change', renderCVETable);
+    document.getElementById('cve-software-filter')?.addEventListener('input', renderCVETable);
+    document.getElementById('cve-sort')?.addEventListener('change', renderCVETable);
     document.getElementById('refresh-cves')?.addEventListener('click', loadCVEs);
+    
+    // Setup filtros de data de CVE
+    const cveDatePeriod = document.getElementById('cve-date-period');
+    const cveCustomDateRange = document.getElementById('cve-custom-date-range');
+    if (cveDatePeriod) {
+        cveDatePeriod.addEventListener('change', (e) => {
+            if (cveCustomDateRange) {
+                cveCustomDateRange.style.display = e.target.value === 'custom' ? 'flex' : 'none';
+            }
+            renderCVETable();
+        });
+    }
+    document.getElementById('cve-date-from')?.addEventListener('change', renderCVETable);
+    document.getElementById('cve-date-to')?.addEventListener('change', renderCVETable);
+    
+    // Setup select all CVEs checkbox
+    document.getElementById('select-all-cves')?.addEventListener('change', (e) => {
+        if (!appState.selectedCVEsForPlan) {
+            appState.selectedCVEsForPlan = new Set();
+        }
+        document.querySelectorAll('#cve-table-body .cve-checkbox').forEach(cb => {
+            cb.checked = e.target.checked;
+            if (e.target.checked) {
+                appState.selectedCVEsForPlan.add(cb.dataset.cve);
+                cb.closest('tr')?.classList.add('selected');
+            } else {
+                appState.selectedCVEsForPlan.delete(cb.dataset.cve);
+                cb.closest('tr')?.classList.remove('selected');
+            }
+        });
+        updateSelectedCVECount();
+    });
+    
+    // Setup botão selecionar filtradas
+    document.getElementById('select-filtered-cves')?.addEventListener('click', selectAllFilteredCVEs);
+    
+    // Setup botão de planeamento a partir de CVEs
+    document.getElementById('plan-selected-cves')?.addEventListener('click', openPlanFromCVEsModal);
     
     // Setup filtros de servidor
     document.getElementById('server-env-filter')?.addEventListener('change', filterServers);
@@ -1378,17 +1897,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // Setup select all CVEs
-    document.getElementById('select-all-cves')?.addEventListener('change', (e) => {
-        document.querySelectorAll('.cve-checkbox').forEach(cb => {
-            cb.checked = e.target.checked;
-        });
-    });
-    
     // Definir data de início padrão
     const startDateInput = document.getElementById('plan-start-date');
     if (startDateInput) {
         startDateInput.value = formatDateISO(new Date());
+    }
+    
+    // Setup CVE period selector
+    const cvePeriodSelect = document.getElementById('plan-cve-period');
+    const customDateRange = document.getElementById('custom-date-range');
+    if (cvePeriodSelect && customDateRange) {
+        cvePeriodSelect.addEventListener('change', (e) => {
+            if (e.target.value === 'custom') {
+                customDateRange.style.display = 'flex';
+                // Definir datas padrão para custom (último mês)
+                const today = new Date();
+                const monthAgo = new Date();
+                monthAgo.setDate(today.getDate() - 30);
+                document.getElementById('plan-cve-from-date').value = formatDateISO(monthAgo);
+                document.getElementById('plan-cve-to-date').value = formatDateISO(today);
+            } else {
+                customDateRange.style.display = 'none';
+            }
+            // Update period indicator
+            updatePeriodIndicator();
+        });
+        
+        // Also update indicator when custom dates change
+        document.getElementById('plan-cve-from-date')?.addEventListener('change', updatePeriodIndicator);
+        document.getElementById('plan-cve-to-date')?.addEventListener('change', updatePeriodIndicator);
     }
     
     // Carregar dados iniciais
@@ -1404,14 +1941,116 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 async function loadScheduleTab() {
     try {
-        const data = await fetchAPI('/api/patches/required');
+        // Load all CVEs for proper planning (max_cves=0 means unlimited)
+        showNotification('A carregar todos os CVEs para planeamento...', 'info');
+        const data = await fetchAPI('/api/patches/required?max_cves=0');
         appState.requiredPatches = data.servers || [];
         renderAutoPatchesSummary();
+        updatePeriodIndicator();  // Update period indicator after loading
+        showNotification(`${data.total_patches} patches identificados em ${data.total_servers} servidores`, 'success');
     } catch (error) {
         console.error('Erro ao carregar patches:', error);
+        showNotification('Não foi possível carregar patches necessários. Clique em "Identificar Patches" primeiro.', 'warning');
     }
 }
 
+/**
+ * Contar patches no período seleccionado
+ */
+function countPatchesInPeriod(periodDays) {
+    if (!appState.requiredPatches || appState.requiredPatches.length === 0) {
+        return { total: 0, inPeriod: 0 };
+    }
+    
+    let total = 0;
+    let inPeriod = 0;
+    const now = new Date();
+    let dateFrom = null;
+    
+    if (periodDays !== 'all' && periodDays !== 'custom') {
+        dateFrom = new Date();
+        dateFrom.setDate(now.getDate() - parseInt(periodDays));
+    }
+    
+    appState.requiredPatches.forEach(server => {
+        if (server.patches && Array.isArray(server.patches)) {
+            server.patches.forEach(patch => {
+                total++;
+                if (!dateFrom) {
+                    inPeriod++;
+                } else {
+                    const patchDate = patch.published_date ? new Date(patch.published_date) : null;
+                    if (patchDate && patchDate >= dateFrom && patchDate <= now) {
+                        inPeriod++;
+                    }
+                }
+            });
+        }
+    });
+    
+    return { total, inPeriod };
+}
+
+/**
+ * Actualizar indicador de período
+ */
+function updatePeriodIndicator() {
+    const periodSelect = document.getElementById('plan-cve-period');
+    const indicator = document.getElementById('period-patch-count');
+    
+    if (!periodSelect || !indicator) return;
+    
+    const period = periodSelect.value;
+    
+    if (period === 'all') {
+        const counts = countPatchesInPeriod(period);
+        indicator.textContent = `${counts.total} patches`;
+        indicator.className = 'period-indicator';
+    } else if (period === 'custom') {
+        // Para custom, recalcular com as datas específicas
+        const fromInput = document.getElementById('plan-cve-from-date')?.value;
+        const toInput = document.getElementById('plan-cve-to-date')?.value;
+        
+        if (fromInput && toInput) {
+            const counts = countPatchesInCustomPeriod(new Date(fromInput), new Date(toInput));
+            indicator.textContent = `${counts.inPeriod}/${counts.total} patches`;
+            indicator.className = 'period-indicator' + (counts.inPeriod === 0 ? ' empty' : '');
+        } else {
+            indicator.textContent = 'Seleccione datas';
+            indicator.className = 'period-indicator';
+        }
+    } else {
+        const counts = countPatchesInPeriod(period);
+        indicator.textContent = `${counts.inPeriod}/${counts.total} patches`;
+        indicator.className = 'period-indicator' + (counts.inPeriod === 0 ? ' empty' : '');
+    }
+}
+
+/**
+ * Contar patches num período custom
+ */
+function countPatchesInCustomPeriod(dateFrom, dateTo) {
+    if (!appState.requiredPatches || appState.requiredPatches.length === 0) {
+        return { total: 0, inPeriod: 0 };
+    }
+    
+    let total = 0;
+    let inPeriod = 0;
+    
+    appState.requiredPatches.forEach(server => {
+        if (server.patches && Array.isArray(server.patches)) {
+            server.patches.forEach(patch => {
+                total++;
+                const patchDate = patch.published_date ? new Date(patch.published_date) : null;
+                if (patchDate && patchDate >= dateFrom && patchDate <= dateTo) {
+                    inPeriod++;
+                }
+            });
+        }
+    });
+    
+    return { total, inPeriod };
+}
 /**
  * Renderizar resumo de patches identificados
  */
@@ -1482,12 +2121,38 @@ async function autoGeneratePlan() {
         return;
     }
     
+    // Obter período de CVEs seleccionado
+    const cvePeriod = document.getElementById('plan-cve-period')?.value || 'all';
+    let dateFrom = null;
+    let dateTo = new Date();
+    
+    if (cvePeriod === 'custom') {
+        const fromInput = document.getElementById('plan-cve-from-date')?.value;
+        const toInput = document.getElementById('plan-cve-to-date')?.value;
+        if (fromInput) dateFrom = new Date(fromInput);
+        if (toInput) dateTo = new Date(toInput);
+    } else if (cvePeriod !== 'all') {
+        const days = parseInt(cvePeriod);
+        dateFrom = new Date();
+        dateFrom.setDate(dateFrom.getDate() - days);
+    }
+    
     // Construir tarefas a partir dos patches identificados
     const tasks = [];
+    let filteredByPeriodCount = 0;
     
     appState.requiredPatches.forEach(server => {
         if (server.patches && Array.isArray(server.patches)) {
             server.patches.forEach(patch => {
+                // Filtrar por período se especificado
+                if (dateFrom) {
+                    const patchDate = patch.published_date ? new Date(patch.published_date) : null;
+                    if (patchDate && (patchDate < dateFrom || patchDate > dateTo)) {
+                        filteredByPeriodCount++;
+                        return; // Skip this patch
+                    }
+                }
+                
                 tasks.push({
                     server_id: server.server_id,
                     cve_id: patch.cve_id,
@@ -1499,8 +2164,17 @@ async function autoGeneratePlan() {
     });
     
     if (tasks.length === 0) {
-        showNotification('Nenhum patch identificado para planear', 'warning');
+        if (filteredByPeriodCount > 0) {
+            showNotification(`Nenhum patch no período seleccionado (${filteredByPeriodCount} filtrados)`, 'warning');
+        } else {
+            showNotification('Nenhum patch identificado para planear', 'warning');
+        }
         return;
+    }
+    
+    // Log de filtro de período
+    if (filteredByPeriodCount > 0) {
+        console.log(`Período CVE: ${filteredByPeriodCount} patches filtrados, ${tasks.length} incluídos`);
     }
     
     // Filtrar por severidade mínima
@@ -1524,9 +2198,30 @@ async function autoGeneratePlan() {
     try {
         showNotification(`A gerar plano para ${filteredTasks.length} patches...`, 'info');
         
+        // Ler configurações do formulário
+        const startDate = document.getElementById('plan-start-date')?.value || null;
+        const planningDays = parseInt(document.getElementById('plan-days')?.value) || 30;
+        const generations = parseInt(document.getElementById('plan-generations')?.value) || 100;
+        
+        // Construir objecto de configuração
+        const config = {
+            planning_days: planningDays,
+            generations: generations
+        };
+        
+        // Adicionar data de início se especificada
+        if (startDate) {
+            config.start_date = startDate;
+        }
+        
+        console.log('Configuração do planeamento:', { tasks: filteredTasks.length, config });
+        
         const result = await fetchAPI('/api/plan', {
             method: 'POST',
-            body: JSON.stringify({ tasks: filteredTasks })
+            body: JSON.stringify({ 
+                tasks: filteredTasks,
+                config: config
+            })
         });
         
         appState.planData = result;
@@ -1538,7 +2233,19 @@ async function autoGeneratePlan() {
         
     } catch (error) {
         console.error('Erro ao gerar plano:', error);
-        showNotification('Erro ao gerar plano: ' + error.message, 'error');
+        
+        // Fornecer mensagem mais específica baseada no erro
+        let errorMsg = 'Erro ao gerar plano automático';
+        if (error.message) {
+            if (error.message.includes('No valid tasks')) {
+                errorMsg = 'Não há tarefas válidas para agendar. Verifique se os CVEs correspondem ao software instalado nos servidores.';
+            } else if (error.message.includes('timeout') || error.message.includes('Timeout')) {
+                errorMsg = 'O planeamento demorou demasiado tempo. Tente reduzir o número de dias ou patches.';
+            } else {
+                errorMsg = `Erro no planeamento: ${error.message}`;
+            }
+        }
+        showNotification(errorMsg, 'error');
     }
 }
 
