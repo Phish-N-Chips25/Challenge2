@@ -26,6 +26,8 @@ from src.repository import load_servers_from_csv, load_workers_from_csv, generat
 from src.availability import AvailabilityManager, PlanningPeriod
 from src.genetic_algorithm import run_genetic_scheduler, GAConfig, GeneticScheduler
 from src.logic import calculate_priority
+from src.database import get_database, GAExecutionReport
+import time
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -1139,6 +1141,7 @@ def api_availability():
 def api_generate_plan():
     """
     Generate a patch schedule using Genetic Algorithm.
+    Returns detailed execution report.
     
     Request body:
     {
@@ -1151,6 +1154,7 @@ def api_generate_plan():
         "generations": 100
     }
     """
+    start_time = time.time()
     data = request.json or {}
     
     servers, workers, availability_manager = load_data()
@@ -1230,6 +1234,8 @@ def api_generate_plan():
     
     best_chromosome, patch_tasks = scheduler.run(verbose=True)
     
+    execution_time_ms = int((time.time() - start_time) * 1000)
+    
     # Convert to response
     schedule = [task_to_dict(t, start_date) for t in patch_tasks]
     
@@ -1248,22 +1254,100 @@ def api_generate_plan():
         "success_rate": round((len(patch_tasks) / len(tasks) * 100) if tasks else 0, 1),
         "best_fitness": round(best_chromosome.fitness, 2),
         "by_environment": {},
-        "by_severity": {}
+        "by_severity": {},
+        "by_worker": {}
     }
     
-    # Count by environment
+    # Count by environment, severity, and worker
     for task in schedule:
         env = task['environment']
         metrics["by_environment"][env] = metrics["by_environment"].get(env, 0) + 1
         
         sev = task['severity']
         metrics["by_severity"][sev] = metrics["by_severity"].get(sev, 0) + 1
+        
+        for worker_name in task.get('workers', []):
+            # workers é uma lista de strings (nomes dos workers)
+            metrics["by_worker"][worker_name] = metrics["by_worker"].get(worker_name, 0) + 1
+    
+    # Build detailed GA execution report
+    ga_report = {
+        "execution_date": datetime.now().isoformat(),
+        "execution_time_ms": execution_time_ms,
+        "config": {
+            "population_size": population_size,
+            "generations": generations,
+            "crossover_rate": config.crossover_rate,
+            "mutation_rate": config.mutation_rate,
+            "elite_size": config.elite_size,
+            "tournament_size": config.tournament_size,
+            "planning_weeks": config.planning_weeks,
+            "max_daily_hours": config.max_daily_hours
+        },
+        "evolution": {
+            "best_fitness_history": scheduler.best_fitness_history,
+            "avg_fitness_history": scheduler.avg_fitness_history,
+            "initial_fitness": scheduler.best_fitness_history[0] if scheduler.best_fitness_history else 0,
+            "final_fitness": best_chromosome.fitness,
+            "improvement": round(
+                (best_chromosome.fitness - scheduler.best_fitness_history[0]) / max(scheduler.best_fitness_history[0], 1) * 100, 2
+            ) if scheduler.best_fitness_history else 0,
+            "generations_to_best": max(
+                i for i, f in enumerate(scheduler.best_fitness_history) if f == max(scheduler.best_fitness_history)
+            ) + 1 if scheduler.best_fitness_history else 0
+        },
+        "results": {
+            "total_tasks": len(tasks),
+            "scheduled_tasks": len(patch_tasks),
+            "failed_tasks": len(tasks) - len(patch_tasks),
+            "success_rate": round((len(patch_tasks) / len(tasks) * 100) if tasks else 0, 2),
+            "total_hours_scheduled": sum(t.get('duration', 0) for t in schedule),
+            "by_severity": metrics["by_severity"],
+            "by_environment": metrics["by_environment"],
+            "by_worker": metrics["by_worker"]
+        },
+        "analysis": {
+            "critical_scheduled": metrics["by_severity"].get("Critical", 0),
+            "high_scheduled": metrics["by_severity"].get("High", 0),
+            "workers_utilized": len(metrics["by_worker"]),
+            "total_workers_available": len(workers),
+            "worker_utilization_rate": round(len(metrics["by_worker"]) / len(workers) * 100, 2) if workers else 0
+        }
+    }
+    
+    # Save report to database
+    try:
+        db = get_database()
+        db_report = GAExecutionReport(
+            execution_date=ga_report["execution_date"],
+            start_date=start_date.isoformat(),
+            planning_days=days,
+            population_size=population_size,
+            generations=generations,
+            total_tasks=len(tasks),
+            scheduled_tasks=len(patch_tasks),
+            success_rate=metrics["success_rate"],
+            best_fitness=best_chromosome.fitness,
+            fitness_history=json.dumps(scheduler.best_fitness_history),
+            avg_fitness_history=json.dumps(scheduler.avg_fitness_history),
+            tasks_by_severity=json.dumps(metrics["by_severity"]),
+            tasks_by_environment=json.dumps(metrics["by_environment"]),
+            tasks_by_worker=json.dumps(metrics["by_worker"]),
+            execution_time_ms=execution_time_ms,
+            config_json=json.dumps(ga_report["config"]),
+            schedule_json=json.dumps(schedule)
+        )
+        report_id = db.save_ga_report(db_report)
+        ga_report["report_id"] = report_id
+    except Exception as e:
+        logger.warning(f"Failed to save GA report to database: {e}")
     
     return jsonify({
         "success": True,
         "schedule": schedule,
         "calendar": calendar,
         "metrics": metrics,
+        "ga_report": ga_report,
         "config": {
             "start_date": start_date.isoformat(),
             "days": days,
@@ -1410,6 +1494,284 @@ def api_patches_required():
         "total_servers": len(result),
         "total_patches": sum(len(s["patches"]) for s in result)
     })
+
+
+# ============================================================
+# DATABASE CVE ENDPOINTS
+# ============================================================
+
+@app.route('/api/db/init', methods=['POST'])
+def api_db_init():
+    """
+    Initialize database and import CVEs from CSV.
+    
+    Request body:
+    {
+        "clear_existing": false  // If true, removes existing CVEs before import
+    }
+    """
+    data = request.json or {}
+    clear_existing = data.get('clear_existing', False)
+    
+    try:
+        db = get_database()
+        
+        # Find CSV file
+        csv_path = os.path.join(os.path.dirname(__file__), 'dataset', 'merged_cve_data.csv')
+        
+        if not os.path.exists(csv_path):
+            return jsonify({"error": f"CVE dataset not found at {csv_path}"}), 404
+        
+        count = db.import_cves_from_csv(csv_path, clear_existing=clear_existing)
+        
+        return jsonify({
+            "success": True,
+            "message": f"Imported {count} CVEs to database",
+            "csv_path": csv_path,
+            "cleared_existing": clear_existing
+        })
+    except Exception as e:
+        logger.error(f"Error initializing database: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/db/cves')
+def api_db_get_cves():
+    """
+    Get CVEs from database with pagination and filters.
+    
+    Query parameters:
+    - page: Page number (default: 1)
+    - per_page: Items per page (default: 50, max: 200)
+    - severity: Filter by severity (Critical, High, Medium, Low)
+    - min_score: Minimum CVSS score
+    - max_score: Maximum CVSS score
+    - vendor: Filter by vendor (partial match)
+    - search: Search in CVE ID, products, and CWE description
+    - sort_by: Sort field (base_score, epss_score, published_date, cve_id)
+    - sort_order: ASC or DESC (default: DESC)
+    - cisa_kev: If "true", show only CISA KEV listed CVEs
+    """
+    try:
+        page, per_page = validate_pagination(
+            request.args.get('page', 1),
+            request.args.get('per_page', 50),
+            max_per_page=200
+        )
+        
+        severity = request.args.get('severity')
+        min_score = request.args.get('min_score')
+        max_score = request.args.get('max_score')
+        vendor = request.args.get('vendor')
+        search = request.args.get('search')
+        sort_by = request.args.get('sort_by', 'base_score')
+        sort_order = request.args.get('sort_order', 'DESC')
+        cisa_kev = request.args.get('cisa_kev', '').lower() == 'true'
+        
+        # Parse numeric filters
+        min_score = float(min_score) if min_score else None
+        max_score = float(max_score) if max_score else None
+        
+        db = get_database()
+        cves, total = db.get_all_cves(
+            page=page,
+            per_page=per_page,
+            severity=severity,
+            min_score=min_score,
+            max_score=max_score,
+            vendor=vendor,
+            search=search,
+            sort_by=sort_by,
+            sort_order=sort_order,
+            cisa_kev_only=cisa_kev
+        )
+        
+        total_pages = (total + per_page - 1) // per_page
+        
+        return jsonify({
+            "cves": cves,
+            "pagination": {
+                "page": page,
+                "per_page": per_page,
+                "total": total,
+                "total_pages": total_pages,
+                "has_next": page < total_pages,
+                "has_prev": page > 1
+            }
+        })
+    except ValidationError as e:
+        return jsonify({"error": e.message}), e.status_code
+    except Exception as e:
+        logger.error(f"Error getting CVEs from database: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/db/cves/<cve_id>')
+def api_db_get_cve(cve_id: str):
+    """Get a single CVE by ID from database."""
+    try:
+        db = get_database()
+        cve = db.get_cve_by_id(cve_id)
+        
+        if not cve:
+            return jsonify({"error": f"CVE {cve_id} not found"}), 404
+        
+        return jsonify(cve)
+    except Exception as e:
+        logger.error(f"Error getting CVE {cve_id}: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/db/cves/stats')
+def api_db_cve_stats():
+    """Get CVE statistics from database."""
+    try:
+        db = get_database()
+        stats = db.get_cve_stats()
+        return jsonify(stats)
+    except Exception as e:
+        logger.error(f"Error getting CVE stats: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+# ============================================================
+# GA REPORT ENDPOINTS
+# ============================================================
+
+@app.route('/api/reports')
+def api_get_reports():
+    """Get recent GA execution reports."""
+    try:
+        limit = int(request.args.get('limit', 10))
+        limit = min(limit, 100)  # Max 100
+        
+        db = get_database()
+        reports = db.get_recent_ga_reports(limit=limit)
+        
+        return jsonify({
+            "reports": reports,
+            "count": len(reports)
+        })
+    except Exception as e:
+        logger.error(f"Error getting reports: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/reports/<int:report_id>')
+def api_get_report(report_id: int):
+    """Get a specific GA execution report with full details."""
+    try:
+        db = get_database()
+        report = db.get_ga_report(report_id)
+        
+        if not report:
+            return jsonify({"error": f"Report {report_id} not found"}), 404
+        
+        return jsonify(report)
+    except Exception as e:
+        logger.error(f"Error getting report {report_id}: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+# ============================================================
+# APPLIED PATCHES ENDPOINTS
+# ============================================================
+
+@app.route('/api/patches/applied', methods=['GET'])
+def api_get_applied_patches():
+    """Get list of applied patches."""
+    try:
+        server_id = request.args.get('server_id')
+        cve_id = request.args.get('cve_id')
+        from_date = request.args.get('from_date')
+        to_date = request.args.get('to_date')
+        
+        db = get_database()
+        patches = db.get_applied_patches(
+            server_id=server_id,
+            cve_id=cve_id,
+            from_date=from_date,
+            to_date=to_date
+        )
+        
+        return jsonify({
+            "patches": patches,
+            "count": len(patches)
+        })
+    except Exception as e:
+        logger.error(f"Error getting applied patches: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/patches/applied', methods=['POST'])
+def api_record_applied_patch():
+    """Record a patch as applied."""
+    try:
+        data = request.json or {}
+        
+        cve_id = data.get('cve_id')
+        server_id = data.get('server_id')
+        
+        if not cve_id or not server_id:
+            return jsonify({"error": "cve_id and server_id are required"}), 400
+        
+        db = get_database()
+        
+        # Check if already applied
+        if db.is_patch_applied(cve_id, server_id):
+            return jsonify({"error": f"Patch {cve_id} already applied to {server_id}"}), 409
+        
+        patch_id = db.record_applied_patch(
+            cve_id=cve_id,
+            server_id=server_id,
+            software_id=data.get('software_id'),
+            applied_by=data.get('applied_by'),
+            duration_hours=data.get('duration_hours'),
+            notes=data.get('notes'),
+            ga_report_id=data.get('ga_report_id')
+        )
+        
+        return jsonify({
+            "success": True,
+            "patch_id": patch_id,
+            "message": f"Patch {cve_id} recorded as applied to {server_id}"
+        }), 201
+    except Exception as e:
+        logger.error(f"Error recording applied patch: {e}")
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/api/patches/check', methods=['POST'])
+def api_check_patches():
+    """Check if patches are already applied."""
+    try:
+        data = request.json or {}
+        patches_to_check = data.get('patches', [])
+        
+        if not patches_to_check:
+            return jsonify({"error": "patches array is required"}), 400
+        
+        db = get_database()
+        results = []
+        
+        for patch in patches_to_check:
+            cve_id = patch.get('cve_id')
+            server_id = patch.get('server_id')
+            
+            if cve_id and server_id:
+                results.append({
+                    "cve_id": cve_id,
+                    "server_id": server_id,
+                    "is_applied": db.is_patch_applied(cve_id, server_id)
+                })
+        
+        return jsonify({
+            "results": results,
+            "checked": len(results)
+        })
+    except Exception as e:
+        logger.error(f"Error checking patches: {e}")
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == '__main__':

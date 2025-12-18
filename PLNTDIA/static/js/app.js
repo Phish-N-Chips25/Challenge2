@@ -188,41 +188,318 @@ function loadUpcomingHolidays() {
  */
 async function loadCVEs() {
     try {
-        const data = await fetchAPI('/api/cves?sort=priority');
-        appState.cves = data.cves || [];
+        // Tentar carregar do banco de dados primeiro
+        let data;
+        try {
+            data = await fetchAPI('/api/db/cves?per_page=200&sort_by=base_score&sort_order=DESC');
+            if (data.cves && data.cves.length > 0) {
+                // Converter formato do banco de dados para formato esperado
+                appState.cves = data.cves.map(cve => ({
+                    cve_id: cve.cve_id,
+                    severity: cve.base_severity || 'MEDIUM',
+                    cvss_score: cve.base_score || 0,
+                    epss_score: cve.epss_score || 0,
+                    priority: cve.base_score || 0,
+                    affected_software: cve.impacted_products || 'Unknown',
+                    vendor: cve.impacted_vendor || 'Unknown',
+                    cwe: cve.cwe_number || '',
+                    cwe_description: cve.cwe_description || '',
+                    attack_vector: cve.attack_vector || 'NETWORK',
+                    published_date: cve.published_date || '',
+                    cisa_kev: cve.cisa_kev || false,
+                    ssvc_decision: cve.ssvc_decision || ''
+                }));
+                appState.cveSource = 'database';
+            }
+        } catch (dbError) {
+            console.log('Database not available, falling back to API:', dbError);
+        }
+        
+        // Fallback para a API legacy se o banco não tiver dados
+        if (!appState.cves || appState.cves.length === 0) {
+            data = await fetchAPI('/api/cves?sort=priority');
+            appState.cves = data.cves || [];
+            appState.cveSource = 'api';
+        }
+        
         renderCVETable();
+        
+        // Mostrar fonte dos dados
+        const sourceIndicator = document.getElementById('cve-source');
+        if (sourceIndicator) {
+            sourceIndicator.textContent = appState.cveSource === 'database' 
+                ? '📊 Dados: SQLite Database' 
+                : '🔄 Dados: API (gerados)';
+        }
+        
     } catch (error) {
         console.error('Erro ao carregar CVEs:', error);
     }
 }
 
 /**
- * Renderizar tabela de CVEs
+ * Inicializar banco de dados com CVEs do dataset
+ */
+async function initDatabase(clearExisting = false) {
+    try {
+        showNotification('A inicializar banco de dados...', 'info');
+        
+        const result = await fetchAPI('/api/db/init', {
+            method: 'POST',
+            body: JSON.stringify({ clear_existing: clearExisting })
+        });
+        
+        if (result.success) {
+            showNotification(`${result.message}`, 'success');
+            // Recarregar CVEs
+            await loadCVEs();
+            // Atualizar stats
+            loadStats();
+        } else {
+            showNotification('Erro ao inicializar banco de dados', 'error');
+        }
+    } catch (error) {
+        console.error('Erro ao inicializar banco:', error);
+    }
+}
+
+/**
+ * Carregar estatísticas de CVEs do banco de dados
+ */
+async function loadDBStats() {
+    try {
+        const stats = await fetchAPI('/api/db/cves/stats');
+        
+        const container = document.getElementById('db-stats');
+        if (container) {
+            container.innerHTML = `
+                <div class="db-stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.total || 0}</span>
+                        <span class="stat-label">Total CVEs</span>
+                    </div>
+                    <div class="stat-item critical">
+                        <span class="stat-value">${stats.by_severity?.CRITICAL || 0}</span>
+                        <span class="stat-label">Critical</span>
+                    </div>
+                    <div class="stat-item high">
+                        <span class="stat-value">${stats.by_severity?.HIGH || 0}</span>
+                        <span class="stat-label">High</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.cisa_kev_count || 0}</span>
+                        <span class="stat-label">CISA KEV</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">${stats.avg_cvss_score || 0}</span>
+                        <span class="stat-label">Média CVSS</span>
+                    </div>
+                </div>
+            `;
+        }
+        return stats;
+    } catch (error) {
+        console.error('Erro ao carregar stats DB:', error);
+        return null;
+    }
+}
+
+/**
+ * Renderizar tabela de CVEs (suporta dados do DB e API)
  */
 function renderCVETable() {
     const tbody = document.getElementById('cve-table-body');
     if (!tbody) return;
     
     if (appState.cves.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="9" class="no-data">Nenhuma CVE encontrada</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="11" class="no-data">Nenhuma CVE encontrada</td></tr>';
         return;
     }
     
-    tbody.innerHTML = appState.cves.map(cve => `
-        <tr data-severity="${cve.severity}" data-software="${cve.software}">
-            <td><input type="checkbox" class="cve-checkbox" data-cve="${cve.cve_id}"></td>
-            <td><strong>${cve.cve_id}</strong></td>
-            <td><span class="severity-badge ${cve.severity.toLowerCase()}">${cve.severity}</span></td>
-            <td>${cve.epss_score?.toFixed(3) || '-'}</td>
-            <td>${cve.software}</td>
-            <td>${cve.patch_duration_hours}h</td>
-            <td>${cve.operators_required || 2}</td>
-            <td>${cve.priority || '-'}</td>
-            <td>
-                <button class="btn btn-sm" onclick="showCVEServers('${cve.cve_id}')" title="Ver servidores afetados">👁️</button>
-            </td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = appState.cves.map(cve => {
+        // Suportar ambos os formatos (DB e API)
+        const cveId = cve.cve_id;
+        const severity = cve.severity || cve.base_severity || 'MEDIUM';
+        const cvssScore = cve.cvss_score || cve.base_score || 0;
+        const epssScore = cve.epss_score || 0;
+        const software = cve.affected_software || cve.software || cve.impacted_products || 'Unknown';
+        const vendor = cve.vendor || cve.impacted_vendor || '-';
+        const attackVector = cve.attack_vector || 'NETWORK';
+        const cwe = cve.cwe || cve.cwe_number || '';
+        const cisaKev = cve.cisa_kev;
+        const ssvcDecision = cve.ssvc_decision || '';
+        const duration = cve.patch_duration_hours || Math.ceil(cvssScore / 2) || 4;
+        
+        return `
+            <tr data-severity="${severity}" data-software="${software}" data-vendor="${vendor}">
+                <td><input type="checkbox" class="cve-checkbox" data-cve="${cveId}"></td>
+                <td>
+                    <strong>${cveId}</strong>
+                    ${cisaKev ? '<span class="kev-badge" title="CISA KEV">⚠️</span>' : ''}
+                </td>
+                <td><span class="severity-badge ${severity.toLowerCase()}">${severity}</span></td>
+                <td><strong>${cvssScore?.toFixed(1) || '-'}</strong></td>
+                <td>${epssScore ? (epssScore * 100).toFixed(2) + '%' : '-'}</td>
+                <td class="vendor-cell" title="${software}">${vendor}</td>
+                <td><span class="attack-vector av-${attackVector.toLowerCase()}">${attackVector.substring(0, 3)}</span></td>
+                <td>${cwe || '-'}</td>
+                <td>${ssvcDecision ? `<span class="ssvc-badge ssvc-${ssvcDecision.toLowerCase()}">${ssvcDecision}</span>` : '-'}</td>
+                <td>${duration}h</td>
+                <td>
+                    <button class="btn btn-sm" onclick="showCVEDetails('${cveId}')" title="Ver detalhes">🔍</button>
+                    <button class="btn btn-sm" onclick="showCVEServers('${cveId}')" title="Selecionar servidores">🖥️</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
+    
+    // Atualizar contador
+    const counter = document.getElementById('cve-count');
+    if (counter) {
+        counter.textContent = `${appState.cves.length} CVEs`;
+    }
+}
+
+/**
+ * Mostrar detalhes completos de um CVE
+ */
+async function showCVEDetails(cveId) {
+    try {
+        // Tentar carregar do banco de dados primeiro
+        let cve;
+        try {
+            cve = await fetchAPI(`/api/db/cves/${cveId}`);
+        } catch (e) {
+            // Fallback para dados em memória
+            cve = appState.cves.find(c => c.cve_id === cveId);
+        }
+        
+        if (!cve) {
+            showNotification('CVE não encontrada', 'error');
+            return;
+        }
+        
+        const modal = document.getElementById('cve-details-modal') || createCVEDetailsModal();
+        const modalBody = document.getElementById('cve-details-body');
+        
+        modalBody.innerHTML = `
+            <div class="cve-detail-header">
+                <h3>${cve.cve_id}</h3>
+                <span class="severity-badge ${(cve.base_severity || cve.severity || 'medium').toLowerCase()}">${cve.base_severity || cve.severity}</span>
+                ${cve.cisa_kev ? '<span class="kev-badge-large">⚠️ CISA KEV</span>' : ''}
+            </div>
+            
+            <div class="cve-detail-grid">
+                <div class="detail-section">
+                    <h4>📊 Scores</h4>
+                    <div class="scores-grid">
+                        <div class="score-item">
+                            <span class="score-label">CVSS Score</span>
+                            <span class="score-value cvss">${cve.base_score?.toFixed(1) || '-'}</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">EPSS Score</span>
+                            <span class="score-value">${cve.epss_score ? (cve.epss_score * 100).toFixed(3) + '%' : '-'}</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Exploitability</span>
+                            <span class="score-value">${cve.exploitability_score?.toFixed(1) || '-'}</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label">Impact</span>
+                            <span class="score-value">${cve.impact_score?.toFixed(1) || '-'}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>🎯 Attack Vector</h4>
+                    <table class="detail-table">
+                        <tr><td>Vector</td><td>${cve.attack_vector || '-'}</td></tr>
+                        <tr><td>Complexity</td><td>${cve.attack_complexity || '-'}</td></tr>
+                        <tr><td>Privileges Required</td><td>${cve.privileges_required || '-'}</td></tr>
+                        <tr><td>User Interaction</td><td>${cve.user_interaction || '-'}</td></tr>
+                        <tr><td>Scope</td><td>${cve.scope || '-'}</td></tr>
+                    </table>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>💥 Impact</h4>
+                    <table class="detail-table">
+                        <tr><td>Confidentiality</td><td>${cve.confidentiality_impact || '-'}</td></tr>
+                        <tr><td>Integrity</td><td>${cve.integrity_impact || '-'}</td></tr>
+                        <tr><td>Availability</td><td>${cve.availability_impact || '-'}</td></tr>
+                    </table>
+                </div>
+                
+                <div class="detail-section">
+                    <h4>📋 SSVC</h4>
+                    <table class="detail-table">
+                        <tr><td>Decision</td><td><span class="ssvc-badge ssvc-${(cve.ssvc_decision || '').toLowerCase()}">${cve.ssvc_decision || '-'}</span></td></tr>
+                        <tr><td>Exploitation</td><td>${cve.ssvc_exploitation || '-'}</td></tr>
+                        <tr><td>Automatable</td><td>${cve.ssvc_automatable || '-'}</td></tr>
+                        <tr><td>Technical Impact</td><td>${cve.ssvc_technical_impact || '-'}</td></tr>
+                    </table>
+                </div>
+                
+                <div class="detail-section full-width">
+                    <h4>🏢 Affected Products</h4>
+                    <p><strong>Vendor:</strong> ${cve.impacted_vendor || '-'}</p>
+                    <p><strong>Products:</strong> ${cve.impacted_products || '-'}</p>
+                    <p><strong>Versions:</strong> ${cve.vulnerable_versions || '-'}</p>
+                </div>
+                
+                <div class="detail-section full-width">
+                    <h4>🐛 CWE</h4>
+                    <p><strong>${cve.cwe_number || '-'}</strong>: ${cve.cwe_description || '-'}</p>
+                </div>
+                
+                <div class="detail-section full-width">
+                    <h4>📅 Dates</h4>
+                    <p><strong>Published:</strong> ${cve.published_date || '-'}</p>
+                    <p><strong>Updated:</strong> ${cve.updated_date || '-'}</p>
+                    ${cve.cisa_kev_date ? `<p><strong>CISA KEV Date:</strong> ${cve.cisa_kev_date}</p>` : ''}
+                </div>
+            </div>
+        `;
+        
+        modal.classList.add('active');
+        
+    } catch (error) {
+        console.error('Erro ao carregar detalhes CVE:', error);
+        showNotification('Erro ao carregar detalhes', 'error');
+    }
+}
+
+/**
+ * Criar modal de detalhes CVE se não existir
+ */
+function createCVEDetailsModal() {
+    const modal = document.createElement('div');
+    modal.id = 'cve-details-modal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3>Detalhes do CVE</h3>
+                <button class="modal-close" onclick="closeCVEDetailsModal()">×</button>
+            </div>
+            <div id="cve-details-body" class="modal-body"></div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" onclick="closeCVEDetailsModal()">Fechar</button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    return modal;
+}
+
+/**
+ * Fechar modal de detalhes CVE
+ */
+function closeCVEDetailsModal() {
+    const modal = document.getElementById('cve-details-modal');
+    if (modal) modal.classList.remove('active');
 }
 
 /**
@@ -1212,52 +1489,281 @@ async function autoGeneratePlan() {
 }
 
 /**
- * Renderizar resultados do planeamento
+ * Renderizar resultados do planeamento com relatório detalhado do GA
  */
 function renderPlanResults(result) {
     const container = document.getElementById('plan-results');
     if (!container) return;
     
     // Suportar diferentes formatos de resposta da API
-    const tasks = result?.tasks || result?.scheduled_tasks || [];
+    const schedule = result?.schedule || result?.tasks || result?.scheduled_tasks || [];
+    const gaReport = result?.ga_report || {};
+    const metrics = result?.metrics || {};
     
-    if (tasks.length === 0) {
+    if (schedule.length === 0) {
         container.innerHTML = '<p class="no-results">Nenhuma tarefa foi agendada.</p>';
         return;
     }
     
     // Agrupar por dia
     const byDay = {};
-    tasks.forEach(task => {
-        const taskDate = task.start_time || task.date || task.scheduled_date;
-        const day = taskDate ? formatDateISO(new Date(taskDate)) : 'Sem data';
+    schedule.forEach(task => {
+        const taskDate = task.date || task.start_time || task.scheduled_date;
+        const day = taskDate ? (typeof taskDate === 'string' && taskDate.length === 10 ? taskDate : formatDateISO(new Date(taskDate))) : 'Sem data';
         if (!byDay[day]) byDay[day] = [];
         byDay[day].push(task);
     });
     
+    // Guardar schedule no estado para o calendário
+    appState.planData = { 
+        ...result, 
+        tasks: schedule.map(t => ({
+            ...t,
+            start_time: t.start_time || t.date
+        }))
+    };
+    
     container.innerHTML = `
+        <!-- Resumo Rápido -->
         <div class="results-summary">
-            <p><strong>Total de Tarefas:</strong> ${tasks.length}</p>
-            <p><strong>Dias com Trabalho:</strong> ${Object.keys(byDay).length}</p>
-            <button class="btn btn-primary" onclick="showTab('calendar')">📅 Ver no Calendário</button>
+            <div class="summary-stats">
+                <div class="stat-box">
+                    <span class="stat-number">${schedule.length}</span>
+                    <span class="stat-label">Tarefas Agendadas</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">${metrics.total_tasks || schedule.length}</span>
+                    <span class="stat-label">Total de Tarefas</span>
+                </div>
+                <div class="stat-box success">
+                    <span class="stat-number">${metrics.success_rate || 100}%</span>
+                    <span class="stat-label">Taxa de Sucesso</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number">${Object.keys(byDay).length}</span>
+                    <span class="stat-label">Dias de Trabalho</span>
+                </div>
+            </div>
+            <div class="summary-actions">
+                <button class="btn btn-primary" onclick="showTab('calendar')">📅 Ver no Calendário</button>
+                <button class="btn btn-secondary" onclick="showGAReport()">📊 Ver Relatório Detalhado</button>
+                <button class="btn btn-secondary" onclick="exportCalendar()">📥 Exportar CSV</button>
+            </div>
         </div>
+        
+        <!-- Distribuição por Severidade e Ambiente -->
+        <div class="distribution-charts">
+            <div class="chart-container">
+                <h4>Por Severidade</h4>
+                <div class="bar-chart">
+                    ${renderDistributionBars(metrics.by_severity || {}, ['Critical', 'High', 'Medium', 'Low'])}
+                </div>
+            </div>
+            <div class="chart-container">
+                <h4>Por Ambiente</h4>
+                <div class="bar-chart">
+                    ${renderDistributionBars(metrics.by_environment || {}, ['DEV', 'TEST', 'PROD'])}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Timeline dos próximos dias -->
         <div class="results-timeline">
-            ${Object.entries(byDay).slice(0, 5).map(([day, dayTasks]) => `
+            <h4>📅 Próximas Tarefas</h4>
+            ${Object.entries(byDay).sort((a, b) => a[0].localeCompare(b[0])).slice(0, 7).map(([day, dayTasks]) => `
                 <div class="timeline-day">
                     <div class="timeline-date">${formatDate(day)}</div>
                     <div class="timeline-tasks">
                         ${dayTasks.map(t => `
-                            <div class="timeline-task env-${t.environment?.toLowerCase()}">
+                            <div class="timeline-task env-${(t.environment || 'DEV').toLowerCase()}">
+                                <span class="task-time">${t.start_hour || '--'}:00</span>
                                 <span class="task-server">${t.server_id}</span>
-                                <span class="task-cve">${t.cve_id}</span>
+                                <span class="task-cve severity-${(t.severity || 'medium').toLowerCase()}">${t.cve_id}</span>
+                                <span class="task-duration">${t.duration || t.duration_hours || '-'}h</span>
                             </div>
                         `).join('')}
                     </div>
                 </div>
             `).join('')}
-            ${Object.keys(byDay).length > 5 ? `<p class="more-days">... e mais ${Object.keys(byDay).length - 5} dias</p>` : ''}
+            ${Object.keys(byDay).length > 7 ? `<p class="more-days">... e mais ${Object.keys(byDay).length - 7} dias</p>` : ''}
+        </div>
+        
+        <!-- Detalhes GA (colapsável) -->
+        <div id="ga-report-detail" class="ga-report-panel" style="display: none;">
+            ${renderGAReportDetail(gaReport)}
         </div>
     `;
+}
+
+/**
+ * Renderizar barras de distribuição
+ */
+function renderDistributionBars(data, keys) {
+    const total = Object.values(data).reduce((a, b) => a + b, 0) || 1;
+    
+    return keys.map(key => {
+        const count = data[key] || 0;
+        const percentage = Math.round((count / total) * 100);
+        const colorClass = key.toLowerCase().replace('_', '-');
+        
+        return `
+            <div class="distribution-row">
+                <span class="dist-label">${key}</span>
+                <div class="dist-bar-container">
+                    <div class="dist-bar ${colorClass}" style="width: ${percentage}%"></div>
+                </div>
+                <span class="dist-value">${count} (${percentage}%)</span>
+            </div>
+        `;
+    }).join('');
+}
+
+/**
+ * Renderizar detalhes do relatório GA
+ */
+function renderGAReportDetail(gaReport) {
+    if (!gaReport || Object.keys(gaReport).length === 0) {
+        return '<p>Dados do algoritmo genético não disponíveis.</p>';
+    }
+    
+    const config = gaReport.config || {};
+    const evolution = gaReport.evolution || {};
+    const results = gaReport.results || {};
+    const analysis = gaReport.analysis || {};
+    
+    return `
+        <h4>📊 Relatório do Algoritmo Genético</h4>
+        
+        <div class="ga-report-grid">
+            <!-- Configuração -->
+            <div class="ga-section">
+                <h5>⚙️ Configuração</h5>
+                <table class="ga-config-table">
+                    <tr><td>População</td><td>${config.population_size || '-'}</td></tr>
+                    <tr><td>Gerações</td><td>${config.generations || '-'}</td></tr>
+                    <tr><td>Taxa de Crossover</td><td>${((config.crossover_rate || 0) * 100).toFixed(0)}%</td></tr>
+                    <tr><td>Taxa de Mutação</td><td>${((config.mutation_rate || 0) * 100).toFixed(0)}%</td></tr>
+                    <tr><td>Elite Size</td><td>${config.elite_size || '-'}</td></tr>
+                    <tr><td>Tournament Size</td><td>${config.tournament_size || '-'}</td></tr>
+                    <tr><td>Semanas de Planeamento</td><td>${config.planning_weeks || '-'}</td></tr>
+                </table>
+            </div>
+            
+            <!-- Evolução -->
+            <div class="ga-section">
+                <h5>📈 Evolução</h5>
+                <table class="ga-config-table">
+                    <tr><td>Fitness Inicial</td><td>${(evolution.initial_fitness || 0).toFixed(2)}</td></tr>
+                    <tr><td>Fitness Final</td><td>${(evolution.final_fitness || 0).toFixed(2)}</td></tr>
+                    <tr><td>Melhoria</td><td class="improvement">+${(evolution.improvement || 0).toFixed(2)}%</td></tr>
+                    <tr><td>Geração do Melhor</td><td>${evolution.generations_to_best || '-'}</td></tr>
+                </table>
+                <div class="fitness-chart">
+                    ${renderFitnessChart(evolution.best_fitness_history || [], evolution.avg_fitness_history || [])}
+                </div>
+            </div>
+            
+            <!-- Resultados -->
+            <div class="ga-section">
+                <h5>✅ Resultados</h5>
+                <table class="ga-config-table">
+                    <tr><td>Tarefas Totais</td><td>${results.total_tasks || '-'}</td></tr>
+                    <tr><td>Tarefas Agendadas</td><td class="success">${results.scheduled_tasks || '-'}</td></tr>
+                    <tr><td>Tarefas Falhadas</td><td class="error">${results.failed_tasks || 0}</td></tr>
+                    <tr><td>Taxa de Sucesso</td><td class="success">${(results.success_rate || 0).toFixed(1)}%</td></tr>
+                    <tr><td>Horas Totais</td><td>${results.total_hours_scheduled || '-'}h</td></tr>
+                </table>
+            </div>
+            
+            <!-- Análise -->
+            <div class="ga-section">
+                <h5>🔍 Análise</h5>
+                <table class="ga-config-table">
+                    <tr><td>CVEs Críticos Agendados</td><td class="critical">${analysis.critical_scheduled || 0}</td></tr>
+                    <tr><td>CVEs High Agendados</td><td class="high">${analysis.high_scheduled || 0}</td></tr>
+                    <tr><td>Workers Utilizados</td><td>${analysis.workers_utilized || 0} / ${analysis.total_workers_available || 0}</td></tr>
+                    <tr><td>Taxa de Utilização Workers</td><td>${(analysis.worker_utilization_rate || 0).toFixed(1)}%</td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Distribuição por Worker -->
+        ${results.by_worker && Object.keys(results.by_worker).length > 0 ? `
+            <div class="ga-section full-width">
+                <h5>👥 Distribuição por Worker</h5>
+                <div class="worker-distribution">
+                    ${Object.entries(results.by_worker).map(([worker, count]) => `
+                        <div class="worker-stat">
+                            <span class="worker-name">${worker}</span>
+                            <span class="worker-count">${count} tarefas</span>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        ` : ''}
+        
+        <!-- Tempo de Execução -->
+        <div class="ga-footer">
+            <span>Tempo de Execução: ${gaReport.execution_time_ms || 0}ms</span>
+            ${gaReport.report_id ? `<span>Report ID: #${gaReport.report_id}</span>` : ''}
+        </div>
+    `;
+}
+
+/**
+ * Renderizar gráfico de fitness (simplificado com CSS)
+ */
+function renderFitnessChart(bestHistory, avgHistory) {
+    if (!bestHistory || bestHistory.length === 0) {
+        return '<p class="no-chart">Dados de evolução não disponíveis</p>';
+    }
+    
+    const maxFitness = Math.max(...bestHistory, ...avgHistory) || 1;
+    const step = Math.max(1, Math.floor(bestHistory.length / 20)); // Mostrar até 20 pontos
+    
+    const points = [];
+    for (let i = 0; i < bestHistory.length; i += step) {
+        points.push({
+            gen: i,
+            best: bestHistory[i],
+            avg: avgHistory[i] || 0
+        });
+    }
+    // Garantir que o último ponto está incluído
+    if (points[points.length - 1].gen !== bestHistory.length - 1) {
+        points.push({
+            gen: bestHistory.length - 1,
+            best: bestHistory[bestHistory.length - 1],
+            avg: avgHistory[avgHistory.length - 1] || 0
+        });
+    }
+    
+    return `
+        <div class="mini-chart">
+            <div class="chart-bars">
+                ${points.map((p, i) => `
+                    <div class="chart-bar-group" title="Gen ${p.gen}: Best=${p.best.toFixed(1)}, Avg=${p.avg.toFixed(1)}">
+                        <div class="chart-bar best" style="height: ${(p.best / maxFitness * 100)}%"></div>
+                        <div class="chart-bar avg" style="height: ${(p.avg / maxFitness * 100)}%"></div>
+                    </div>
+                `).join('')}
+            </div>
+            <div class="chart-legend">
+                <span class="legend-item"><span class="legend-color best"></span> Best Fitness</span>
+                <span class="legend-item"><span class="legend-color avg"></span> Avg Fitness</span>
+            </div>
+        </div>
+    `;
+}
+
+/**
+ * Mostrar/ocultar relatório GA detalhado
+ */
+function showGAReport() {
+    const panel = document.getElementById('ga-report-detail');
+    if (panel) {
+        panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+    }
 }
 
 /**
