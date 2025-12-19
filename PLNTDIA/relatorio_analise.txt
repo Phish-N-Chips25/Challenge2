@@ -1,217 +1,198 @@
 ============================================================
          PLNTDIA - Relatório de Planeamento
-         Gerado em: 2025-12-19 09:47:13
+         Gerado em: 2025-12-19 09:56:52
 ============================================================
 
 === 1. DADOS CARREGADOS (CSV) ===
 📂 Fonte dados: csv/
 🖥️  Servidores: 60
     - PROD: 20 | UAT: 0 | DEV: 20
-🔒 CVEs:       23 (dataset real)
-    - Período: 2025-11-19 a 2025-12-19
+🔒 CVEs:       2 (dataset real)
+    - Período: 2025-12-12 a 2025-12-19
     - Total no ficheiro: 206,794
-    - Total no período: 3,201
-    - Match infraestrutura: 23
+    - Total no período: 429
+    - Match infraestrutura: 2
 👷 Equipa:     10 técnicos
     - Senior: 4 | Mid: 4 | Junior: 2
-✅ Tarefas válidas identificadas: 138
+✅ Tarefas válidas identificadas: 18
 
 === 2. RESULTADO DO AGENDAMENTO ===
-✅ Agendadas:     84
-⚠️  Falhadas:      54
-📈 Taxa de Sucesso: 60.9%
+✅ Agendadas:     18
+⚠️  Falhadas:      0
+📈 Taxa de Sucesso: 100.0%
 
 === 3. UTILIZAÇÃO DE RECURSOS ===
 
 👷 Técnicos:
-   João Pereira         [█░░░░░░░░░░░░░░░░░░░]   7.7%
-   Pedro Santos         [█░░░░░░░░░░░░░░░░░░░]   7.5%
-   Ana Silva            [█░░░░░░░░░░░░░░░░░░░]   7.4%
-   Inês Rodrigues       [█░░░░░░░░░░░░░░░░░░░]   7.4%
-   Ricardo Fernandes    [█░░░░░░░░░░░░░░░░░░░]   7.4%
-   Sofia Almeida        [█░░░░░░░░░░░░░░░░░░░]   7.4%
-   Tiago Lopes          [█░░░░░░░░░░░░░░░░░░░]   7.1%
-   Miguel Teixeira      [█░░░░░░░░░░░░░░░░░░░]   6.8%
-   Carla Nunes          [█░░░░░░░░░░░░░░░░░░░]   6.2%
-   Maria Costa          [█░░░░░░░░░░░░░░░░░░░]   5.7%
+   Ana Silva            [░░░░░░░░░░░░░░░░░░░░]   4.6%
+   João Pereira         [░░░░░░░░░░░░░░░░░░░░]   4.6%
+   Inês Rodrigues       [░░░░░░░░░░░░░░░░░░░░]   3.1%
+   Maria Costa          [░░░░░░░░░░░░░░░░░░░░]   1.8%
+   Pedro Santos         [░░░░░░░░░░░░░░░░░░░░]   0.8%
+   Ricardo Fernandes    [░░░░░░░░░░░░░░░░░░░░]   0.0%
+   Sofia Almeida        [░░░░░░░░░░░░░░░░░░░░]   0.0%
+   Miguel Teixeira      [░░░░░░░░░░░░░░░░░░░░]   0.0%
+   Carla Nunes          [░░░░░░░░░░░░░░░░░░░░]   0.0%
+   Tiago Lopes          [░░░░░░░░░░░░░░░░░░░░]   0.0%
 
-   Média de utilização: 7.0%
+   Média de utilização: 1.5%
 
 🖥️  Servidores (top 10):
-   PROD_Security_01     [████████░░░░░░░░░░░░]  40.0%
-   PROD_Security_02     [████████░░░░░░░░░░░░]  40.0%
-   PROD_FileServices_01 [██░░░░░░░░░░░░░░░░░░]  11.4%
-   PROD_FileServices_02 [██░░░░░░░░░░░░░░░░░░]  11.4%
-   TEST_Security_01     [█░░░░░░░░░░░░░░░░░░░]   6.7%
-   TEST_Security_02     [█░░░░░░░░░░░░░░░░░░░]   6.7%
-   PROD_CRM_01          [█░░░░░░░░░░░░░░░░░░░]   5.7%
-   PROD_CRM_02          [█░░░░░░░░░░░░░░░░░░░]   5.7%
-   PROD_ERP_01          [█░░░░░░░░░░░░░░░░░░░]   5.7%
-   PROD_ERP_02          [█░░░░░░░░░░░░░░░░░░░]   5.7%
+   PROD_Analytics_01    [█████░░░░░░░░░░░░░░░]  28.6%
+   PROD_Analytics_02    [█████░░░░░░░░░░░░░░░]  28.6%
+   PROD_Monitoring_02   [█████░░░░░░░░░░░░░░░]  28.6%
+   TEST_Analytics_01    [░░░░░░░░░░░░░░░░░░░░]   4.8%
+   TEST_Analytics_02    [░░░░░░░░░░░░░░░░░░░░]   4.8%
+   TEST_Monitoring_02   [░░░░░░░░░░░░░░░░░░░░]   4.8%
+   DEV_Analytics_01     [░░░░░░░░░░░░░░░░░░░░]   3.2%
+   DEV_Analytics_02     [░░░░░░░░░░░░░░░░░░░░]   3.2%
+   DEV_Monitoring_02    [░░░░░░░░░░░░░░░░░░░░]   3.2%
 
 === 4. PLANO FINAL (Primeiras 20 Tarefas) ===
 
-🗓️  [Seg 18h-22h] CVE-2025-59718
-    🔴 Severidade: Critical | EPSS: 0.90 | Risco: ALTO
-    🖥️  Servidor: DEV_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
-    ⏱️  Duração:  4h | Prioridade: 9.20
+🗓️  [Seg 18h-19h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Analytics_01
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 18h-22h] CVE-2025-59718
-    🔴 Severidade: Critical | EPSS: 0.90 | Risco: ALTO
-    🖥️  Servidor: DEV_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
-    ⏱️  Duração:  4h | Prioridade: 9.20
+🗓️  [Seg 18h-19h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Analytics_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 18h-22h] CVE-2025-59245
-    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_FileServices_01
-    📦 Software: SharePoint v2019 (Criticidade: 7.0)
-    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
-    ⏱️  Duração:  4h | Prioridade: 4.60
+🗓️  [Seg 18h-19h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Monitoring_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Maria Costa (Junior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 18h-22h] CVE-2025-59245
-    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_FileServices_02
-    📦 Software: SharePoint v2019 (Criticidade: 7.0)
-    👷 Equipa:   Miguel Teixeira (Senior), Carla Nunes (Senior)
-    ⏱️  Duração:  4h | Prioridade: 4.60
+🗓️  [Seg 19h-20h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Analytics_01
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 22h-00h] CVE-2025-53949
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Seg 19h-20h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Analytics_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 22h-00h] CVE-2025-53949
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Seg 19h-20h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Monitoring_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Pedro Santos (Junior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 22h-00h] CVE-2025-53949
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: TEST_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Seg 22h-23h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Analytics_01
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Seg 22h-00h] CVE-2025-53949
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: TEST_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Miguel Teixeira (Senior), Carla Nunes (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Seg 22h-23h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Analytics_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 18h-22h] CVE-2025-59719
-    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
-    ⏱️  Duração:  4h | Prioridade: 5.20
+🗓️  [Seg 22h-23h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Monitoring_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 18h-22h] CVE-2025-59719
-    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
-    ⏱️  Duração:  4h | Prioridade: 5.20
+🗓️  [Seg 23h-00h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Analytics_01
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 18h-20h] CVE-2020-36900
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_CRM_01
-    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
-    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.50
+🗓️  [Seg 23h-00h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Analytics_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 18h-20h] CVE-2020-36900
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_CRM_02
-    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
-    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
-    ⏱️  Duração:  2h | Prioridade: 4.50
+🗓️  [Seg 23h-00h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Monitoring_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 20h-22h] CVE-2025-13426
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_ERP_01
-    📦 Software: Java v17 (Criticidade: 8.0)
-    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.50
+🗓️  [Qua 02h-03h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Analytics_01
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 20h-22h] CVE-2025-13426
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_ERP_02
-    📦 Software: Java v17 (Criticidade: 8.0)
-    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
-    ⏱️  Duração:  2h | Prioridade: 4.50
+🗓️  [Qua 02h-03h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Analytics_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 22h-00h] CVE-2025-60024
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Qua 02h-03h] CVE-2025-37731
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Monitoring_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 22h-00h] CVE-2025-60024
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: DEV_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Qua 03h-04h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Analytics_01
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Ana Silva (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 22h-00h] CVE-2025-60024
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: TEST_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Qua 03h-04h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Analytics_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   João Pereira (Senior)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
 
-🗓️  [Ter 22h-00h] CVE-2025-60024
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: TEST_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
-    ⏱️  Duração:  2h | Prioridade: 4.80
+🗓️  [Qua 03h-04h] CVE-2025-37732
+    🟡 Severidade: Medium | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Monitoring_02
+    📦 Software: Elasticsearch v8.0 (Criticidade: 7.0)
+    👷 Equipa:   Inês Rodrigues (Mid)
+    ⏱️  Duração:  1h | Prioridade: 3.60
 --------------------------------------------------
-
-🗓️  [Qua 02h-04h] CVE-2025-53949
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: PROD_Security_01
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
-    ⏱️  Duração:  2h | Prioridade: 4.80
---------------------------------------------------
-
-🗓️  [Qua 02h-04h] CVE-2025-53949
-    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
-    🖥️  Servidor: PROD_Security_02
-    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
-    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
-    ⏱️  Duração:  2h | Prioridade: 4.80
---------------------------------------------------
-
-... e mais 64 tarefas não mostradas
 
 ============================================================
                     FIM DO RELATÓRIO

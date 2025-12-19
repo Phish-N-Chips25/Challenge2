@@ -11,20 +11,37 @@ Gera gráficos relevantes para análise do planeamento de patches:
 
 import os
 import logging
+import sys
 from typing import List, Dict, Optional, Tuple
 from collections import defaultdict
 from datetime import date, timedelta
 
 try:
     import matplotlib
-    matplotlib.use('Agg')  # Backend não-interativo para evitar problemas
+    # Usar backend interactivo para mostrar gráficos
+    # TkAgg para sistemas com Tk, ou outro disponível
+    if sys.platform == 'darwin':  # macOS
+        matplotlib.use('MacOSX')
+    else:
+        matplotlib.use('TkAgg')
     import matplotlib.pyplot as plt
     import matplotlib.patches as mpatches
     from matplotlib.ticker import MaxNLocator
     MATPLOTLIB_AVAILABLE = True
-except ImportError:
-    MATPLOTLIB_AVAILABLE = False
-    plt = None
+    INTERACTIVE_BACKEND = True
+except Exception:
+    try:
+        import matplotlib
+        matplotlib.use('Agg')  # Fallback para backend não-interativo
+        import matplotlib.pyplot as plt
+        import matplotlib.patches as mpatches
+        from matplotlib.ticker import MaxNLocator
+        MATPLOTLIB_AVAILABLE = True
+        INTERACTIVE_BACKEND = False
+    except ImportError:
+        MATPLOTLIB_AVAILABLE = False
+        INTERACTIVE_BACKEND = False
+        plt = None
 
 try:
     import numpy as np
@@ -119,12 +136,13 @@ class GeneticAlgorithmVisualizer:
             'max_fitness': max(fitness_values) if fitness_values else 0
         })
     
-    def plot_fitness_evolution(self, filename: str = "fitness_evolution.png") -> Optional[str]:
+    def plot_fitness_evolution(self, filename: str = "fitness_evolution.png", show: bool = False) -> Optional[str]:
         """
         Gráfico de evolução do fitness ao longo das gerações.
         
         Args:
             filename: Nome do ficheiro de saída
+            show: Se True, mostra o gráfico na consola
             
         Returns:
             Caminho do ficheiro gerado ou None se falhar
@@ -170,17 +188,22 @@ class GeneticAlgorithmVisualizer:
         filepath = os.path.join(self.output_dir, filename)
         plt.tight_layout()
         plt.savefig(filepath, dpi=150, bbox_inches='tight')
-        plt.close()
+        
+        if show:
+            plt.show()
+        else:
+            plt.close()
         
         logger.info(f"Gráfico de evolução do fitness guardado em: {filepath}")
         return filepath
     
-    def plot_convergence(self, filename: str = "convergence.png") -> Optional[str]:
+    def plot_convergence(self, filename: str = "convergence.png", show: bool = False) -> Optional[str]:
         """
         Gráfico de análise de convergência do algoritmo.
         
         Args:
             filename: Nome do ficheiro de saída
+            show: Se True, mostra o gráfico na consola
             
         Returns:
             Caminho do ficheiro gerado ou None se falhar
@@ -252,7 +275,11 @@ class GeneticAlgorithmVisualizer:
         
         filepath = os.path.join(self.output_dir, filename)
         plt.savefig(filepath, dpi=150, bbox_inches='tight')
-        plt.close()
+        
+        if show:
+            plt.show()
+        else:
+            plt.close()
         
         logger.info(f"Gráfico de convergência guardado em: {filepath}")
         return filepath
@@ -260,7 +287,8 @@ class GeneticAlgorithmVisualizer:
 
 def plot_schedule_overview(schedule: List[PatchTask], 
                            output_dir: str = "graficos",
-                           filename: str = "schedule_overview.png") -> Optional[str]:
+                           filename: str = "schedule_overview.png",
+                           show: bool = False) -> Optional[str]:
     """
     Gráfico panorâmico do planeamento.
     
@@ -274,6 +302,7 @@ def plot_schedule_overview(schedule: List[PatchTask],
         schedule: Lista de PatchTask agendadas
         output_dir: Diretório de saída
         filename: Nome do ficheiro
+        show: Se True, mostra o gráfico na consola
         
     Returns:
         Caminho do ficheiro gerado ou None se falhar
@@ -377,7 +406,11 @@ def plot_schedule_overview(schedule: List[PatchTask],
     
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, dpi=150, bbox_inches='tight')
-    plt.close()
+    
+    if show:
+        plt.show()
+    else:
+        plt.close()
     
     logger.info(f"Gráfico panorâmico guardado em: {filepath}")
     return filepath
@@ -386,7 +419,8 @@ def plot_schedule_overview(schedule: List[PatchTask],
 def plot_worker_utilization(schedule: List[PatchTask],
                             workers: List[Worker],
                             output_dir: str = "graficos",
-                            filename: str = "worker_utilization.png") -> Optional[str]:
+                            filename: str = "worker_utilization.png",
+                            show: bool = False) -> Optional[str]:
     """
     Gráfico de utilização dos workers.
     
@@ -395,6 +429,7 @@ def plot_worker_utilization(schedule: List[PatchTask],
         workers: Lista de todos os workers
         output_dir: Diretório de saída
         filename: Nome do ficheiro
+        show: Se True, mostra o gráfico na consola
         
     Returns:
         Caminho do ficheiro gerado ou None se falhar
@@ -466,7 +501,11 @@ def plot_worker_utilization(schedule: List[PatchTask],
     
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, dpi=150, bbox_inches='tight')
-    plt.close()
+    
+    if show:
+        plt.show()
+    else:
+        plt.close()
     
     logger.info(f"Gráfico de utilização de workers guardado em: {filepath}")
     return filepath
@@ -475,7 +514,8 @@ def plot_worker_utilization(schedule: List[PatchTask],
 def plot_timeline(schedule: List[PatchTask],
                   output_dir: str = "graficos",
                   filename: str = "timeline.png",
-                  max_tasks: int = 30) -> Optional[str]:
+                  max_tasks: int = 30,
+                  show: bool = False) -> Optional[str]:
     """
     Gráfico de timeline (Gantt) do planeamento.
     
@@ -484,6 +524,7 @@ def plot_timeline(schedule: List[PatchTask],
         output_dir: Diretório de saída
         filename: Nome do ficheiro
         max_tasks: Máximo de tarefas a mostrar
+        show: Se True, mostra o gráfico na consola
         
     Returns:
         Caminho do ficheiro gerado ou None se falhar
@@ -544,7 +585,11 @@ def plot_timeline(schedule: List[PatchTask],
     
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, dpi=150, bbox_inches='tight')
-    plt.close()
+    
+    if show:
+        plt.show()
+    else:
+        plt.close()
     
     logger.info(f"Gráfico de timeline guardado em: {filepath}")
     return filepath
@@ -552,7 +597,8 @@ def plot_timeline(schedule: List[PatchTask],
 
 def plot_cve_analysis(cves: List[CVE],
                       output_dir: str = "graficos",
-                      filename: str = "cve_analysis.png") -> Optional[str]:
+                      filename: str = "cve_analysis.png",
+                      show: bool = False) -> Optional[str]:
     """
     Gráfico de análise dos CVEs.
     
@@ -560,6 +606,7 @@ def plot_cve_analysis(cves: List[CVE],
         cves: Lista de CVEs
         output_dir: Diretório de saída
         filename: Nome do ficheiro
+        show: Se True, mostra o gráfico na consola
         
     Returns:
         Caminho do ficheiro gerado ou None se falhar
@@ -636,7 +683,11 @@ def plot_cve_analysis(cves: List[CVE],
     
     filepath = os.path.join(output_dir, filename)
     plt.savefig(filepath, dpi=150, bbox_inches='tight')
-    plt.close()
+    
+    if show:
+        plt.show()
+    else:
+        plt.close()
     
     logger.info(f"Gráfico de análise de CVEs guardado em: {filepath}")
     return filepath
@@ -647,7 +698,8 @@ def generate_all_charts(schedule: List[PatchTask],
                         workers: List[Worker],
                         metrics,
                         visualizer: Optional[GeneticAlgorithmVisualizer] = None,
-                        output_dir: str = "graficos") -> List[str]:
+                        output_dir: str = "graficos",
+                        show: bool = False) -> List[str]:
     """
     Gera todos os gráficos disponíveis.
     
@@ -658,6 +710,7 @@ def generate_all_charts(schedule: List[PatchTask],
         metrics: Métricas do agendamento
         visualizer: Visualizador do AG (opcional, para gráficos de fitness)
         output_dir: Diretório de saída
+        show: Se True, mostra os gráficos na consola
         
     Returns:
         Lista de caminhos dos ficheiros gerados
@@ -666,35 +719,39 @@ def generate_all_charts(schedule: List[PatchTask],
         logger.warning("Matplotlib não disponível. Instale com: pip install matplotlib")
         return []
     
+    if show and not INTERACTIVE_BACKEND:
+        logger.warning("Backend interactivo não disponível. Gráficos serão apenas guardados.")
+        show = False
+    
     generated_files = []
     
     # 1. Gráficos do algoritmo genético (se disponível)
     if visualizer:
-        fitness_file = visualizer.plot_fitness_evolution()
+        fitness_file = visualizer.plot_fitness_evolution(show=show)
         if fitness_file:
             generated_files.append(fitness_file)
         
-        convergence_file = visualizer.plot_convergence()
+        convergence_file = visualizer.plot_convergence(show=show)
         if convergence_file:
             generated_files.append(convergence_file)
     
     # 2. Visão geral do planeamento
-    overview_file = plot_schedule_overview(schedule, output_dir)
+    overview_file = plot_schedule_overview(schedule, output_dir, show=show)
     if overview_file:
         generated_files.append(overview_file)
     
     # 3. Utilização de workers
-    worker_file = plot_worker_utilization(schedule, workers, output_dir)
+    worker_file = plot_worker_utilization(schedule, workers, output_dir, show=show)
     if worker_file:
         generated_files.append(worker_file)
     
     # 4. Timeline
-    timeline_file = plot_timeline(schedule, output_dir)
+    timeline_file = plot_timeline(schedule, output_dir, show=show)
     if timeline_file:
         generated_files.append(timeline_file)
     
     # 5. Análise de CVEs
-    cve_file = plot_cve_analysis(cves, output_dir)
+    cve_file = plot_cve_analysis(cves, output_dir, show=show)
     if cve_file:
         generated_files.append(cve_file)
     
@@ -723,3 +780,4 @@ def print_charts_summary(generated_files: List[str]):
     
     print(f"\n   📁 Diretório: {os.path.dirname(generated_files[0])}")
     print("=" * 50)
+

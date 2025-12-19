@@ -47,7 +47,8 @@ from src.visualization import (
     GeneticAlgorithmVisualizer,
     generate_all_charts,
     print_charts_summary,
-    MATPLOTLIB_AVAILABLE
+    MATPLOTLIB_AVAILABLE,
+    INTERACTIVE_BACKEND
 )
 import re
 
@@ -249,9 +250,14 @@ def parse_args():
         help='Diretório para guardar os gráficos (default: graficos)'
     )
     viz_group.add_argument(
+        '--show-charts',
+        action='store_true',
+        help='Mostrar os gráficos na consola (janelas interactivas)'
+    )
+    viz_group.add_argument(
         '--no-show-charts',
         action='store_true',
-        help='Não abrir os gráficos automaticamente após geração'
+        help='Não abrir a pasta de gráficos automaticamente após geração'
     )
     
     # === Grupo: Configuração Geral ===
@@ -768,6 +774,9 @@ def main():
                     
                     visualizer.record_generation(gen + 1, fitness_values, best, diversity)
                 
+                # Verificar se deve mostrar gráficos na consola
+                show_interactive = args.show_charts
+                
                 # Gerar todos os gráficos
                 generated_files = generate_all_charts(
                     schedule=schedule,
@@ -775,14 +784,15 @@ def main():
                     workers=workers,
                     metrics=metrics,
                     visualizer=visualizer,
-                    output_dir=args.charts_dir
+                    output_dir=args.charts_dir,
+                    show=show_interactive
                 )
                 
                 # Mostrar resumo
                 print_charts_summary(generated_files)
                 
-                # Abrir diretório de gráficos (se não desativado)
-                if generated_files and not args.no_show_charts:
+                # Abrir diretório de gráficos (se não desativado e não mostrou interactivamente)
+                if generated_files and not args.no_show_charts and not show_interactive:
                     import platform
                     import subprocess
                     
