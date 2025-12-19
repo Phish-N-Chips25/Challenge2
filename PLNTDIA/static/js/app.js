@@ -216,12 +216,18 @@ async function loadStats() {
             if (countEl) countEl.textContent = count;
         });
         
-        // Atualizar CVEs por severidade
-        appState.cvesBySeverity = stats.cves_by_severity || { CRITICAL: 0, HIGH: 0, MEDIUM: 0, LOW: 0 };
-        document.getElementById('critical-count').textContent = appState.cvesBySeverity.CRITICAL || 0;
-        document.getElementById('high-count').textContent = appState.cvesBySeverity.HIGH || 0;
-        document.getElementById('medium-count').textContent = appState.cvesBySeverity.MEDIUM || 0;
-        document.getElementById('low-count').textContent = appState.cvesBySeverity.LOW || 0;
+        // Atualizar CVEs por severidade (API retorna Title Case: Critical, High, etc.)
+        const severityData = stats.cves_by_severity || {};
+        appState.cvesBySeverity = {
+            CRITICAL: severityData.Critical || severityData.CRITICAL || 0,
+            HIGH: severityData.High || severityData.HIGH || 0,
+            MEDIUM: severityData.Medium || severityData.MEDIUM || 0,
+            LOW: severityData.Low || severityData.LOW || 0
+        };
+        document.getElementById('critical-count').textContent = appState.cvesBySeverity.CRITICAL;
+        document.getElementById('high-count').textContent = appState.cvesBySeverity.HIGH;
+        document.getElementById('medium-count').textContent = appState.cvesBySeverity.MEDIUM;
+        document.getElementById('low-count').textContent = appState.cvesBySeverity.LOW;
         
         // Carregar próximos feriados
         loadUpcomingHolidays();
@@ -622,8 +628,8 @@ async function openPlanFromCVEsModal() {
     modal.style.display = 'flex';
     
     try {
-        // Carregar servidores
-        const serversData = await fetchAPI('/api/servers');
+        // Carregar todos os servidores (sem paginação)
+        const serversData = await fetchAPI('/api/servers?per_page=100');
         const servers = serversData.servers || [];
         
         // Obter CVEs selecionadas
