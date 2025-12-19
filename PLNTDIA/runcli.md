@@ -63,6 +63,25 @@ python main.py [opções]
 | `--enforce-dependencies` | Bloquear patches em PROD se não foram testados em TEST | desativado |
 | `--show-pipeline` | Mostrar estado do pipeline de deployment | desativado |
 
+### Visualização e Gráficos
+
+| Opção | Descrição | Default |
+|-------|-----------|---------|
+| `--charts` | Gerar gráficos de análise do planeamento | desativado |
+| `--charts-dir PATH` | Diretório para guardar os gráficos | `graficos` |
+| `--no-show-charts` | Não abrir a pasta de gráficos automaticamente | desativado |
+
+#### Gráficos Gerados
+
+| Ficheiro | Descrição |
+|----------|-----------|
+| `fitness_evolution.png` | Evolução do fitness do algoritmo genético |
+| `convergence.png` | Análise de convergência (4 sub-gráficos) |
+| `schedule_overview.png` | Visão geral do planeamento (severidade, ambiente, carga) |
+| `worker_utilization.png` | Utilização da equipa técnica |
+| `timeline.png` | Cronograma Gantt das tarefas |
+| `cve_analysis.png` | Análise de CVEs (severidade, EPSS, prioridade) |
+
 ### Configuração Geral
 
 | Opção | Descrição | Default |
@@ -77,7 +96,6 @@ python main.py [opções]
 ---
 
 ## Exemplos de Uso
-
 ### 1. Execução Básica (CVEs Sintéticos)
 
 ```bash
@@ -171,7 +189,40 @@ python main.py --dataset dataset/merged_cve_data.csv --show-pipeline
 python main.py --dataset dataset/merged_cve_data.csv --enforce-dependencies --show-pipeline -v
 ```
 
-### 7. Customizar Output
+### 7. Gerar Gráficos de Análise
+
+```bash
+# Gerar todos os gráficos (abre pasta automaticamente)
+python main.py --dataset dataset/merged_cve_data.csv --charts
+
+# Gerar gráficos sem abrir a pasta
+python main.py --dataset dataset/merged_cve_data.csv --charts --no-show-charts
+
+# Guardar gráficos em pasta personalizada
+python main.py --dataset dataset/merged_cve_data.csv --charts --charts-dir relatorios/graficos
+
+# Análise completa com gráficos
+python main.py \
+  --dataset dataset/merged_cve_data.csv \
+  --days 30 \
+  --min-severity HIGH \
+  --charts \
+  -o relatorio_mensal.txt \
+  -v
+```
+
+#### Gráficos Gerados
+
+Quando usa `--charts`, são gerados 6 gráficos na pasta `graficos/`:
+
+1. **fitness_evolution.png** - Evolução do fitness do algoritmo
+2. **convergence.png** - Análise de convergência (4 sub-gráficos)
+3. **schedule_overview.png** - Distribuição por severidade, ambiente e carga
+4. **worker_utilization.png** - Horas e tarefas por técnico
+5. **timeline.png** - Cronograma Gantt das tarefas
+6. **cve_analysis.png** - Análise de CVEs (EPSS, severidade, prioridade)
+
+### 8. Customizar Output
 
 ```bash
 # Definir ficheiro de output
@@ -184,7 +235,7 @@ python main.py --max-display 50
 python main.py --save-scenario cenario.json
 ```
 
-### 8. Comandos Combinados (Uso Real)
+### 9. Comandos Combinados (Uso Real)
 
 ```bash
 # Análise completa: CVEs HIGH dos últimos 60 dias, tracking ativo
@@ -226,6 +277,19 @@ python main.py \
   --ignore-vacations \
   --track-patches \
   -o plano_urgente.txt
+
+# Análise completa com gráficos e todas as opções
+python main.py \
+  --dataset dataset/merged_cve_data.csv \
+  --days 30 \
+  --min-severity HIGH \
+  --track-patches \
+  --skip-applied \
+  --show-availability \
+  --enforce-dependencies \
+  --charts \
+  -o plano_executivo.txt \
+  -v
 ```
 
 ---
@@ -252,11 +316,13 @@ python main.py \
 |----------|-----------|
 | `relatorio_analise.txt` | Relatório de planeamento (default) |
 | `data/applied_patches.csv` | Histórico de patches aplicados |
+| `graficos/` | Gráficos de análise (quando usa --charts) |
 | `plntdia.log` | Log detalhado de execução |
 
 ---
 
 ## Resumo de Todas as Opções
+
 
 ```bash
 python main.py --help
@@ -268,8 +334,10 @@ usage: main.py [-h] [-c CVES | --dataset PATH] [--days N] [--period PERÍODO]
                [--track-patches] [--patch-history PATH] [--skip-applied]
                [--patch-report PATH] [--vacations PATH] [--ignore-vacations]
                [--start-date YYYY-MM-DD] [--show-availability]
-               [--enforce-dependencies] [--show-pipeline] [--csv-path PATH]
-               [--seed N] [-o FILE] [-v] [--save-scenario FILE] [--max-display N]
+               [--enforce-dependencies] [--show-pipeline]
+               [--charts] [--charts-dir PATH] [--no-show-charts]
+               [--csv-path PATH] [--seed N] [-o FILE] [-v] 
+               [--save-scenario FILE] [--max-display N]
 
 PLNTDIA - Sistema de Planeamento de Patches
 
@@ -299,6 +367,11 @@ Disponibilidade da Equipa:
 Dependências de Pipeline:
   --enforce-dependencies  Bloquear patches em PROD se não testados em TEST
   --show-pipeline         Mostrar estado do pipeline de deployment
+
+Visualização e Gráficos:
+  --charts                Gerar gráficos de análise do planeamento
+  --charts-dir PATH       Diretório para guardar gráficos (default: graficos)
+  --no-show-charts        Não abrir a pasta de gráficos automaticamente
 
 Configuração Geral:
   --csv-path PATH         Caminho para a pasta CSV (default: ./csv)

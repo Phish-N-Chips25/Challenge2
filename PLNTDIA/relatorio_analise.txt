@@ -1,213 +1,217 @@
 ============================================================
          PLNTDIA - Relatório de Planeamento
-         Gerado em: 2025-12-18 09:51:12
+         Gerado em: 2025-12-19 09:47:13
 ============================================================
 
 === 1. DADOS CARREGADOS (CSV) ===
 📂 Fonte dados: csv/
 🖥️  Servidores: 60
     - PROD: 20 | UAT: 0 | DEV: 20
-🔒 CVEs:       5 (sintético)
+🔒 CVEs:       23 (dataset real)
+    - Período: 2025-11-19 a 2025-12-19
+    - Total no ficheiro: 206,794
+    - Total no período: 3,201
+    - Match infraestrutura: 23
 👷 Equipa:     10 técnicos
     - Senior: 4 | Mid: 4 | Junior: 2
-✅ Tarefas válidas identificadas: 33
+✅ Tarefas válidas identificadas: 138
 
 === 2. RESULTADO DO AGENDAMENTO ===
-✅ Agendadas:     33
-⚠️  Falhadas:      0
-📈 Taxa de Sucesso: 100.0%
+✅ Agendadas:     84
+⚠️  Falhadas:      54
+📈 Taxa de Sucesso: 60.9%
 
 === 3. UTILIZAÇÃO DE RECURSOS ===
 
 👷 Técnicos:
-   Inês Rodrigues       [░░░░░░░░░░░░░░░░░░░░]   4.0%
-   Sofia Almeida        [░░░░░░░░░░░░░░░░░░░░]   4.0%
-   Ana Silva            [░░░░░░░░░░░░░░░░░░░░]   3.0%
-   Ricardo Fernandes    [░░░░░░░░░░░░░░░░░░░░]   3.0%
-   João Pereira         [░░░░░░░░░░░░░░░░░░░░]   2.0%
-   Carla Nunes          [░░░░░░░░░░░░░░░░░░░░]   2.0%
-   Maria Costa          [░░░░░░░░░░░░░░░░░░░░]   1.8%
-   Miguel Teixeira      [░░░░░░░░░░░░░░░░░░░░]   1.0%
-   Tiago Lopes          [░░░░░░░░░░░░░░░░░░░░]   1.0%
-   Pedro Santos         [░░░░░░░░░░░░░░░░░░░░]   0.0%
+   João Pereira         [█░░░░░░░░░░░░░░░░░░░]   7.7%
+   Pedro Santos         [█░░░░░░░░░░░░░░░░░░░]   7.5%
+   Ana Silva            [█░░░░░░░░░░░░░░░░░░░]   7.4%
+   Inês Rodrigues       [█░░░░░░░░░░░░░░░░░░░]   7.4%
+   Ricardo Fernandes    [█░░░░░░░░░░░░░░░░░░░]   7.4%
+   Sofia Almeida        [█░░░░░░░░░░░░░░░░░░░]   7.4%
+   Tiago Lopes          [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   Miguel Teixeira      [█░░░░░░░░░░░░░░░░░░░]   6.8%
+   Carla Nunes          [█░░░░░░░░░░░░░░░░░░░]   6.2%
+   Maria Costa          [█░░░░░░░░░░░░░░░░░░░]   5.7%
 
-   Média de utilização: 2.2%
+   Média de utilização: 7.0%
 
 🖥️  Servidores (top 10):
-   PROD_Integration_02  [██░░░░░░░░░░░░░░░░░░]  14.3%
-   PROD_CRM_01          [██░░░░░░░░░░░░░░░░░░]  14.3%
-   PROD_Email_01        [██░░░░░░░░░░░░░░░░░░]  14.3%
-   PROD_Email_02        [██░░░░░░░░░░░░░░░░░░]  14.3%
-   PROD_CRM_02          [█░░░░░░░░░░░░░░░░░░░]   7.1%
-   PROD_WebPortal_01    [█░░░░░░░░░░░░░░░░░░░]   7.1%
-   PROD_WebPortal_02    [█░░░░░░░░░░░░░░░░░░░]   7.1%
-   PROD_FileServices_02 [█░░░░░░░░░░░░░░░░░░░]   7.1%
-   PROD_Analytics_01    [█░░░░░░░░░░░░░░░░░░░]   7.1%
-   PROD_Analytics_02    [█░░░░░░░░░░░░░░░░░░░]   7.1%
+   PROD_Security_01     [████████░░░░░░░░░░░░]  40.0%
+   PROD_Security_02     [████████░░░░░░░░░░░░]  40.0%
+   PROD_FileServices_01 [██░░░░░░░░░░░░░░░░░░]  11.4%
+   PROD_FileServices_02 [██░░░░░░░░░░░░░░░░░░]  11.4%
+   TEST_Security_01     [█░░░░░░░░░░░░░░░░░░░]   6.7%
+   TEST_Security_02     [█░░░░░░░░░░░░░░░░░░░]   6.7%
+   PROD_CRM_01          [█░░░░░░░░░░░░░░░░░░░]   5.7%
+   PROD_CRM_02          [█░░░░░░░░░░░░░░░░░░░]   5.7%
+   PROD_ERP_01          [█░░░░░░░░░░░░░░░░░░░]   5.7%
+   PROD_ERP_02          [█░░░░░░░░░░░░░░░░░░░]   5.7%
 
 === 4. PLANO FINAL (Primeiras 20 Tarefas) ===
 
-🗓️  [Seg 18h-20h] CVE-2025-1004
-    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
-    🖥️  Servidor: DEV_Email_01
-    📦 Software: Exchange v2019 (Criticidade: 9.0)
-    👷 Equipa:   Inês Rodrigues (Mid)
-    ⏱️  Duração:  2h | Prioridade: 7.26
+🗓️  [Seg 18h-22h] CVE-2025-59718
+    🔴 Severidade: Critical | EPSS: 0.90 | Risco: ALTO
+    🖥️  Servidor: DEV_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  4h | Prioridade: 9.20
 --------------------------------------------------
 
-🗓️  [Seg 18h-20h] CVE-2025-1004
-    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
-    🖥️  Servidor: DEV_Email_02
-    📦 Software: Exchange v2019 (Criticidade: 9.0)
-    👷 Equipa:   Sofia Almeida (Senior)
-    ⏱️  Duração:  2h | Prioridade: 7.26
+🗓️  [Seg 18h-22h] CVE-2025-59718
+    🔴 Severidade: Critical | EPSS: 0.90 | Risco: ALTO
+    🖥️  Servidor: DEV_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
+    ⏱️  Duração:  4h | Prioridade: 9.20
 --------------------------------------------------
 
-🗓️  [Seg 18h-19h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
-    🖥️  Servidor: DEV_WebPortal_01
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   João Pereira (Senior)
-    ⏱️  Duração:  1h | Prioridade: 5.45
+🗓️  [Seg 18h-22h] CVE-2025-59245
+    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_FileServices_01
+    📦 Software: SharePoint v2019 (Criticidade: 7.0)
+    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
+    ⏱️  Duração:  4h | Prioridade: 4.60
 --------------------------------------------------
 
-🗓️  [Seg 18h-19h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
-    🖥️  Servidor: DEV_WebPortal_02
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   Maria Costa (Junior)
-    ⏱️  Duração:  1h | Prioridade: 5.45
---------------------------------------------------
-
-🗓️  [Seg 18h-19h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+🗓️  [Seg 18h-22h] CVE-2025-59245
+    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
     🖥️  Servidor: DEV_FileServices_02
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   Ricardo Fernandes (Mid)
-    ⏱️  Duração:  1h | Prioridade: 5.45
+    📦 Software: SharePoint v2019 (Criticidade: 7.0)
+    👷 Equipa:   Miguel Teixeira (Senior), Carla Nunes (Senior)
+    ⏱️  Duração:  4h | Prioridade: 4.60
 --------------------------------------------------
 
-🗓️  [Ter 18h-19h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
+🗓️  [Seg 22h-00h] CVE-2025-53949
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.80
+--------------------------------------------------
+
+🗓️  [Seg 22h-00h] CVE-2025-53949
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
+    ⏱️  Duração:  2h | Prioridade: 4.80
+--------------------------------------------------
+
+🗓️  [Seg 22h-00h] CVE-2025-53949
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.80
+--------------------------------------------------
+
+🗓️  [Seg 22h-00h] CVE-2025-53949
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Miguel Teixeira (Senior), Carla Nunes (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.80
+--------------------------------------------------
+
+🗓️  [Ter 18h-22h] CVE-2025-59719
+    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  4h | Prioridade: 5.20
+--------------------------------------------------
+
+🗓️  [Ter 18h-22h] CVE-2025-59719
+    🔴 Severidade: Critical | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
+    ⏱️  Duração:  4h | Prioridade: 5.20
+--------------------------------------------------
+
+🗓️  [Ter 18h-20h] CVE-2020-36900
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
     🖥️  Servidor: DEV_CRM_01
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   João Pereira (Senior)
-    ⏱️  Duração:  1h | Prioridade: 5.45
+    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
+    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.50
 --------------------------------------------------
 
-🗓️  [Ter 18h-19h] CVE-2025-1001
-    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
+🗓️  [Ter 18h-20h] CVE-2020-36900
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
     🖥️  Servidor: DEV_CRM_02
     📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
-    👷 Equipa:   Maria Costa (Junior)
-    ⏱️  Duração:  1h | Prioridade: 4.13
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 4.50
 --------------------------------------------------
 
-🗓️  [Ter 18h-19h] CVE-2025-1003
-    🟢 Severidade: Low | EPSS: 0.22 | Risco: BAIXO
-    🖥️  Servidor: DEV_Analytics_01
-    📦 Software: Python v3.11 (Criticidade: 5.0)
-    👷 Equipa:   Inês Rodrigues (Mid)
-    ⏱️  Duração:  1h | Prioridade: 3.02
+🗓️  [Ter 20h-22h] CVE-2025-13426
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_ERP_01
+    📦 Software: Java v17 (Criticidade: 8.0)
+    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.50
 --------------------------------------------------
 
-🗓️  [Ter 18h-19h] CVE-2025-1003
-    🟢 Severidade: Low | EPSS: 0.22 | Risco: BAIXO
-    🖥️  Servidor: DEV_Analytics_02
-    📦 Software: Python v3.11 (Criticidade: 5.0)
-    👷 Equipa:   Ricardo Fernandes (Mid)
-    ⏱️  Duração:  1h | Prioridade: 3.02
+🗓️  [Ter 20h-22h] CVE-2025-13426
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_ERP_02
+    📦 Software: Java v17 (Criticidade: 8.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 4.50
 --------------------------------------------------
 
-🗓️  [Ter 18h-20h] CVE-2025-1000
-    🟢 Severidade: Low | EPSS: 0.04 | Risco: BAIXO
-    🖥️  Servidor: DEV_Integration_02
-    📦 Software: RabbitMQ v3.12 (Criticidade: 7.0)
-    👷 Equipa:   Sofia Almeida (Senior)
-    ⏱️  Duração:  2h | Prioridade: 2.67
+🗓️  [Ter 22h-00h] CVE-2025-60024
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.80
 --------------------------------------------------
 
-🗓️  [Ter 19h-20h] CVE-2025-1001
-    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
-    🖥️  Servidor: DEV_CRM_01
-    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
-    👷 Equipa:   Inês Rodrigues (Mid)
-    ⏱️  Duração:  1h | Prioridade: 4.13
+🗓️  [Ter 22h-00h] CVE-2025-60024
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: DEV_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Pedro Santos (Junior), Inês Rodrigues (Mid)
+    ⏱️  Duração:  2h | Prioridade: 4.80
 --------------------------------------------------
 
-🗓️  [Qua 02h-04h] CVE-2025-1004
-    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
-    🖥️  Servidor: PROD_Email_01
-    📦 Software: Exchange v2019 (Criticidade: 9.0)
-    👷 Equipa:   Ana Silva (Mid)
-    ⏱️  Duração:  2h | Prioridade: 7.26
+🗓️  [Ter 22h-00h] CVE-2025-60024
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ricardo Fernandes (Mid), Sofia Almeida (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.80
 --------------------------------------------------
 
-🗓️  [Qua 02h-04h] CVE-2025-1004
-    🟡 Severidade: Medium | EPSS: 0.71 | Risco: ALTO
-    🖥️  Servidor: PROD_Email_02
-    📦 Software: Exchange v2019 (Criticidade: 9.0)
-    👷 Equipa:   João Pereira (Senior)
-    ⏱️  Duração:  2h | Prioridade: 7.26
+🗓️  [Ter 22h-00h] CVE-2025-60024
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: TEST_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Carla Nunes (Senior), Tiago Lopes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 4.80
 --------------------------------------------------
 
-🗓️  [Qua 02h-03h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
-    🖥️  Servidor: PROD_WebPortal_01
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   Inês Rodrigues (Mid)
-    ⏱️  Duração:  1h | Prioridade: 5.45
+🗓️  [Qua 02h-04h] CVE-2025-53949
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Security_01
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Ana Silva (Mid), João Pereira (Senior)
+    ⏱️  Duração:  2h | Prioridade: 4.80
 --------------------------------------------------
 
-🗓️  [Qua 02h-03h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
-    🖥️  Servidor: PROD_WebPortal_02
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   Ricardo Fernandes (Mid)
-    ⏱️  Duração:  1h | Prioridade: 5.45
+🗓️  [Qua 02h-04h] CVE-2025-53949
+    🟠 Severidade: High | EPSS: 0.10 | Risco: BAIXO
+    🖥️  Servidor: PROD_Security_02
+    📦 Software: Fortinet FortiGate v7.2 (Criticidade: 9.0)
+    👷 Equipa:   Inês Rodrigues (Mid), Ricardo Fernandes (Mid)
+    ⏱️  Duração:  2h | Prioridade: 4.80
 --------------------------------------------------
 
-🗓️  [Qua 02h-03h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
-    🖥️  Servidor: PROD_FileServices_02
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   Sofia Almeida (Senior)
-    ⏱️  Duração:  1h | Prioridade: 5.45
---------------------------------------------------
-
-🗓️  [Qua 02h-03h] CVE-2025-1002
-    🟢 Severidade: Low | EPSS: 0.59 | Risco: MÉDIO
-    🖥️  Servidor: PROD_CRM_01
-    📦 Software: .NET Framework v4.8 (Criticidade: 7.0)
-    👷 Equipa:   Carla Nunes (Senior)
-    ⏱️  Duração:  1h | Prioridade: 5.45
---------------------------------------------------
-
-🗓️  [Qua 02h-03h] CVE-2025-1001
-    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
-    🖥️  Servidor: PROD_CRM_02
-    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
-    👷 Equipa:   Tiago Lopes (Mid)
-    ⏱️  Duração:  1h | Prioridade: 4.13
---------------------------------------------------
-
-🗓️  [Qua 03h-04h] CVE-2025-1001
-    🟡 Severidade: Medium | EPSS: 0.15 | Risco: BAIXO
-    🖥️  Servidor: PROD_CRM_01
-    📦 Software: Dynamics 365 v9.2 (Criticidade: 8.0)
-    👷 Equipa:   Inês Rodrigues (Mid)
-    ⏱️  Duração:  1h | Prioridade: 4.13
---------------------------------------------------
-
-🗓️  [Qua 03h-04h] CVE-2025-1003
-    🟢 Severidade: Low | EPSS: 0.22 | Risco: BAIXO
-    🖥️  Servidor: PROD_Analytics_01
-    📦 Software: Python v3.11 (Criticidade: 5.0)
-    👷 Equipa:   Ricardo Fernandes (Mid)
-    ⏱️  Duração:  1h | Prioridade: 3.02
---------------------------------------------------
-
-... e mais 13 tarefas não mostradas
+... e mais 64 tarefas não mostradas
 
 ============================================================
                     FIM DO RELATÓRIO

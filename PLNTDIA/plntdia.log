@@ -6688,3 +6688,41 @@ AttributeError: 'AvailabilityManager' object has no attribute 'is_worker_availab
 2025-12-18 09:51:12,746 - __main__ - INFO - Horizonte de planeamento: 14 dias (2 semanas)
 2025-12-18 09:51:12,746 - src.planner - INFO - Horizonte de planeamento: 2 semanas (336 horas)
 2025-12-18 09:51:12,752 - __main__ - INFO - Agendamento concluído: ScheduleMetrics(total=33, scheduled=33, success_rate=100.0%)
+2025-12-19 09:47:09,153 - __main__ - INFO - === PLNTDIA - Início da Execução ===
+2025-12-19 09:47:09,154 - __main__ - INFO - Período de planeamento: 2025-12-19 a 2026-01-17 (30 dias)
+2025-12-19 09:47:09,158 - src.availability - INFO - Carregadas 8 ausências de csv/team_vacations.csv
+2025-12-19 09:47:09,159 - src.availability - INFO - Carregados 16 feriados de csv/holidays.csv
+2025-12-19 09:47:09,159 - __main__ - INFO - Carregadas 8 ausências de csv/team_vacations.csv
+2025-12-19 09:47:09,159 - __main__ - INFO - Carregados 16 feriados de csv/holidays.csv
+2025-12-19 09:47:09,159 - __main__ - INFO - A carregar dados dos ficheiros CSV...
+2025-12-19 09:47:09,160 - src.repository - INFO - Carregados 60 servidores de /Users/aricardoferraz/Documents/Challenge-2/Challenge2/PLNTDIA/csv/servers.csv
+2025-12-19 09:47:09,162 - src.repository - INFO - Carregadas janelas de manutenção de /Users/aricardoferraz/Documents/Challenge-2/Challenge2/PLNTDIA/csv/server_windows.csv
+2025-12-19 09:47:09,163 - src.repository - INFO - Carregado software de /Users/aricardoferraz/Documents/Challenge-2/Challenge2/PLNTDIA/csv/server_applications.csv
+2025-12-19 09:47:09,163 - src.repository - INFO - Carregados 10 técnicos de /Users/aricardoferraz/Documents/Challenge-2/Challenge2/PLNTDIA/csv/team.csv
+2025-12-19 09:47:09,163 - __main__ - INFO - Carregados: 60 servidores, 10 técnicos
+2025-12-19 09:47:09,164 - __main__ - INFO - A carregar CVEs do dataset: dataset/merged_cve_data.csv
+2025-12-19 09:47:09,164 - src.cve_loader - INFO - A filtrar CVEs de 2025-11-19 a 2025-12-19
+2025-12-19 09:47:09,164 - src.cve_loader - INFO - Software na infraestrutura: Node.js, Exchange, CrowdStrike Falcon, MySQL Server, WebLogic Server, Nginx, Java, Active Directory, SharePoint, SQL Server, Elasticsearch, Python, Prometheus, Redis, Fortinet FortiGate, Kong Gateway, .NET Framework, ASP.NET Core, IIS, Dynamics 365, RabbitMQ, Grafana, Apache Tomcat, Zabbix, PostgreSQL, Oracle Database
+2025-12-19 09:47:12,793 - src.cve_loader - INFO - CVEs carregados: 23 de 3201 no período (206794 total)
+2025-12-19 09:47:12,794 - __main__ - INFO - CVEs carregados: 23 (período: 2025-11-19 a 2025-12-19)
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_01 tem 5 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_02 tem 5 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_03 tem 5 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_05 tem 2 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_06 tem 3 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_08 tem 3 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Worker Tech_09 tem 8 dias de ausência no período
+2025-12-19 09:47:12,794 - __main__ - INFO - Workers com ausências no período: Tech_01, Tech_06, Tech_05, Tech_09, Tech_08, Tech_02, Tech_03
+2025-12-19 09:47:12,794 - __main__ - INFO - A calcular prioridades e verificar RTO...
+2025-12-19 09:47:12,795 - __main__ - INFO - Tarefas válidas: 138, Descartadas (RTO): 0
+2025-12-19 09:47:12,795 - __main__ - INFO - A executar agendamento...
+2025-12-19 09:47:12,795 - __main__ - INFO - Horizonte de planeamento: 30 dias (5 semanas)
+2025-12-19 09:47:12,796 - src.planner - INFO - Horizonte de planeamento: 5 semanas (840 horas)
+2025-12-19 09:47:13,033 - __main__ - INFO - Agendamento concluído: ScheduleMetrics(total=138, scheduled=84, success_rate=60.9%)
+2025-12-19 09:47:13,034 - __main__ - INFO - A gerar gráficos de análise...
+2025-12-19 09:47:14,555 - src.visualization - INFO - Gráfico de evolução do fitness guardado em: graficos/fitness_evolution.png
+2025-12-19 09:47:15,617 - src.visualization - INFO - Gráfico de convergência guardado em: graficos/convergence.png
+2025-12-19 09:47:16,276 - src.visualization - INFO - Gráfico panorâmico guardado em: graficos/schedule_overview.png
+2025-12-19 09:47:16,810 - src.visualization - INFO - Gráfico de utilização de workers guardado em: graficos/worker_utilization.png
+2025-12-19 09:47:17,488 - src.visualization - INFO - Gráfico de timeline guardado em: graficos/timeline.png
+2025-12-19 09:47:18,210 - src.visualization - INFO - Gráfico de análise de CVEs guardado em: graficos/cve_analysis.png
