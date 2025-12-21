@@ -1,27 +1,35 @@
+# src/logic.py
 from typing import List, Tuple
 from .domain import Server, CVE, Software, Worker
+
+def get_patch_duration(severity: str) -> int:
+    """
+    Centraliza a estimativa de tempo (horas) baseada na severidade.
+    Garante consistência entre a validação de RTO e o agendamento.
+    """
+    mapping = {
+        "Critical": 4,
+        "High": 2,
+        "Medium": 1,
+        "Low": 1
+    }
+    return mapping.get(severity, 1)
 
 def find_affected_servers(cve: CVE, servers: List[Server]) -> List[Tuple[Server, Software]]:
     """Encontra quais servidores têm o software vulnerável."""
     targets = []
     for srv in servers:
         for soft in srv.installed_software:
-            # Compara ID e Versão (String exata por enquanto)
             if (soft.id == cve.affected_software_id and 
                 soft.version == cve.affected_software_version):
                 targets.append((srv, soft))
     return targets
 
-
 def calculate_priority(cve: CVE, software: Software) -> float:
     """Calcula urgência baseada no EPSS, Severidade e Criticalidade do Software."""
-    
-    # 1. Tentar converter Severidade (Híbrido: aceita numérico ou texto)
     try:
-        # Se já vier numérico no CSV (futuro)
         sev_score = float(cve.severity)
     except ValueError:
-        # Se for texto (High, Medium...)
         severity_map = {"Low": 2.0, "Medium": 5.0, "High": 8.0, "Critical": 10.0}
         sev_score = severity_map.get(cve.severity, 2.0)
     
@@ -31,38 +39,43 @@ def calculate_priority(cve: CVE, software: Software) -> float:
     # Fórmula: 50% ML + 30% Negócio + 20% CVSS
     return (epss_scaled * 0.5) + (crit_score * 0.3) + (sev_score * 0.2)
 
-def is_worker_available(worker: Worker, day: int, start_h: int, duration: int) -> bool:
+def is_worker_available(worker: Worker, absolute_start_h: int, duration: int) -> bool:
     """
-    Verifica se o horário pedido cabe dentro de algum turno do trabalhador.
+    Verifica disponibilidade usando modulo 168 para suportar múltiplas semanas.
     """
-    required_end = start_h + duration
+    # Converter tempo absoluto para tempo relativo da semana (0-167)
+    rel_start = absolute_start_h % 168
+    rel_end = rel_start + duration
     
+    day = rel_start // 24
+    hour_start = rel_start % 24
+    hour_end = hour_start + duration
+
     for shift_day, shift_start, shift_end in worker.weekly_shifts:
         if shift_day == day:
-            if shift_start <= start_h and required_end <= shift_end:
+            if shift_start <= hour_start and hour_end <= shift_end:
                 return True
     return False
 
-def is_server_available(server: Server, day: int, start_h: int, duration: int) -> bool:
+def is_server_available(server: Server, absolute_start_h: int, duration: int) -> bool:
     """
-    Verifica se o patch cabe dentro de alguma janela de manutenção do servidor.
+    Verifica janela de manutenção usando modulo 168.
     """
-    required_end = start_h + duration
+    rel_start = absolute_start_h % 168
+    
+    day = rel_start // 24
+    hour_start = rel_start % 24
+    hour_end = hour_start + duration
     
     for win_day, win_start, win_end in server.downtime_windows:
-        # 1. É o dia certo?
         if win_day == day:
-            # 2. Cabe na janela?
-            # Ex: Janela 02-06. Patch 03-05. (2 <= 3) E (5 <= 6). Válido.
-            if win_start <= start_h and required_end <= win_end:
+            if win_start <= hour_start and hour_end <= win_end:
                 return True
     return False
-
 
 def prepare_patching_tasks(cves: List[CVE], servers: List[Server]) -> List[Tuple[CVE, Server, Software]]:
     """
-    Cruza as CVEs com os Servidores, calcula prioridades e filtra pelo RTO.
-    Retorna a lista limpa de tarefas para o planeador.
+    Cruza CVEs com Servidores e filtra pelo RTO usando a duração dinâmica.
     """
     tasks_to_plan = []
     
@@ -70,15 +83,41 @@ def prepare_patching_tasks(cves: List[CVE], servers: List[Server]) -> List[Tuple
 
     for cve in cves:
         targets = find_affected_servers(cve, servers)
-        if not targets: continue
+        if not targets: 
+            continue
+
+        # 1. Determinar a duração baseada na severidade (Regra Central)
+        duration = get_patch_duration(cve.severity)
 
         for server, software in targets:
-            # 1. Calcular Prioridade
+            # 2. Calcular Prioridade
             cve.final_priority_score = calculate_priority(cve, software)
             
-            # 2. Regra de Negócio: O Patch cabe no RTO?
-            if cve.estimated_fix_time <= server.rto_hours:
+            # 3. Validar RTO: A duração calculada é aceitável para este servidor?
+            if duration <= server.rto_hours:
                 tasks_to_plan.append((cve, server, software))
-            # Se quiseres podes logar os descartados aqui ou retornar uma lista separada
+            else:
+                # Opcional: print para debug se necessário
+                print(f"❌ DESCARTADO: {cve.id} ({duration}h) excede RTO do {server.id} ({server.rto_hours}h)")
+                pass
             
     return tasks_to_plan
+
+# src/logic.py
+
+LEVEL_RANK = {
+    "Junior": 1,
+    "Mid": 2,
+    "Senior": 3
+}
+
+def can_worker_handle_level(worker_level: str, required_level: str) -> bool:
+    """Verifica se o ranking do trabalhador chega para o exigido."""
+    return LEVEL_RANK.get(worker_level, 0) >= LEVEL_RANK.get(required_level, 0)
+
+# Custo por hora de cada nível (Exemplo em Euros)
+LEVEL_HOURLY_RATE = {
+    "Junior": 25.0,
+    "Mid": 40.0,
+    "Senior": 60.0
+}

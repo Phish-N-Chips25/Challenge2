@@ -26,13 +26,8 @@ def load_server_applications(csv_path: str) -> Dict[str, List[Software]]:
     for _, row in df.iterrows():
         srv_id = row['server_id']
         
-        # Tenta ler criticidade do CSV, senão usa o DEFAULT
-        if 'criticality' in row:
-            crit = float(row['criticality'])
-        else:
-            # Fallback seguro procurando por várias colunas de nome possível
-            sw_name = row.get('software_id', row.get('affected_software', 'Unknown'))
-            crit = DEFAULT_CRITICALITY.get(sw_name, 5.0)
+        # Ler criticidade do CSV (valor padrão 5.0 caso não exista)
+        crit = float(row.get('criticality', 5.0))
 
         # Normalizar nome da coluna do software
         sw_col = 'software_id' if 'software_id' in row else 'affected_software'
@@ -104,70 +99,74 @@ def load_server_windows(csv_path: str, servers: List[Server]):
             count += 1
 
 def load_workers(csv_path: str, servers: List[Server]) -> List[Worker]:
-    """
-    PASSO 4: Lê técnicos, calcula turnos (com almoço) e define permissões baseadas em Skills.
-    """
     workers = []
     try:
         df = pd.read_csv(csv_path)
     except FileNotFoundError:
-        print(f"❌ Erro: Ficheiro {csv_path} não encontrado.")
         return []
 
-    print(f"-> A processar {len(df)} técnicos e a cruzar skills...")
-
     for _, row in df.iterrows():
-        # Parse básico
         w_id = row['tech_id']
         name = row['tech_name']
         level = row['level']
+        # .strip() para evitar erros de espaços invisíveis no CSV
         skills = [s.strip() for s in str(row['skills']).split(';')]
         
-        # Calcular Turnos
         shifts = []
-        start = int(row['work_start_h'])
-        lunch_in = int(row['lunch_start_h'])
-        lunch_out = int(row['lunch_end_h'])
-        end = int(row['work_end_h'])
+        # USAR FLOAT em vez de INT para suportar 7.5, 11.5, etc.
+        start = float(row['work_start_h'])
+        lunch_in = float(row['lunch_start_h'])
+        lunch_out = float(row['lunch_end_h'])
+        end = float(row['work_end_h'])
         is_on_call = int(row['on_call']) == 1
+        
+        # NOVO: Ler os dias de trabalho específicos (ex: "0;1;2;3;4" ou "5;6")
+        work_days_str = str(row['work_days']).split(';')
+        work_days = [int(d) for d in work_days_str]
 
-        for day in range(5): 
-            if lunch_in > start: shifts.append((day, start, lunch_in)) # Manhã
-            if end > lunch_out: shifts.append((day, lunch_out, end))   # Tarde
+        # Criar turnos normais APENAS para os dias definidos no CSV
+        for day in work_days: 
+            if lunch_in > start: 
+                shifts.append((day, start, lunch_in))
+            if end > lunch_out: 
+                shifts.append((day, lunch_out, end))
                 
-        # Lógica ON CALL
         if is_on_call:
-            for day in range(5): shifts.append((day, 0, 8)) # Noites semana
-            shifts.append((5, 0, 24)) # Sábado
-            shifts.append((6, 0, 24)) # Domingo
+            # Lógica ON CALL original:
+            # Noites de semana (Cobre a janela de PROD das 01h-05h)
+            for day in range(5): 
+                shifts.append((day, 0, 8)) 
+            # Fins de semana totais (Cobre DEV/UAT se ainda não tiver turno lá)
+            shifts.append((5, 0, 24)) 
+            shifts.append((6, 0, 24)) 
 
-        # Cruzar Skills com Servidores para definir authorized_server_ids
         auth_ids = []
         for srv in servers:
-            has_permission = False
-            
-            # 1. Por Software
+            has_perm = False
+            # Comparação de software (Skills)
             for soft in srv.installed_software:
-                if soft.id in skills: 
-                    has_permission = True
-                    break
+                if soft.id in skills:
+                    has_perm = True; break
             
-            # 2. Por Sistema Operativo (Opcional)
-            if not has_permission:
+            # Comparação de SO
+            if not has_perm:
                 if "Windows Server" in skills and "Windows" in srv.os_name:
-                    has_permission = True
+                    has_perm = True
                 elif "Linux" in skills and "Linux" in srv.os_name:
-                    has_permission = True
+                    has_perm = True
 
-            if has_permission:
+            if has_perm:
                 auth_ids.append(srv.id)
 
-        workers.append(Worker(
-            id=w_id, name=name, level=level, skills=skills,
-            weekly_shifts=shifts, authorized_server_ids=auth_ids
-        ))
-
+        # Criamos o objeto Worker (agora o is_on_call é usado pelo planner para os limites de 8h/12h)
+        workers.append(Worker(w_id, name, level, skills, shifts, auth_ids, is_on_call))
+        
+    print(f"--- DEBUG STAFF ---")
+    for w in workers:
+        print(f"ID: {w.id} | Nome: {w.name} | Servidores Autorizados: {len(w.authorized_server_ids)}")
+        
     return workers
+
 
 def load_cves(csv_path: str) -> List[CVE]:
     """
@@ -204,7 +203,7 @@ def initialize_infrastructure_from_csv():
     sw_map = load_server_applications("data/server_applications.csv") 
     servers = load_servers("data/servers.csv", sw_map)
     load_server_windows("data/server_windows.csv", servers)
-    workers = load_workers("data/workers.csv", servers)
+    workers = load_workers("data/team.csv", servers)
     
     print(f"✅ Infraestrutura Carregada: {len(servers)} Servidores, {len(workers)} Técnicos.\n")
     return servers, workers

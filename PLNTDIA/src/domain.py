@@ -15,19 +15,24 @@ class Software:
 @dataclass
 class Server:
     id: str
-    os_name: str            # Ex: "Ubuntu"
-    os_version: str         # Ex: "20.04"
-    rto_hours: int          # Recovery Time Objective (Ex: 4 horas max de paragem)
-    
-    # Lista de janelas: (DiaSemana, HoraInicio, HoraFim)
-    # 0=Segunda ... 6=Domingo
-    downtime_windows: List[Tuple[int, int, int]]
-    
-    # O que está instalado neste servidor
+    os_name: str
+    os_version: str
+    rto_hours: int
+    downtime_windows: List[Tuple[int, int, int]] = field(default_factory=list)
     installed_software: List[Software] = field(default_factory=list)
 
-    def add_software(self, sw: Software):
-        self.installed_software.append(sw)
+    @property
+    def environment(self):
+        return self.id.split('_')[1] # Extrai DEV, UAT ou PROD
+
+    @property
+    def chain_id(self):
+        return self.id.split('_')[2] # Extrai o número 001, 002...
+
+    @property
+    def env_rank(self):
+        # Define a ordem lógica
+        return {"DEV": 1, "UAT": 2, "PROD": 3}.get(self.environment, 99)
 
 # --- 3. CVE / PATCH ---
 @dataclass
@@ -54,12 +59,18 @@ class Worker:
     name: str # Adicionámos o nome para ficar bonito no relatório
     level: str # 'Junior', 'Mid', 'Senior'
     skills: List[str] = field(default_factory=list) # Novidade
-    
     weekly_shifts: List[Tuple[int, int, int]] = field(default_factory=list)
-    
     # Este campo continua a ser crucial para o algoritmo saber onde ele pode tocar.
     # Mas agora será preenchido automaticamente pelo código!
     authorized_server_ids: List[str] = field(default_factory=list)
+    is_on_call: bool = False # NOVO: Define se pode fazer 12h/dia e noites/FDS
+
+
+
+    def __repr__(self):
+        # Útil para o Debug que fizemos antes
+        status = "ON-CALL" if self.is_on_call else "NORMAL"
+        return f"{self.name} ({self.level}) [{status}]"
 
 
 # --- 5. O OBJETO FINAL (O Plano) ---
@@ -70,5 +81,5 @@ class PatchTask:
     server: Server
     software: Software
     workers: List[Worker]    
-    start_time: int     # Hora absoluta na simulação (0 a 168)
+    start_time: int  # Agora pode ir de 0 até 8760 (1 ano em horas)
     end_time: int

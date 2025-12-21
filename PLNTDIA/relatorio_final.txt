@@ -1,0 +1,765 @@
+=== HISTÓRICO DE EXECUÇÃO ===
+-> A iniciar evolução genética (100 gerações)...
+   Geração 00: Melhor Fitness = 2995.75
+   Geração 01: Melhor Fitness = 3019.65
+   Geração 02: Melhor Fitness = 3019.65
+   Geração 03: Melhor Fitness = 3176.85
+   Geração 04: Melhor Fitness = 3176.85
+   Geração 05: Melhor Fitness = 3333.95
+   Geração 06: Melhor Fitness = 3480.85
+   Geração 07: Melhor Fitness = 3545.75
+   Geração 08: Melhor Fitness = 3668.65
+   Geração 09: Melhor Fitness = 3696.25
+   Geração 10: Melhor Fitness = 3851.15
+   Geração 11: Melhor Fitness = 3877.30
+   Geração 12: Melhor Fitness = 3983.20
+   Geração 13: Melhor Fitness = 4013.20
+   Geração 14: Melhor Fitness = 4177.35
+   Geração 15: Melhor Fitness = 4264.55
+   Geração 16: Melhor Fitness = 4270.65
+   Geração 17: Melhor Fitness = 4421.30
+   Geração 18: Melhor Fitness = 4421.30
+   Geração 19: Melhor Fitness = 4582.10
+   Geração 20: Melhor Fitness = 4583.25
+   Geração 21: Melhor Fitness = 4735.55
+   Geração 22: Melhor Fitness = 4737.70
+   Geração 23: Melhor Fitness = 4739.85
+   Geração 24: Melhor Fitness = 4896.55
+   Geração 25: Melhor Fitness = 4977.85
+   Geração 26: Melhor Fitness = 5039.85
+   Geração 27: Melhor Fitness = 5195.75
+   Geração 28: Melhor Fitness = 5195.75
+   Geração 29: Melhor Fitness = 5244.00
+   Geração 30: Melhor Fitness = 5377.40
+   Geração 31: Melhor Fitness = 5451.45
+   Geração 32: Melhor Fitness = 5458.10
+   Geração 33: Melhor Fitness = 5458.10
+   Geração 34: Melhor Fitness = 5565.05
+   Geração 35: Melhor Fitness = 5565.05
+   Geração 36: Melhor Fitness = 5696.85
+   Geração 37: Melhor Fitness = 5696.85
+   Geração 38: Melhor Fitness = 5822.15
+   Geração 39: Melhor Fitness = 5822.15
+   Geração 40: Melhor Fitness = 5882.10
+   Geração 41: Melhor Fitness = 5982.70
+   Geração 42: Melhor Fitness = 5982.70
+   Geração 43: Melhor Fitness = 5982.70
+   Geração 44: Melhor Fitness = 6006.75
+   Geração 45: Melhor Fitness = 6036.55
+   Geração 46: Melhor Fitness = 6036.55
+   Geração 47: Melhor Fitness = 6037.15
+   Geração 48: Melhor Fitness = 6125.85
+   Geração 49: Melhor Fitness = 6125.85
+   Geração 50: Melhor Fitness = 6130.25
+   Geração 51: Melhor Fitness = 6130.25
+   Geração 52: Melhor Fitness = 6163.00
+   Geração 53: Melhor Fitness = 6289.00
+   Geração 54: Melhor Fitness = 6289.00
+   Geração 55: Melhor Fitness = 6321.90
+   Geração 56: Melhor Fitness = 6321.90
+   Geração 57: Melhor Fitness = 6506.85
+   Geração 58: Melhor Fitness = 6506.85
+   Geração 59: Melhor Fitness = 6506.85
+   Geração 60: Melhor Fitness = 6509.40
+   Geração 61: Melhor Fitness = 6664.65
+   Geração 62: Melhor Fitness = 6664.65
+   Geração 63: Melhor Fitness = 6665.30
+   Geração 64: Melhor Fitness = 6675.80
+   Geração 65: Melhor Fitness = 6676.30
+   Geração 66: Melhor Fitness = 6676.30
+   Geração 67: Melhor Fitness = 6819.35
+   Geração 68: Melhor Fitness = 6831.35
+   Geração 69: Melhor Fitness = 6831.35
+   Geração 70: Melhor Fitness = 6831.35
+   Geração 71: Melhor Fitness = 6862.30
+   Geração 72: Melhor Fitness = 6868.50
+   Geração 73: Melhor Fitness = 6868.50
+   Geração 74: Melhor Fitness = 6882.00
+   Geração 75: Melhor Fitness = 6882.00
+   Geração 76: Melhor Fitness = 6882.00
+   Geração 77: Melhor Fitness = 6918.70
+   Geração 78: Melhor Fitness = 6918.70
+   Geração 79: Melhor Fitness = 6918.70
+   Geração 80: Melhor Fitness = 6918.90
+   Geração 81: Melhor Fitness = 7074.60
+   Geração 82: Melhor Fitness = 7074.60
+   Geração 83: Melhor Fitness = 7074.60
+   Geração 84: Melhor Fitness = 7075.00
+   Geração 85: Melhor Fitness = 7112.15
+   Geração 86: Melhor Fitness = 7112.15
+   Geração 87: Melhor Fitness = 7112.15
+   Geração 88: Melhor Fitness = 7112.15
+   Geração 89: Melhor Fitness = 7112.15
+   Geração 90: Melhor Fitness = 7116.45
+   Geração 91: Melhor Fitness = 7116.45
+   Geração 92: Melhor Fitness = 7268.05
+   Geração 93: Melhor Fitness = 7268.05
+   Geração 94: Melhor Fitness = 7268.05
+   Geração 95: Melhor Fitness = 7268.05
+   Geração 96: Melhor Fitness = 7274.95
+   Geração 97: Melhor Fitness = 7275.30
+   Geração 98: Melhor Fitness = 7275.30
+   Geração 99: Melhor Fitness = 7281.45
+
+========================================
+
+========================================
+       RELATÓRIO DE GESTÃO DE PATCHING
+========================================
+
+--- ESTATÍSTICAS GERAIS ---
+✅ Total de Patches Agendados: 147
+⚠️  Total de Patches Falhados:  36
+📊 Taxa de Sucesso Global:    80.3%
+
+--- MÉTRICAS DE PIPELINE (Cadeia de Valor) ---
+🚀 Pipelines Completos (DEV+UAT+PROD): 37
+🧪 Apenas Testes (DEV+UAT):           12
+🛠️  Retidos em Dev (Apenas DEV):      12
+📈 Eficiência de Entrega em PROD:     60.7%
+
+--- ANÁLISE DE CARGA (DIÁRIA E SEMANAL) ---
+👤 Ana Silva       (Mid)
+   Semanal: Sem 1: 16h | Sem 2: 16h | Sem 3: 16h | Sem 4: 16h
+   Diário:  Sáb(D5): 8h | Dom(D6): 8h | Sáb(D12): 8h | Dom(D13): 8h | Sáb(D19): 8h | Dom(D20): 8h | Sáb(D26): 8h | Dom(D27): 8h
+   Custo Total: 2,560.00€
+------------------------------
+👤 Carla Nunes     (Senior)
+   Semanal: Sem 1: 24h | Sem 2: 29h | Sem 3: 14h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 9h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sex(D18): 2h
+   Custo Total: 4,020.00€
+------------------------------
+👤 Inês Rodrigues  (Mid)
+   Semanal: Sem 1: 24h | Sem 2: 37h | Sem 3: 14h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 4h | Sex(D11): 4h | Sáb(D12): 12h | Dom(D13): 9h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sex(D18): 2h
+   Custo Total: 3,000.00€
+------------------------------
+👤 João Pereira    (Senior)
+   Semanal: Sem 1: 24h | Sem 2: 40h | Sem 3: 20h | Sem 4: 16h | Sem 5: 6h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 4h | Sex(D11): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sex(D18): 4h | Sáb(D19): 4h | Ter(D22): 4h | Qua(D23): 4h | Qui(D24): 4h | Sex(D25): 4h | Ter(D29): 4h | Qua(D30): 2h
+   Custo Total: 6,360.00€
+------------------------------
+👤 Maria Costa     (Junior)
+   Semanal: Sem 1: 16h | Sem 2: 8h
+   Diário:  Sáb(D5): 8h | Dom(D6): 8h | Sáb(D12): 8h
+   Custo Total: 600.00€
+------------------------------
+👤 Miguel Teixeira (Senior)
+   Semanal: Sem 1: 12h | Sem 2: 10h | Sem 3: 4h
+   Diário:  Sáb(D5): 6h | Dom(D6): 6h | Sáb(D12): 6h | Dom(D13): 4h | Sáb(D19): 4h
+   Custo Total: 1,560.00€
+------------------------------
+👤 Pedro Santos    (Junior)
+   Semanal: Sem 1: 24h | Sem 2: 24h | Sem 3: 20h | Sem 4: 16h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Sáb(D12): 12h | Dom(D13): 12h | Sáb(D19): 12h | Dom(D20): 8h | Sáb(D26): 8h | Dom(D27): 8h
+   Custo Total: 2,100.00€
+------------------------------
+👤 Ricardo Fernandes (Mid)
+   Semanal: Sem 1: 16h | Sem 2: 16h | Sem 3: 6h
+   Diário:  Sáb(D5): 8h | Dom(D6): 8h | Sáb(D12): 8h | Dom(D13): 8h | Sáb(D19): 6h
+   Custo Total: 1,520.00€
+------------------------------
+👤 Sofia Almeida   (Senior)
+   Semanal: Sem 1: 16h | Sem 2: 12h
+   Diário:  Sáb(D5): 8h | Dom(D6): 8h | Sáb(D12): 8h | Dom(D13): 4h
+   Custo Total: 1,680.00€
+------------------------------
+👤 Tiago Lopes     (Mid)
+   Semanal: Sem 1: 24h | Sem 2: 28h | Sem 3: 16h | Sem 4: 16h | Sem 5: 4h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sex(D18): 4h | Ter(D22): 4h | Qua(D23): 4h | Qui(D24): 4h | Sex(D25): 4h | Ter(D29): 4h
+   Custo Total: 3,520.00€
+------------------------------
+
+💰 CUSTO TOTAL ESTIMADO: 26,920.00€
+
+========================================
+   DETALHE CRONOLÓGICO E PRIORIDADES
+========================================
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-02h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-02h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-01h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 02h-04h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 02h-04h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 03h-04h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-06h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 06h-07h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 07h-08h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Ana Silva (Mid), João Pereira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Pedro Santos (Junior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 08h-12h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 08h-10h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 10h-14h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Maria Costa (Junior), Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 10h-11h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 11h-13h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 13h-15h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 13h-15h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ana Silva (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 13h-15h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 15h-19h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Maria Costa (Junior), Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 15h-17h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Ana Silva (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 15h-16h | CVE-2024-NGINX01
+    Prioridade: 4.90 | App: Nginx
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 16h-18h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 18h-19h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 19h-20h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     João Pereira (Senior), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 04h-08h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 08h-09h | CVE-2024-NGINX01
+    Prioridade: 4.90 | App: Nginx
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 08h-10h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 09h-11h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 10h-14h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Maria Costa (Junior), Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 10h-11h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 11h-13h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 11h-12h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Dom 13h-14h | CVE-2024-NGINX01
+    Prioridade: 4.90 | App: Nginx
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 13h-15h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 14h-16h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 15h-19h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Ricardo Fernandes (Mid), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 15h-19h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Maria Costa (Junior), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 16h-18h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 18h-20h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-02h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     João Pereira (Senior), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-03h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 02h-04h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 03h-04h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 04h-05h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 04h-05h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     João Pereira (Senior), Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Qua 03h-05h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Qui 01h-05h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     João Pereira (Senior), Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Sex 01h-05h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     João Pereira (Senior), Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-02h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-02h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-02h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 02h-06h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 02h-04h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-06h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     João Pereira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 04h-06h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 06h-10h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 06h-10h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-09h | CVE-2024-NGINX01
+    Prioridade: 4.90 | App: Nginx
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 09h-11h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 10h-14h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Maria Costa (Junior), Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 10h-11h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 10h-12h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     João Pereira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 10h-12h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 10h-12h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 11h-13h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 11h-12h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Sáb 13h-15h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 13h-15h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 15h-19h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Maria Costa (Junior), Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 15h-16h | CVE-2024-NGINX01
+    Prioridade: 4.90 | App: Nginx
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 16h-18h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 18h-20h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 00h-04h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Dom 00h-02h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 00h-02h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 02h-06h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 04h-08h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 06h-08h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 06h-07h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 07h-09h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 08h-10h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 08h-09h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 11h-13h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 12h-14h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [DEV] Dom 13h-15h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 13h-15h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Sofia Almeida (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 15h-19h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Ricardo Fernandes (Mid), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     João Pereira (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-03h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 03h-05h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     João Pereira (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 03h-05h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-03h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Qua 03h-05h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 03h-05h | CVE-2024-SHP01
+    Prioridade: 7.45 | App: SharePoint
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Qui 01h-03h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     João Pereira (Senior)
+----------------------------------------
+🗓️  [PROD] Qui 01h-03h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qui 01h-05h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid), Carla Nunes (Senior)
+----------------------------------------
+🗓️  [PROD] Qui 03h-04h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qui 03h-05h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     João Pereira (Senior)
+----------------------------------------
+🗓️  [PROD] Qui 04h-05h | CVE-2024-IIS01
+    Prioridade: 5.05 | App: IIS
+    Equipa:     Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Sex 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Sex 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Inês Rodrigues (Mid)
+----------------------------------------
+🗓️  [PROD] Sex 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Carla Nunes (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Sáb 08h-10h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 10h-12h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 12h-14h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Sáb 13h-15h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Teixeira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 15h-17h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ricardo Fernandes (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Dom 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qui 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Sex 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Sáb 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [UAT] Dom 13h-17h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Silva (Mid), Pedro Santos (Junior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     João Pereira (Senior), Tiago Lopes (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-03h | CVE-2024-AD02
+    Prioridade: 8.60 | App: Active Directory
+    Equipa:     João Pereira (Senior)
+----------------------------------------

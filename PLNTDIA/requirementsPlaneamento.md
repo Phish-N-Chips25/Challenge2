@@ -62,3 +62,11 @@ Critical,4h,"Requer backup, coordenação de equipa e testes extensos."
 High,2h,Requer validação e aplicação cuidadosa.
 Medium,1h,Patch padrão de rotina.
 Low,1h,Atualização simples de configuração ou biblioteca.
+
+
+
+Sinal no Relatório,O que significa,Como ajustar
+"Custo muito baixo, mas muitos falhados.","A penalização de custo está ""faminta"". O AG prefere não fazer o patch para não gastar dinheiro.",Diminui o divisor do custo (ex: de / 100 para / 500) ou aumenta o bónus de PROD.
+"Muitos sucessos, mas custo astronómico.","O AG está a usar Seniores para tudo porque não sente o ""peso"" do dinheiro.",Aumenta a penalização de custo (ex: de / 100 para / 50).
+"Muitos patches feitos, mas poucos pipelines completos.","O AG está a fazer ""caça aos pontos"" fáceis em DEV e a ignorar a sequência lógica.",Aumenta o bónus de Ciclo Completo (de 100 para 300).
+Muitos Juniores sozinhos (sem mentoria).,O bónus de mentoria é demasiado baixo para o esforço de coordenar dois técnicos.,Aumenta o bónus de Equipa Mista (de 30 para 100).
