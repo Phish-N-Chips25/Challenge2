@@ -18,12 +18,20 @@ def main():
         print("4 - Personalizado (digite o nº de semanas)")
         
         opcao = input("\nOpção: ")
-        
-        if opcao == "1": weeks = 1
-        elif opcao == "2": weeks = 4
-        elif opcao == "3": weeks = 12
-        else: weeks = int(opcao) if opcao.isdigit() else 1
-            
+
+        if opcao == "1":
+            weeks = 1
+        elif opcao == "2":
+            weeks = 4
+        elif opcao == "3":
+            weeks = 12
+        elif opcao == "4":
+            valor = input("Digite o número de semanas: ")
+            weeks = int(valor) if valor.isdigit() else 1
+        else:
+            print("Opção inválida. Usando 1 semana.")
+            weeks = 1
+
     except ValueError:
         weeks = 1
 
