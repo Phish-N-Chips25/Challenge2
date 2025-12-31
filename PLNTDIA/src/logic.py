@@ -75,7 +75,9 @@ def is_server_available(server: Server, absolute_start_h: int, duration: int) ->
 
 def prepare_patching_tasks(cves: List[CVE], servers: List[Server]) -> List[Tuple[CVE, Server, Software]]:
     """
-    Cruza CVEs com Servidores e filtra pelo RTO usando a duração dinâmica.
+    Cruza CVEs com Servidores.
+    [SOFT RTO] Agora não filtra tarefas que excedem o RTO aqui. 
+    Passa todas para o Planner, que decidirá se marca como 'Violação'.
     """
     tasks_to_plan = []
     
@@ -94,11 +96,13 @@ def prepare_patching_tasks(cves: List[CVE], servers: List[Server]) -> List[Tuple
             cve.final_priority_score = calculate_priority(cve, software)
             
             # 3. Validar RTO: A duração calculada é aceitável para este servidor?
-            if duration <= server.rto_hours:
-                tasks_to_plan.append((cve, server, software))
-            else:
-                # Opcional: print para debug se necessário
-                print(f"❌ DESCARTADO: {cve.id} ({duration}h) excede RTO do {server.id} ({server.rto_hours}h)")
+            # [ALTERAÇÃO] Removemos o 'else' que descartava. 
+            # Aceitamos a tarefa mesmo que duration > server.rto_hours.
+            tasks_to_plan.append((cve, server, software))
+            
+            # Opcional: print para debug se necessário (apenas informativo)
+            if duration > server.rto_hours:
+                # print(f"⚠️ INFO: {cve.id} ({duration}h) excede RTO do {server.id} ({server.rto_hours}h), mas segue para planeamento.")
                 pass
             
     return tasks_to_plan

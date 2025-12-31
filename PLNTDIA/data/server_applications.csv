@@ -20,102 +20,342 @@ Srv_PROD_006,SQL Server,2019,10.0
 Srv_DEV_007,SQL Server,2019,10.0
 Srv_UAT_007,SQL Server,2019,10.0
 Srv_PROD_007,SQL Server,2019,10.0
-Srv_DEV_008,Active Directory,2016+,10.0
-Srv_UAT_008,Active Directory,2016+,10.0
-Srv_PROD_008,Active Directory,2016+,10.0
-Srv_DEV_009,Active Directory,2016+,10.0
-Srv_UAT_009,Active Directory,2016+,10.0
-Srv_PROD_009,Active Directory,2016+,10.0
-Srv_DEV_010,Active Directory,2016+,10.0
-Srv_UAT_010,Active Directory,2016+,10.0
-Srv_PROD_010,Active Directory,2016+,10.0
-Srv_DEV_011,Active Directory,2016+,10.0
-Srv_UAT_011,Active Directory,2016+,10.0
-Srv_PROD_011,Active Directory,2016+,10.0
-Srv_DEV_012,Active Directory,2016+,10.0
-Srv_UAT_012,Active Directory,2016+,10.0
-Srv_PROD_012,Active Directory,2016+,10.0
-Srv_DEV_013,Active Directory,2016+,10.0
-Srv_UAT_013,Active Directory,2016+,10.0
-Srv_PROD_013,Active Directory,2016+,10.0
-Srv_DEV_014,Active Directory,2016+,10.0
-Srv_UAT_014,Active Directory,2016+,10.0
-Srv_PROD_014,Active Directory,2016+,10.0
-Srv_DEV_015,Exchange,2016,9.0
-Srv_UAT_015,Exchange,2016,9.0
-Srv_PROD_015,Exchange,2016,9.0
-Srv_DEV_016,Exchange,2016,9.0
-Srv_UAT_016,Exchange,2016,9.0
-Srv_PROD_016,Exchange,2016,9.0
-Srv_DEV_017,Exchange,2016,9.0
-Srv_UAT_017,Exchange,2016,9.0
-Srv_PROD_017,Exchange,2016,9.0
-Srv_DEV_018,Exchange,2016,9.0
-Srv_UAT_018,Exchange,2016,9.0
-Srv_PROD_018,Exchange,2016,9.0
-Srv_DEV_019,Exchange,2016,9.0
-Srv_UAT_019,Exchange,2016,9.0
-Srv_PROD_019,Exchange,2016,9.0
-Srv_DEV_020,Exchange,2016,9.0
-Srv_UAT_020,Exchange,2016,9.0
-Srv_PROD_020,Exchange,2016,9.0
-Srv_DEV_021,Exchange,2016,9.0
-Srv_UAT_021,Exchange,2016,9.0
-Srv_PROD_021,Exchange,2016,9.0
-Srv_DEV_022,IIS,10.0,6.0
-Srv_DEV_022,SharePoint,Subscription,7.0
-Srv_UAT_022,IIS,10.0,6.0
-Srv_UAT_022,SharePoint,Subscription,7.0
-Srv_PROD_022,IIS,10.0,6.0
-Srv_PROD_022,SharePoint,Subscription,7.0
-Srv_DEV_023,IIS,10.0,6.0
-Srv_DEV_023,SharePoint,Subscription,7.0
-Srv_UAT_023,IIS,10.0,6.0
-Srv_UAT_023,SharePoint,Subscription,7.0
-Srv_PROD_023,IIS,10.0,6.0
-Srv_PROD_023,SharePoint,Subscription,7.0
-Srv_DEV_024,IIS,10.0,6.0
-Srv_DEV_024,SharePoint,Subscription,7.0
-Srv_UAT_024,IIS,10.0,6.0
-Srv_UAT_024,SharePoint,Subscription,7.0
-Srv_PROD_024,IIS,10.0,6.0
-Srv_PROD_024,SharePoint,Subscription,7.0
-Srv_DEV_025,IIS,10.0,6.0
-Srv_DEV_025,SharePoint,Subscription,7.0
-Srv_UAT_025,IIS,10.0,6.0
-Srv_UAT_025,SharePoint,Subscription,7.0
-Srv_PROD_025,IIS,10.0,6.0
-Srv_PROD_025,SharePoint,Subscription,7.0
-Srv_DEV_026,IIS,10.0,6.0
-Srv_DEV_026,SharePoint,Subscription,7.0
-Srv_UAT_026,IIS,10.0,6.0
-Srv_UAT_026,SharePoint,Subscription,7.0
-Srv_PROD_026,IIS,10.0,6.0
-Srv_PROD_026,SharePoint,Subscription,7.0
-Srv_DEV_027,IIS,10.0,6.0
-Srv_DEV_027,SharePoint,Subscription,7.0
-Srv_UAT_027,IIS,10.0,6.0
-Srv_UAT_027,SharePoint,Subscription,7.0
-Srv_PROD_027,IIS,10.0,6.0
-Srv_PROD_027,SharePoint,Subscription,7.0
-Srv_DEV_028,IIS,10.0,6.0
-Srv_DEV_028,SharePoint,Subscription,7.0
-Srv_UAT_028,IIS,10.0,6.0
-Srv_UAT_028,SharePoint,Subscription,7.0
-Srv_PROD_028,IIS,10.0,6.0
-Srv_PROD_028,SharePoint,Subscription,7.0
-Srv_DEV_029,Nginx,1.18,8.0
-Srv_UAT_029,Nginx,1.18,8.0
-Srv_PROD_029,Nginx,1.18,8.0
-Srv_DEV_030,Nginx,1.18,8.0
-Srv_UAT_030,Nginx,1.18,8.0
-Srv_PROD_030,Nginx,1.18,8.0
-Srv_DEV_031,Nginx,1.18,8.0
-Srv_UAT_031,Nginx,1.18,8.0
-Srv_PROD_031,Nginx,1.18,8.0
-Srv_DEV_032,Nginx,1.18,8.0
-Srv_UAT_032,Nginx,1.18,8.0
-Srv_PROD_032,Nginx,1.18,8.0
-Srv_DEV_033,Nginx,1.18,8.0
-Srv_UAT_033,Nginx,1.18,8.0
-Srv_PROD_033,Nginx,1.18,8.0
+Srv_DEV_008,SQL Server,2019,10.0
+Srv_UAT_008,SQL Server,2019,10.0
+Srv_PROD_008,SQL Server,2019,10.0
+Srv_DEV_009,SQL Server,2019,10.0
+Srv_UAT_009,SQL Server,2019,10.0
+Srv_PROD_009,SQL Server,2019,10.0
+Srv_DEV_010,SQL Server,2019,10.0
+Srv_UAT_010,SQL Server,2019,10.0
+Srv_PROD_010,SQL Server,2019,10.0
+Srv_DEV_011,SQL Server,2019,10.0
+Srv_UAT_011,SQL Server,2019,10.0
+Srv_PROD_011,SQL Server,2019,10.0
+Srv_DEV_012,SQL Server,2019,10.0
+Srv_UAT_012,SQL Server,2019,10.0
+Srv_PROD_012,SQL Server,2019,10.0
+Srv_DEV_013,SQL Server,2019,10.0
+Srv_UAT_013,SQL Server,2019,10.0
+Srv_PROD_013,SQL Server,2019,10.0
+Srv_DEV_014,SQL Server,2019,10.0
+Srv_UAT_014,SQL Server,2019,10.0
+Srv_PROD_014,SQL Server,2019,10.0
+Srv_DEV_015,SQL Server,2019,10.0
+Srv_UAT_015,SQL Server,2019,10.0
+Srv_PROD_015,SQL Server,2019,10.0
+Srv_DEV_016,SQL Server,2019,10.0
+Srv_UAT_016,SQL Server,2019,10.0
+Srv_PROD_016,SQL Server,2019,10.0
+Srv_DEV_017,SQL Server,2019,10.0
+Srv_UAT_017,SQL Server,2019,10.0
+Srv_PROD_017,SQL Server,2019,10.0
+Srv_DEV_018,SQL Server,2019,10.0
+Srv_UAT_018,SQL Server,2019,10.0
+Srv_PROD_018,SQL Server,2019,10.0
+Srv_DEV_019,SQL Server,2019,10.0
+Srv_UAT_019,SQL Server,2019,10.0
+Srv_PROD_019,SQL Server,2019,10.0
+Srv_DEV_020,SQL Server,2019,10.0
+Srv_UAT_020,SQL Server,2019,10.0
+Srv_PROD_020,SQL Server,2019,10.0
+Srv_DEV_021,Active Directory,2016+,10.0
+Srv_UAT_021,Active Directory,2016+,10.0
+Srv_PROD_021,Active Directory,2016+,10.0
+Srv_DEV_022,Active Directory,2016+,10.0
+Srv_UAT_022,Active Directory,2016+,10.0
+Srv_PROD_022,Active Directory,2016+,10.0
+Srv_DEV_023,Active Directory,2016+,10.0
+Srv_UAT_023,Active Directory,2016+,10.0
+Srv_PROD_023,Active Directory,2016+,10.0
+Srv_DEV_024,Active Directory,2016+,10.0
+Srv_UAT_024,Active Directory,2016+,10.0
+Srv_PROD_024,Active Directory,2016+,10.0
+Srv_DEV_025,Active Directory,2016+,10.0
+Srv_UAT_025,Active Directory,2016+,10.0
+Srv_PROD_025,Active Directory,2016+,10.0
+Srv_DEV_026,Active Directory,2016+,10.0
+Srv_UAT_026,Active Directory,2016+,10.0
+Srv_PROD_026,Active Directory,2016+,10.0
+Srv_DEV_027,Active Directory,2016+,10.0
+Srv_UAT_027,Active Directory,2016+,10.0
+Srv_PROD_027,Active Directory,2016+,10.0
+Srv_DEV_028,Active Directory,2016+,10.0
+Srv_UAT_028,Active Directory,2016+,10.0
+Srv_PROD_028,Active Directory,2016+,10.0
+Srv_DEV_029,Active Directory,2016+,10.0
+Srv_UAT_029,Active Directory,2016+,10.0
+Srv_PROD_029,Active Directory,2016+,10.0
+Srv_DEV_030,Active Directory,2016+,10.0
+Srv_UAT_030,Active Directory,2016+,10.0
+Srv_PROD_030,Active Directory,2016+,10.0
+Srv_DEV_031,Active Directory,2016+,10.0
+Srv_UAT_031,Active Directory,2016+,10.0
+Srv_PROD_031,Active Directory,2016+,10.0
+Srv_DEV_032,Active Directory,2016+,10.0
+Srv_UAT_032,Active Directory,2016+,10.0
+Srv_PROD_032,Active Directory,2016+,10.0
+Srv_DEV_033,Active Directory,2016+,10.0
+Srv_UAT_033,Active Directory,2016+,10.0
+Srv_PROD_033,Active Directory,2016+,10.0
+Srv_DEV_034,Active Directory,2016+,10.0
+Srv_UAT_034,Active Directory,2016+,10.0
+Srv_PROD_034,Active Directory,2016+,10.0
+Srv_DEV_035,Active Directory,2016+,10.0
+Srv_UAT_035,Active Directory,2016+,10.0
+Srv_PROD_035,Active Directory,2016+,10.0
+Srv_DEV_036,Active Directory,2016+,10.0
+Srv_UAT_036,Active Directory,2016+,10.0
+Srv_PROD_036,Active Directory,2016+,10.0
+Srv_DEV_037,Active Directory,2016+,10.0
+Srv_UAT_037,Active Directory,2016+,10.0
+Srv_PROD_037,Active Directory,2016+,10.0
+Srv_DEV_038,Active Directory,2016+,10.0
+Srv_UAT_038,Active Directory,2016+,10.0
+Srv_PROD_038,Active Directory,2016+,10.0
+Srv_DEV_039,Active Directory,2016+,10.0
+Srv_UAT_039,Active Directory,2016+,10.0
+Srv_PROD_039,Active Directory,2016+,10.0
+Srv_DEV_040,Active Directory,2016+,10.0
+Srv_UAT_040,Active Directory,2016+,10.0
+Srv_PROD_040,Active Directory,2016+,10.0
+Srv_DEV_041,Exchange,2016,9.0
+Srv_UAT_041,Exchange,2016,9.0
+Srv_PROD_041,Exchange,2016,9.0
+Srv_DEV_042,Exchange,2016,9.0
+Srv_UAT_042,Exchange,2016,9.0
+Srv_PROD_042,Exchange,2016,9.0
+Srv_DEV_043,Exchange,2016,9.0
+Srv_UAT_043,Exchange,2016,9.0
+Srv_PROD_043,Exchange,2016,9.0
+Srv_DEV_044,Exchange,2016,9.0
+Srv_UAT_044,Exchange,2016,9.0
+Srv_PROD_044,Exchange,2016,9.0
+Srv_DEV_045,Exchange,2016,9.0
+Srv_UAT_045,Exchange,2016,9.0
+Srv_PROD_045,Exchange,2016,9.0
+Srv_DEV_046,Exchange,2016,9.0
+Srv_UAT_046,Exchange,2016,9.0
+Srv_PROD_046,Exchange,2016,9.0
+Srv_DEV_047,Exchange,2016,9.0
+Srv_UAT_047,Exchange,2016,9.0
+Srv_PROD_047,Exchange,2016,9.0
+Srv_DEV_048,Exchange,2016,9.0
+Srv_UAT_048,Exchange,2016,9.0
+Srv_PROD_048,Exchange,2016,9.0
+Srv_DEV_049,Exchange,2016,9.0
+Srv_UAT_049,Exchange,2016,9.0
+Srv_PROD_049,Exchange,2016,9.0
+Srv_DEV_050,Exchange,2016,9.0
+Srv_UAT_050,Exchange,2016,9.0
+Srv_PROD_050,Exchange,2016,9.0
+Srv_DEV_051,Exchange,2016,9.0
+Srv_UAT_051,Exchange,2016,9.0
+Srv_PROD_051,Exchange,2016,9.0
+Srv_DEV_052,Exchange,2016,9.0
+Srv_UAT_052,Exchange,2016,9.0
+Srv_PROD_052,Exchange,2016,9.0
+Srv_DEV_053,Exchange,2016,9.0
+Srv_UAT_053,Exchange,2016,9.0
+Srv_PROD_053,Exchange,2016,9.0
+Srv_DEV_054,Exchange,2016,9.0
+Srv_UAT_054,Exchange,2016,9.0
+Srv_PROD_054,Exchange,2016,9.0
+Srv_DEV_055,Exchange,2016,9.0
+Srv_UAT_055,Exchange,2016,9.0
+Srv_PROD_055,Exchange,2016,9.0
+Srv_DEV_056,Exchange,2016,9.0
+Srv_UAT_056,Exchange,2016,9.0
+Srv_PROD_056,Exchange,2016,9.0
+Srv_DEV_057,Exchange,2016,9.0
+Srv_UAT_057,Exchange,2016,9.0
+Srv_PROD_057,Exchange,2016,9.0
+Srv_DEV_058,Exchange,2016,9.0
+Srv_UAT_058,Exchange,2016,9.0
+Srv_PROD_058,Exchange,2016,9.0
+Srv_DEV_059,Exchange,2016,9.0
+Srv_UAT_059,Exchange,2016,9.0
+Srv_PROD_059,Exchange,2016,9.0
+Srv_DEV_060,Exchange,2016,9.0
+Srv_UAT_060,Exchange,2016,9.0
+Srv_PROD_060,Exchange,2016,9.0
+Srv_DEV_061,IIS,10.0,6.0
+Srv_DEV_061,SharePoint,Subscription,7.0
+Srv_UAT_061,IIS,10.0,6.0
+Srv_UAT_061,SharePoint,Subscription,7.0
+Srv_PROD_061,IIS,10.0,6.0
+Srv_PROD_061,SharePoint,Subscription,7.0
+Srv_DEV_062,IIS,10.0,6.0
+Srv_DEV_062,SharePoint,Subscription,7.0
+Srv_UAT_062,IIS,10.0,6.0
+Srv_UAT_062,SharePoint,Subscription,7.0
+Srv_PROD_062,IIS,10.0,6.0
+Srv_PROD_062,SharePoint,Subscription,7.0
+Srv_DEV_063,IIS,10.0,6.0
+Srv_DEV_063,SharePoint,Subscription,7.0
+Srv_UAT_063,IIS,10.0,6.0
+Srv_UAT_063,SharePoint,Subscription,7.0
+Srv_PROD_063,IIS,10.0,6.0
+Srv_PROD_063,SharePoint,Subscription,7.0
+Srv_DEV_064,IIS,10.0,6.0
+Srv_DEV_064,SharePoint,Subscription,7.0
+Srv_UAT_064,IIS,10.0,6.0
+Srv_UAT_064,SharePoint,Subscription,7.0
+Srv_PROD_064,IIS,10.0,6.0
+Srv_PROD_064,SharePoint,Subscription,7.0
+Srv_DEV_065,IIS,10.0,6.0
+Srv_DEV_065,SharePoint,Subscription,7.0
+Srv_UAT_065,IIS,10.0,6.0
+Srv_UAT_065,SharePoint,Subscription,7.0
+Srv_PROD_065,IIS,10.0,6.0
+Srv_PROD_065,SharePoint,Subscription,7.0
+Srv_DEV_066,IIS,10.0,6.0
+Srv_DEV_066,SharePoint,Subscription,7.0
+Srv_UAT_066,IIS,10.0,6.0
+Srv_UAT_066,SharePoint,Subscription,7.0
+Srv_PROD_066,IIS,10.0,6.0
+Srv_PROD_066,SharePoint,Subscription,7.0
+Srv_DEV_067,IIS,10.0,6.0
+Srv_DEV_067,SharePoint,Subscription,7.0
+Srv_UAT_067,IIS,10.0,6.0
+Srv_UAT_067,SharePoint,Subscription,7.0
+Srv_PROD_067,IIS,10.0,6.0
+Srv_PROD_067,SharePoint,Subscription,7.0
+Srv_DEV_068,IIS,10.0,6.0
+Srv_DEV_068,SharePoint,Subscription,7.0
+Srv_UAT_068,IIS,10.0,6.0
+Srv_UAT_068,SharePoint,Subscription,7.0
+Srv_PROD_068,IIS,10.0,6.0
+Srv_PROD_068,SharePoint,Subscription,7.0
+Srv_DEV_069,IIS,10.0,6.0
+Srv_DEV_069,SharePoint,Subscription,7.0
+Srv_UAT_069,IIS,10.0,6.0
+Srv_UAT_069,SharePoint,Subscription,7.0
+Srv_PROD_069,IIS,10.0,6.0
+Srv_PROD_069,SharePoint,Subscription,7.0
+Srv_DEV_070,IIS,10.0,6.0
+Srv_DEV_070,SharePoint,Subscription,7.0
+Srv_UAT_070,IIS,10.0,6.0
+Srv_UAT_070,SharePoint,Subscription,7.0
+Srv_PROD_070,IIS,10.0,6.0
+Srv_PROD_070,SharePoint,Subscription,7.0
+Srv_DEV_071,IIS,10.0,6.0
+Srv_DEV_071,SharePoint,Subscription,7.0
+Srv_UAT_071,IIS,10.0,6.0
+Srv_UAT_071,SharePoint,Subscription,7.0
+Srv_PROD_071,IIS,10.0,6.0
+Srv_PROD_071,SharePoint,Subscription,7.0
+Srv_DEV_072,IIS,10.0,6.0
+Srv_DEV_072,SharePoint,Subscription,7.0
+Srv_UAT_072,IIS,10.0,6.0
+Srv_UAT_072,SharePoint,Subscription,7.0
+Srv_PROD_072,IIS,10.0,6.0
+Srv_PROD_072,SharePoint,Subscription,7.0
+Srv_DEV_073,IIS,10.0,6.0
+Srv_DEV_073,SharePoint,Subscription,7.0
+Srv_UAT_073,IIS,10.0,6.0
+Srv_UAT_073,SharePoint,Subscription,7.0
+Srv_PROD_073,IIS,10.0,6.0
+Srv_PROD_073,SharePoint,Subscription,7.0
+Srv_DEV_074,IIS,10.0,6.0
+Srv_DEV_074,SharePoint,Subscription,7.0
+Srv_UAT_074,IIS,10.0,6.0
+Srv_UAT_074,SharePoint,Subscription,7.0
+Srv_PROD_074,IIS,10.0,6.0
+Srv_PROD_074,SharePoint,Subscription,7.0
+Srv_DEV_075,IIS,10.0,6.0
+Srv_DEV_075,SharePoint,Subscription,7.0
+Srv_UAT_075,IIS,10.0,6.0
+Srv_UAT_075,SharePoint,Subscription,7.0
+Srv_PROD_075,IIS,10.0,6.0
+Srv_PROD_075,SharePoint,Subscription,7.0
+Srv_DEV_076,IIS,10.0,6.0
+Srv_DEV_076,SharePoint,Subscription,7.0
+Srv_UAT_076,IIS,10.0,6.0
+Srv_UAT_076,SharePoint,Subscription,7.0
+Srv_PROD_076,IIS,10.0,6.0
+Srv_PROD_076,SharePoint,Subscription,7.0
+Srv_DEV_077,IIS,10.0,6.0
+Srv_DEV_077,SharePoint,Subscription,7.0
+Srv_UAT_077,IIS,10.0,6.0
+Srv_UAT_077,SharePoint,Subscription,7.0
+Srv_PROD_077,IIS,10.0,6.0
+Srv_PROD_077,SharePoint,Subscription,7.0
+Srv_DEV_078,IIS,10.0,6.0
+Srv_DEV_078,SharePoint,Subscription,7.0
+Srv_UAT_078,IIS,10.0,6.0
+Srv_UAT_078,SharePoint,Subscription,7.0
+Srv_PROD_078,IIS,10.0,6.0
+Srv_PROD_078,SharePoint,Subscription,7.0
+Srv_DEV_079,IIS,10.0,6.0
+Srv_DEV_079,SharePoint,Subscription,7.0
+Srv_UAT_079,IIS,10.0,6.0
+Srv_UAT_079,SharePoint,Subscription,7.0
+Srv_PROD_079,IIS,10.0,6.0
+Srv_PROD_079,SharePoint,Subscription,7.0
+Srv_DEV_080,IIS,10.0,6.0
+Srv_DEV_080,SharePoint,Subscription,7.0
+Srv_UAT_080,IIS,10.0,6.0
+Srv_UAT_080,SharePoint,Subscription,7.0
+Srv_PROD_080,IIS,10.0,6.0
+Srv_PROD_080,SharePoint,Subscription,7.0
+Srv_DEV_081,Nginx,1.18,8.0
+Srv_UAT_081,Nginx,1.18,8.0
+Srv_PROD_081,Nginx,1.18,8.0
+Srv_DEV_082,Nginx,1.18,8.0
+Srv_UAT_082,Nginx,1.18,8.0
+Srv_PROD_082,Nginx,1.18,8.0
+Srv_DEV_083,Nginx,1.18,8.0
+Srv_UAT_083,Nginx,1.18,8.0
+Srv_PROD_083,Nginx,1.18,8.0
+Srv_DEV_084,Nginx,1.18,8.0
+Srv_UAT_084,Nginx,1.18,8.0
+Srv_PROD_084,Nginx,1.18,8.0
+Srv_DEV_085,Nginx,1.18,8.0
+Srv_UAT_085,Nginx,1.18,8.0
+Srv_PROD_085,Nginx,1.18,8.0
+Srv_DEV_086,Nginx,1.18,8.0
+Srv_UAT_086,Nginx,1.18,8.0
+Srv_PROD_086,Nginx,1.18,8.0
+Srv_DEV_087,Nginx,1.18,8.0
+Srv_UAT_087,Nginx,1.18,8.0
+Srv_PROD_087,Nginx,1.18,8.0
+Srv_DEV_088,Nginx,1.18,8.0
+Srv_UAT_088,Nginx,1.18,8.0
+Srv_PROD_088,Nginx,1.18,8.0
+Srv_DEV_089,Nginx,1.18,8.0
+Srv_UAT_089,Nginx,1.18,8.0
+Srv_PROD_089,Nginx,1.18,8.0
+Srv_DEV_090,Nginx,1.18,8.0
+Srv_UAT_090,Nginx,1.18,8.0
+Srv_PROD_090,Nginx,1.18,8.0
+Srv_DEV_091,Nginx,1.18,8.0
+Srv_UAT_091,Nginx,1.18,8.0
+Srv_PROD_091,Nginx,1.18,8.0
+Srv_DEV_092,Nginx,1.18,8.0
+Srv_UAT_092,Nginx,1.18,8.0
+Srv_PROD_092,Nginx,1.18,8.0
+Srv_DEV_093,Nginx,1.18,8.0
+Srv_UAT_093,Nginx,1.18,8.0
+Srv_PROD_093,Nginx,1.18,8.0
+Srv_DEV_094,Nginx,1.18,8.0
+Srv_UAT_094,Nginx,1.18,8.0
+Srv_PROD_094,Nginx,1.18,8.0
+Srv_DEV_095,Nginx,1.18,8.0
+Srv_UAT_095,Nginx,1.18,8.0
+Srv_PROD_095,Nginx,1.18,8.0
+Srv_DEV_096,Nginx,1.18,8.0
+Srv_UAT_096,Nginx,1.18,8.0
+Srv_PROD_096,Nginx,1.18,8.0
+Srv_DEV_097,Nginx,1.18,8.0
+Srv_UAT_097,Nginx,1.18,8.0
+Srv_PROD_097,Nginx,1.18,8.0
+Srv_DEV_098,Nginx,1.18,8.0
+Srv_UAT_098,Nginx,1.18,8.0
+Srv_PROD_098,Nginx,1.18,8.0
+Srv_DEV_099,Nginx,1.18,8.0
+Srv_UAT_099,Nginx,1.18,8.0
+Srv_PROD_099,Nginx,1.18,8.0
+Srv_DEV_100,Nginx,1.18,8.0
+Srv_UAT_100,Nginx,1.18,8.0
+Srv_PROD_100,Nginx,1.18,8.0

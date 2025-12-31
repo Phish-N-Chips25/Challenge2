@@ -2,7 +2,8 @@
 from src.repository import initialize_infrastructure_from_csv, load_cves
 from src.logic import prepare_patching_tasks
 from src.planner import create_genetic_schedule 
-from src.reporting import export_schedule_report
+# [ATUALIZADO] Adicionei a importação do export_schedule_json
+from src.reporting import export_schedule_report, export_schedule_json
 
 def main():
     #print("========================================")
@@ -55,17 +56,23 @@ def main():
     print(f"-> Tarefas validadas para processamento: {len(tasks_to_plan)}")
 
     # 4. EXECUTAR O ALGORITMO GENÉTICO
-    # MUDANÇA AQUI: Chamar create_genetic_schedule e passar TOTAL_HOURS
-    final_schedule, logs_ag = create_genetic_schedule(
+    # Agora recebemos 3 valores: Schedule, Failures e Logs
+    # [AJUSTE] Valores otimizados para o cenário de 300 servidores (Equilíbrio Rapidez/Qualidade)
+    final_schedule, failures, logs_ag = create_genetic_schedule(
         tasks_to_plan, 
         workers, 
         max_hours=TOTAL_HOURS,
-        pop_size=60,     # Quantidade de planos diferentes a testar em simultâneo
-        generations=100   # Quantas vezes o algoritmo vai tentar melhorar os planos
+        pop_size=50,     # Ajustado para 50 (Suficiente para variar as ordens)
+        generations=30   # Ajustado para 30 (Convergência rápida com planner inteligente)
     )
     
-    # 5. Exportar Resultados
-    export_schedule_report(final_schedule, len(tasks_to_plan), logs_ag)
+    # 5. Exportar Resultados (TXT)
+    # Passamos a lista de 'failures' para o relatório detalhado
+    export_schedule_report(final_schedule, failures, len(tasks_to_plan), logs_ag)
+    
+    # 6. Exportar Resultados (JSON para Frontend)
+    # [NOVO] Gera o ficheiro para o calendário web
+    export_schedule_json(final_schedule)
 
 if __name__ == "__main__":
     main()

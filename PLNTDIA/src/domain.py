@@ -83,3 +83,15 @@ class PatchTask:
     workers: List[Worker]    
     start_time: int  # Agora pode ir de 0 até 8760 (1 ano em horas)
     end_time: int
+    # [NOVO] Flag para identificar se esta tarefa violou a janela de manutenção (Soft RTO)
+    # Se True, significa que o patch demora mais tempo do que a janela permite,
+    # mas foi agendado na mesma (requer aprovação humana).
+    rto_violation: bool = False
+
+
+@dataclass
+class FailedTask:
+    """Representa uma tarefa que NÃO foi possível agendar"""
+    cve: CVE
+    server: Server
+    reason: str # Ex: "Dependência de DEV não satisfeita" ou "Sem vaga na agenda"

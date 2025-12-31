@@ -1,11 +1,51 @@
 tech_id,tech_name,level,skills,work_start_h,lunch_start_h,lunch_end_h,work_end_h,on_call,work_days
-Tech_01,Ana Silva,Mid,Patch Management;Security Hardening;Active Directory;Exchange;SQL Server,8.0,12.0,13.0,17.0,0,3;4;5;6
-Tech_02,João Pereira,Senior,Active Directory;Patch Management;Exchange,10.0,14.0,15.0,19.0,1,0;1;2;3;4
-Tech_03,Maria Costa,Junior,Exchange;SharePoint;IIS;Patch Management,10.0,14.0,15.0,19.0,0,5;6
-Tech_04,Pedro Santos,Junior,Active Directory;Security Hardening;SQL Server;IIS;Windows Server,8.0,12.0,13.0,17.0,1,0;1;2;3;4
-Tech_05,Inês Rodrigues,Mid,Backup & Recovery;IIS;Exchange;SharePoint,11.0,15.0,16.0,20.0,1,0;1;2;3;4
-Tech_06,Ricardo Fernandes,Mid,SharePoint;Windows Server;Patch Management;Security Hardening,10.0,14.0,15.0,19.0,0,5;6
-Tech_07,Sofia Almeida,Senior,IIS;Security Hardening;Active Directory,11.0,15.0,16.0,20.0,0,5;6
-Tech_08,Miguel Teixeira,Senior,Exchange;Windows Server;Backup & Recovery;Security Hardening,7.5,11.5,12.5,16.5,0,4;5;6
-Tech_09,Carla Nunes,Senior,Exchange;Patch Management;SharePoint;Backup & Recovery;IIS,7.5,11.5,12.5,16.5,1,0;1;2;3;4
-Tech_10,Tiago Lopes,Mid,Security Hardening;SharePoint;Backup & Recovery;Active Directory,8.0,12.0,13.0,17.0,1,0;1;2;3;4
+Tech_01,Miguel Lopes,Mid,Security Hardening;Active Directory;Windows Server;IIS,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_02,Sofia Dias,Senior,Nginx;Firewall Mgmt;Linux Administration;Exchange;Patch Management,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_03,Tiago Martins,Mid,Patch Management;SharePoint;Nginx;Linux Administration,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_04,Rui Martins,Mid,Windows Server;Patch Management;Exchange;SQL Server,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_05,Hugo Moreira,Mid,IIS;Windows Server;Patch Management;Firewall Mgmt,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_06,Bruno Ferreira,Mid,Patch Management;Nginx;Security Hardening;Backup & Recovery,14.0,18.0,19.0,23.0,1,0;1;2;3;4
+Tech_07,André Rodrigues,Mid,Windows Server;Active Directory;Exchange;Firewall Mgmt,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_08,Diogo Rodrigues,Junior,Patch Management;Backup & Recovery;Firewall Mgmt,14.0,18.0,19.0,23.0,0,0;1;2;3;4
+Tech_09,Carla Oliveira,Senior,SharePoint;Security Hardening;Linux Administration;IIS;Windows Server,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_10,Diana Pereira,Senior,Security Hardening;Nginx;SharePoint;IIS;Firewall Mgmt,14.0,18.0,19.0,23.0,1,0;1;2;3;4
+Tech_11,João Fernandes,Senior,SQL Server;Security Hardening;Firewall Mgmt;Patch Management;Nginx,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_12,André Sousa,Senior,Patch Management;Nginx;Linux Administration;SharePoint;IIS,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_13,Ana Martins,Senior,Backup & Recovery;SQL Server;Linux Administration;SharePoint;Patch Management,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_14,Sofia Costa,Senior,Windows Server;Security Hardening;Active Directory;Exchange;Linux Administration,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_15,Pedro Fernandes,Mid,Firewall Mgmt;Active Directory;IIS;Patch Management,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_16,Joana Fernandes,Senior,Active Directory;Backup & Recovery;Nginx;SharePoint;IIS,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_17,Carla Carvalho,Senior,Active Directory;SQL Server;Exchange;Patch Management;IIS,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_18,Rui Fernandes,Junior,Nginx;SharePoint;IIS,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_19,Hugo Rodrigues,Senior,Exchange;Backup & Recovery;Active Directory;Linux Administration;IIS,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_20,João Martins,Senior,Patch Management;IIS;Exchange;SharePoint;Nginx,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_21,Tiago Almeida,Junior,Firewall Mgmt;SharePoint;Linux Administration,14.0,18.0,19.0,23.0,0,0;1;2;3;4
+Tech_22,Pedro Pinto,Senior,Firewall Mgmt;Windows Server;Patch Management;SQL Server;Exchange,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_23,Cátia Martins,Mid,SQL Server;Firewall Mgmt;IIS;Linux Administration,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_24,Elsa Almeida,Mid,IIS;Patch Management;Security Hardening;SQL Server,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_25,Tiago Pinto,Junior,Linux Administration;Nginx;Backup & Recovery,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_26,Inês Gomes,Mid,Nginx;SharePoint;IIS;Linux Administration,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_27,Miguel Pereira,Mid,Linux Administration;Exchange;Backup & Recovery;Nginx,10.0,14.0,15.0,19.0,1,4;5;6;0;1
+Tech_28,Joana Carvalho,Junior,Security Hardening;Windows Server;Nginx,14.0,18.0,19.0,23.0,0,0;1;2;3;4
+Tech_29,Carla Almeida,Mid,Firewall Mgmt;Backup & Recovery;Active Directory;SharePoint,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_30,Rui Costa,Mid,Patch Management;Firewall Mgmt;SharePoint;Nginx,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_31,Bruno Moreira,Mid,Exchange;Backup & Recovery;SQL Server;Windows Server,14.0,18.0,19.0,23.0,0,0;1;2;3;4
+Tech_32,Joana Rodrigues,Junior,IIS;Linux Administration;SQL Server,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_33,Rui Costa,Senior,Exchange;Nginx;Backup & Recovery;Security Hardening;Patch Management,10.0,14.0,15.0,19.0,1,4;5;6;0;1
+Tech_34,Rui Ferreira,Senior,SharePoint;Linux Administration;Backup & Recovery;SQL Server;Firewall Mgmt,14.0,18.0,19.0,23.0,0,0;1;2;3;4
+Tech_35,Beatriz Pereira,Senior,Backup & Recovery;Firewall Mgmt;SharePoint;Security Hardening;Active Directory,14.0,18.0,19.0,23.0,1,0;1;2;3;4
+Tech_36,Maria Santos,Junior,Active Directory;Firewall Mgmt;Backup & Recovery,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_37,João Pinto,Senior,Exchange;Active Directory;Backup & Recovery;SQL Server;Nginx,7.0,11.0,12.0,16.0,1,0;1;2;3;4
+Tech_38,Ricardo Martins,Junior,SharePoint;Patch Management;Backup & Recovery,10.0,14.0,15.0,19.0,0,4;5;6;0;1
+Tech_39,Sofia Silva,Mid,Active Directory;Linux Administration;SharePoint;Backup & Recovery,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_40,João Dias,Junior,Nginx;Patch Management;Security Hardening,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_41,Carla Ferreira,Mid,Security Hardening;SharePoint;Nginx;Firewall Mgmt,7.0,11.0,12.0,16.0,0,0;1;2;3;4
+Tech_42,Miguel Carvalho,Mid,Exchange;Firewall Mgmt;SQL Server;Windows Server,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_43,Joana Carvalho,Senior,Patch Management;Linux Administration;Backup & Recovery;IIS;SharePoint,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_44,João Carvalho,Mid,IIS;Patch Management;Exchange;SQL Server,7.0,11.0,12.0,16.0,0,0;1;2;3;4
+Tech_45,Diogo Santos,Senior,Patch Management;Windows Server;Exchange;SQL Server;Active Directory,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_46,Diana Ferreira,Senior,IIS;SharePoint;Windows Server;SQL Server;Security Hardening,10.0,14.0,15.0,19.0,1,4;5;6;0;1
+Tech_47,Hugo Carvalho,Junior,Firewall Mgmt;Linux Administration;Backup & Recovery,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_48,Diogo Gomes,Mid,SharePoint;Patch Management;SQL Server;Firewall Mgmt,9.0,13.0,14.0,18.0,0,0;1;2;3;4
+Tech_49,Cátia Rodrigues,Senior,SQL Server;Exchange;IIS;Windows Server;Patch Management,9.0,13.0,14.0,18.0,1,0;1;2;3;4
+Tech_50,Hugo Pinto,Junior,Patch Management;IIS;Firewall Mgmt,10.0,14.0,15.0,19.0,0,4;5;6;0;1
