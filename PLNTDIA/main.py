@@ -63,7 +63,7 @@ def main():
         workers, 
         max_hours=TOTAL_HOURS,
         pop_size=50,     # Ajustado para 50 (Suficiente para variar as ordens)
-        generations=30   # Ajustado para 30 (Convergência rápida com planner inteligente)
+        generations=5   # Ajustado para 30 (Convergência rápida com planner inteligente)
     )
     
     # 5. Exportar Resultados (TXT)
