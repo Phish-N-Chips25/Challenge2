@@ -29,8 +29,8 @@ class EPSSPredictorPipeline:
             self.feature_mapping = json.load(f)
         
         self.feature_columns = self.feature_mapping['all_features']
-        print(f"✓ Loaded model from {model_path}")
-        print(f"✓ Expected features: {len(self.feature_columns)}")
+        print(f" Loaded model from {model_path}")
+        print(f" Expected features: {len(self.feature_columns)}")
     
     def encode_new_cve_data(self, cve_data):
         """
@@ -73,6 +73,9 @@ class EPSSPredictorPipeline:
         # 2. Encode temporal features
         if 'published_date' in cve_data:
             pub_date = pd.to_datetime(cve_data['published_date'])
+            # Remove timezone info to avoid tz-naive vs tz-aware errors
+            if pub_date.tzinfo is not None:
+                pub_date = pub_date.tz_localize(None)
             now = pd.Timestamp.now()
             features['days_since_publication'] = (now - pub_date).days
             features['year_published'] = pub_date.year
@@ -219,7 +222,7 @@ if __name__ == "__main__":
         print(f"  {key:30s}: {value}")
     
     epss_pred = predictor.predict(cve_example)
-    print(f"\n✓ Predicted EPSS Score: {epss_pred:.6f}")
+    print(f"\n Predicted EPSS Score: {epss_pred:.6f}")
     print(f"  Risk Level: {'CRITICAL' if epss_pred > 0.8 else 'HIGH' if epss_pred > 0.5 else 'MEDIUM'}")
     
     # ========================================================================
@@ -323,7 +326,7 @@ if __name__ == "__main__":
     cves_df.to_csv('cves_with_predictions.csv', index=False)
     """)
     
-    print("\n✓ PREDICTION PIPELINE READY!")
+    print("\n PREDICTION PIPELINE READY!")
     print("\nUse EPSSPredictorPipeline class for custom predictions:")
     print("  - predictor.predict(cve_dict) for single CVE")
     print("  - predictor.predict_batch(cve_list) for multiple CVEs")
