@@ -1,0 +1,235 @@
+"""
+Test Trained Models on Current Dataset
+Evaluate model performance by comparing predictions against actual EPSS scores
+"""
+
+import pandas as pd
+import numpy as np
+import joblib
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+def evaluate_model(model_path, X_test, actual_scores, model_name, use_scaled=False):
+    """
+    Evaluate a single model on test data.
+    
+    Args:
+        model_path: Path to the saved model
+        X_test: DataFrame with preprocessed features
+        actual_scores: Array of actual EPSS scores
+        model_name: Name of the model for display
+        use_scaled: Whether this model uses scaled features
+    
+    Returns:
+        dict: Evaluation metrics
+    """
+    print(f"\n{'='*80}")
+    print(f"Testing: {model_name}")
+    print(f"{'='*80}")
+    
+    # Load model directly and make predictions
+    model = joblib.load(model_path)
+    predictions = model.predict(X_test)
+    
+    # Calculate metrics
+    mae = mean_absolute_error(actual_scores, predictions)
+    rmse = np.sqrt(mean_squared_error(actual_scores, predictions))
+    r2 = r2_score(actual_scores, predictions)
+    
+    # Calculate percentage within tolerance
+    tolerance = 0.1  # 10% tolerance
+    within_tolerance = np.mean(np.abs(actual_scores - predictions) <= tolerance)
+    
+    metrics = {
+        'model': model_name,
+        'mae': mae,
+        'rmse': rmse,
+        'r2': r2,
+        'within_10%': within_tolerance * 100,
+        'predictions': predictions
+    }
+    
+    print(f"\n Performance Metrics:")
+    print(f"  Mean Absolute Error (MAE):  {mae:.6f}")
+    print(f"  Root Mean Squared Error:    {rmse:.6f}")
+    print(f"  R² Score:                   {r2:.6f}")
+    print(f"  Within 10% Tolerance:       {within_tolerance*100:.2f}%")
+    
+    return metrics
+
+
+def plot_predictions_vs_actual(results, actual_scores, sample_size=1000):
+    """
+    Create visualization comparing predictions vs actual scores.
+    
+    Args:
+        results: List of metric dictionaries from all models
+        actual_scores: Array of actual EPSS scores
+        sample_size: Number of samples to plot (for performance)
+    """
+    n_models = len(results)
+    fig, axes = plt.subplots(2, 2, figsize=(15, 12))
+    axes = axes.flatten()
+    
+    # Sample data for plotting
+    indices = np.random.choice(len(actual_scores), size=min(sample_size, len(actual_scores)), replace=False)
+    actual_sample = actual_scores[indices]
+    
+    for idx, result in enumerate(results):
+        ax = axes[idx]
+        pred_sample = result['predictions'][indices]
+        
+        # Scatter plot
+        ax.scatter(actual_sample, pred_sample, alpha=0.5, s=10)
+        
+        # Perfect prediction line
+        min_val = min(actual_sample.min(), pred_sample.min())
+        max_val = max(actual_sample.max(), pred_sample.max())
+        ax.plot([min_val, max_val], [min_val, max_val], 'r--', label='Perfect Prediction')
+        
+        # Labels and title
+        ax.set_xlabel('Actual EPSS Score')
+        ax.set_ylabel('Predicted EPSS Score')
+        ax.set_title(f"{result['model']}\nR² = {result['r2']:.4f}, MAE = {result['mae']:.6f}")
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+    
+    plt.tight_layout()
+    plt.savefig('model_predictions_comparison.png', dpi=300, bbox_inches='tight')
+    print(f"\n Visualization saved to: model_predictions_comparison.png")
+    plt.close()
+
+
+def create_comparison_report(results):
+    """
+    Create a comparison report of all models.
+    
+    Args:
+        results: List of metric dictionaries from all models
+    """
+    print(f"\n{'='*80}")
+    print("MODEL COMPARISON SUMMARY")
+    print(f"{'='*80}")
+    
+    # Create comparison DataFrame
+    comparison_df = pd.DataFrame([
+        {
+            'Model': r['model'],
+            'MAE': r['mae'],
+            'RMSE': r['rmse'],
+            'R² Score': r['r2'],
+            'Within 10%': f"{r['within_10%']:.2f}%"
+        }
+        for r in results
+    ])
+    
+    # Sort by R² score (descending)
+    comparison_df = comparison_df.sort_values('R² Score', ascending=False)
+    
+    print("\n" + comparison_df.to_string(index=False))
+    
+    # Save to CSV
+    comparison_df.to_csv('model_comparison_results.csv', index=False)
+    print(f"\n Comparison saved to: model_comparison_results.csv")
+    
+    # Identify best model
+    best_model = comparison_df.iloc[0]['Model']
+    best_r2 = comparison_df.iloc[0]['R² Score']
+    print(f"\n Best Model: {best_model} (R² = {best_r2:.6f})")
+    
+    return comparison_df
+
+
+def main():
+    """
+    Main function to test all models on the dataset.
+    """
+    print("="*80)
+    print("TESTING TRAINED MODELS ON VALIDATION DATASET")
+    print("="*80)
+    
+    # Load preprocessed features and targets
+    print("\n Loading preprocessed data...")
+    X_unscaled = pd.read_csv('X_features_unscaled.csv')
+    X_scaled = pd.read_csv('X_features_scaled.csv')
+    y = pd.read_csv('y_target.csv').values.ravel()
+    
+    print(f"  Features shape: {X_unscaled.shape}")
+    print(f"  Target shape: {y.shape}")
+    
+    # Use the SAME split as training (test_size=0.2, random_state=42)
+    print("\n Splitting data using same parameters as training...")
+    print("  - Train/Test split: 80/20")
+    print("  - Random state: 42")
+    print("  - This matches the validation set used during training")
+    
+    # Split both unscaled and scaled features
+    _, X_test_unscaled, _, y_test = train_test_split(
+        X_unscaled, y, test_size=0.2, random_state=42
+    )
+    _, X_test_scaled, _, _ = train_test_split(
+        X_scaled, y, test_size=0.2, random_state=42
+    )
+    
+    print(f"\n Validation set: {len(X_test_unscaled):,} CVEs")
+    print(f"  (Exact same validation set from training)")
+    
+    # Models to test (with their feature scaling requirements)
+    models = [
+        ('rf_epss_model.pkl', 'Random Forest', X_test_unscaled),
+        ('xgb_epss_model.pkl', 'XGBoost', X_test_unscaled),
+        ('lgb_epss_model.pkl', 'LightGBM', X_test_unscaled),
+        ('knn_epss_model.pkl', 'K-Nearest Neighbors', X_test_scaled)
+    ]
+    
+    # Test each model
+    results = []
+    for model_path, model_name, X_test in models:
+        try:
+            use_scaled = 'scaled' in str(X_test.columns) or model_name == 'K-Nearest Neighbors'
+            metrics = evaluate_model(model_path, X_test, y_test, model_name, use_scaled)
+            results.append(metrics)
+        except FileNotFoundError:
+            print(f"\n  Model not found: {model_path}")
+        except Exception as e:
+            print(f"\n Error testing {model_name}: {str(e)}")
+    
+    if not results:
+        print("\n No models could be tested!")
+        return
+    
+    # Create comparison report
+    comparison_df = create_comparison_report(results)
+    
+    # Create visualization
+    print(f"\n{'='*80}")
+    print("CREATING VISUALIZATIONS")
+    print(f"{'='*80}")
+    plot_predictions_vs_actual(results, y_test)
+    
+    # Error distribution analysis
+    print(f"\n{'='*80}")
+    print("ERROR DISTRIBUTION ANALYSIS")
+    print(f"{'='*80}")
+    
+    for result in results:
+        errors = y_test - result['predictions']
+        print(f"\n{result['model']}:")
+        print(f"  Mean Error:      {np.mean(errors):+.6f}")
+        print(f"  Median Error:    {np.median(errors):+.6f}")
+        print(f"  Std Dev:         {np.std(errors):.6f}")
+        print(f"  Max Overpredict: {errors.min():.6f}")
+        print(f"  Max Underpredict: {errors.max():.6f}")
+    
+    print(f"\n{'='*80}")
+    print(" MODEL TESTING COMPLETE!")
+    print(f"{'='*80}")
+    print("\nGenerated files:")
+    print("  - model_comparison_results.csv")
+    print("  - model_predictions_comparison.png")
+
+
+if __name__ == "__main__":
+    main()
