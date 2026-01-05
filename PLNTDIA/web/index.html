@@ -12,6 +12,15 @@
         .container { max-width: 1600px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         
         h1 { text-align: center; color: #1a202c; margin-bottom: 20px; }
+
+        /* Filtro */
+        .filters { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+        .filters label { font-size: 14px; font-weight: 600; color: #4a5568; }
+        .filters input { width: min(520px, 90vw); padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+        .filters button { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; }
+        .filters button:hover { background: #f7fafc; }
+        .filters .button-link { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
+        .filters .button-link:hover { background: #f7fafc; }
         
         /* Legenda */
         .legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
@@ -27,6 +36,17 @@
         /* Estilo do Calendário */
         #calendar { max-height: 85vh; }
         .fc-event { cursor: pointer; border: none; font-size: 11px; }
+
+        /* Gráfico (barras) */
+        .chart-container { margin-top: 18px; }
+        .chart-title { margin: 0 0 10px 0; color: #1a202c; font-size: 16px; font-weight: 700; }
+        .bar-chart { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; overflow-x: auto; }
+        .bar-chart-inner { display: flex; align-items: flex-end; gap: 12px; min-height: 260px; }
+        .bar-item { display: grid; grid-template-rows: 1fr auto auto; gap: 6px; width: 54px; flex: 0 0 auto; }
+        .bar { width: 100%; border-radius: 8px; background: #4a5568; }
+        .bar-label { font-size: 11px; color: #4a5568; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bar-count { font-size: 11px; color: #718096; text-align: center; font-weight: 700; }
+        .chart-empty { color: #718096; font-size: 14px; padding: 8px 2px; }
         
         /* Modal Customizado */
         .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
@@ -40,6 +60,14 @@
 
 <div class="container">
     <h1>🗓️ Plano de Patching Otimizado (AI)</h1>
+
+    <div class="filters">
+        <label for="serverFilter">Filtrar por servidor (número):</label>
+        <input id="serverFilter" type="text" list="serverTitles" placeholder="Ex: 12 (ou 'Servidores - 12')" autocomplete="off" />
+        <datalist id="serverTitles"></datalist>
+        <button id="clearFilter" type="button">Limpar</button>
+        <a class="button-link" href="failures.html">Ver Falhas</a>
+    </div>
     
     <div class="legend">
         <div class="legend-item"><span class="dot dev"></span>DEV</div>
@@ -49,6 +77,13 @@
     </div>
 
     <div id='calendar'></div>
+
+    <div class="chart-container">
+        <h2 id="chartTitle" class="chart-title">Agendamentos por servidor</h2>
+        <div class="bar-chart">
+            <div id="barChart" class="bar-chart-inner"></div>
+        </div>
+    </div>
 </div>
 
 <div id="eventModal" class="modal">
@@ -64,21 +99,235 @@
         var modal = document.getElementById("eventModal");
         var span = document.getElementsByClassName("close")[0];
 
+        var serverFilterInput = document.getElementById('serverFilter');
+        var clearFilterBtn = document.getElementById('clearFilter');
+        var serverTitlesDatalist = document.getElementById('serverTitles');
+        var barChartEl = document.getElementById('barChart');
+        var chartTitleEl = document.getElementById('chartTitle');
+
+        var allEvents = [];
+        var calendar = null;
+
         span.onclick = function() { modal.style.display = "none"; }
         window.onclick = function(event) { if (event.target == modal) modal.style.display = "none"; }
+
+        function normalize(text) {
+            return (text || '').toString().trim().toLowerCase();
+        }
+
+        function extractServerNumber(text) {
+            var match = (text || '').toString().match(/(\d+)/);
+            return match ? match[1] : null;
+        }
+
+        function serverGroupLabel(serverNumber) {
+            return `Servidores - ${serverNumber}`;
+        }
+
+        function normalizeEnv(value) {
+            var env = normalize(value);
+            if (env === 'production') env = 'prod';
+            if (env === 'uat') env = 'uat';
+            if (env === 'dev') env = 'dev';
+            if (env === 'prod') env = 'prod';
+            return env;
+        }
+
+        function envDisplay(envKey) {
+            if (envKey === 'dev') return 'DEV';
+            if (envKey === 'uat') return 'UAT';
+            if (envKey === 'prod') return 'PROD';
+            return (envKey || '').toString().toUpperCase();
+        }
+
+        function envColor(envKey) {
+            if (envKey === 'dev') return '#38a169';
+            if (envKey === 'uat') return '#dd6b20';
+            if (envKey === 'prod') return '#e53e3e';
+            return '#4a5568';
+        }
+
+        function renderBarChart(events, queryNumber) {
+            if (!barChartEl) return;
+            barChartEl.innerHTML = '';
+
+            // Se estamos a filtrar por um servidor específico, mostrar 3 barras por tipo (DEV/UAT/PROD)
+            if (queryNumber) {
+                if (chartTitleEl) {
+                    chartTitleEl.textContent = `Agendamentos por tipo — ${serverGroupLabel(queryNumber)}`;
+                }
+
+                var envKeys = ['dev', 'uat', 'prod'];
+                var envCounts = new Map(envKeys.map(k => [k, 0]));
+
+                for (var i = 0; i < events.length; i++) {
+                    var props = (events[i] && events[i].extendedProps) ? events[i].extendedProps : (events[i] || {}).extendedProps;
+                    var env = props ? props.environment : null;
+                    var envKey = normalizeEnv(env);
+                    if (!envKey) continue;
+                    if (!envCounts.has(envKey)) envCounts.set(envKey, 0);
+                    envCounts.set(envKey, envCounts.get(envKey) + 1);
+                }
+
+                var entries = envKeys.map(k => [k, envCounts.get(k) || 0]);
+                var maxCount = Math.max(...entries.map(e => e[1]));
+                var maxBarHeight = 200; // px
+
+                for (var j = 0; j < entries.length; j++) {
+                    var envKey2 = entries[j][0];
+                    var count2 = entries[j][1];
+
+                    var item2 = document.createElement('div');
+                    item2.className = 'bar-item';
+
+                    var bar2 = document.createElement('div');
+                    bar2.className = 'bar';
+                    bar2.style.backgroundColor = envColor(envKey2);
+                    bar2.style.height = (maxCount === 0) ? '8px' : Math.max(8, Math.round((count2 / maxCount) * maxBarHeight)) + 'px';
+                    bar2.title = envDisplay(envKey2) + ': ' + count2;
+
+                    var label2 = document.createElement('div');
+                    label2.className = 'bar-label';
+                    label2.title = envDisplay(envKey2);
+                    label2.textContent = envDisplay(envKey2);
+
+                    var countEl2 = document.createElement('div');
+                    countEl2.className = 'bar-count';
+                    countEl2.textContent = count2;
+
+                    item2.appendChild(bar2);
+                    item2.appendChild(label2);
+                    item2.appendChild(countEl2);
+                    barChartEl.appendChild(item2);
+                }
+                return;
+            }
+
+            if (chartTitleEl) {
+                chartTitleEl.textContent = 'Agendamentos por servidor';
+            }
+
+            var counts = new Map();
+            for (var k = 0; k < events.length; k++) {
+                var title = (events[k] && events[k].title) ? events[k].title.toString().trim() : '';
+                if (!title) continue;
+
+                var serverNumber = extractServerNumber(title) || title;
+                counts.set(serverNumber, (counts.get(serverNumber) || 0) + 1);
+            }
+
+            var entries = Array.from(counts.entries());
+            if (entries.length === 0) {
+                var empty = document.createElement('div');
+                empty.className = 'chart-empty';
+                empty.textContent = 'Sem agendamentos para mostrar (com o filtro atual).';
+                barChartEl.appendChild(empty);
+                return;
+            }
+
+            // Ordenar por contagem desc, depois por nome
+            entries.sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0], 'pt', { sensitivity: 'base' }));
+
+            var maxCount = Math.max(...entries.map(e => e[1]));
+            var maxBarHeight = 200; // px
+
+            for (var j = 0; j < entries.length; j++) {
+                var key = entries[j][0];
+                var count = entries[j][1];
+
+                var name = extractServerNumber(key) ? serverGroupLabel(key) : key;
+
+                var item = document.createElement('div');
+                item.className = 'bar-item';
+
+                var bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = Math.max(8, Math.round((count / maxCount) * maxBarHeight)) + 'px';
+                bar.title = name + ': ' + count;
+
+                var label = document.createElement('div');
+                label.className = 'bar-label';
+                label.title = name;
+                label.textContent = name;
+
+                var countEl = document.createElement('div');
+                countEl.className = 'bar-count';
+                countEl.textContent = count;
+
+                item.appendChild(bar);
+                item.appendChild(label);
+                item.appendChild(countEl);
+                barChartEl.appendChild(item);
+            }
+        }
+
+        function applyServerFilter() {
+            if (!calendar) return;
+            var query = normalize(serverFilterInput.value);
+            var queryNumber = extractServerNumber(query);
+            var filtered = allEvents;
+
+            if (query.length > 0) {
+                if (queryNumber) {
+                    filtered = allEvents.filter(e => extractServerNumber(e && e.title) === queryNumber);
+                } else {
+                    filtered = allEvents.filter(e => normalize(e.title).includes(query));
+                }
+            }
+
+            calendar.removeAllEvents();
+            calendar.addEventSource(filtered);
+
+            renderBarChart(filtered, queryNumber);
+        }
+
+        function populateServerTitlesDatalist() {
+            if (!serverTitlesDatalist) return;
+            serverTitlesDatalist.innerHTML = '';
+
+            var numbers = Array.from(
+                new Set(
+                    allEvents
+                        .map(e => extractServerNumber(e && e.title))
+                        .filter(n => n && n.length > 0)
+                )
+            ).sort((a, b) => Number(a) - Number(b));
+
+            for (var i = 0; i < numbers.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = serverGroupLabel(numbers[i]);
+                serverTitlesDatalist.appendChild(opt);
+            }
+        }
+
+        serverFilterInput.addEventListener('input', applyServerFilter);
+        clearFilterBtn.addEventListener('click', function() {
+            serverFilterInput.value = '';
+            applyServerFilter();
+            serverFilterInput.focus();
+        });
 
         // [CORREÇÃO] Buscar o JSON PRIMEIRO para saber a data inicial
         fetch('schedule.json')
             .then(response => response.json())
-            .then(events => {
+            .then(data => {
+
+                var events = Array.isArray(data)
+                    ? data
+                    : (data && Array.isArray(data.events) ? data.events : []);
+
+                allEvents = events;
+                populateServerTitlesDatalist();
                 
                 // Descobrir a data do primeiro evento para focar o calendário lá
                 var initialDate = new Date(); // Default hoje
-                if (events.length > 0) {
-                    initialDate = events[0].start; // Data do primeiro patch
+                if (allEvents.length > 0) {
+                    // Ordenar por data de início para encontrar o primeiro evento
+                    var sorted = [...allEvents].sort((a, b) => new Date(a.start) - new Date(b.start));
+                    initialDate = sorted[0].start; // Data do primeiro patch
                 }
 
-                var calendar = new FullCalendar.Calendar(calendarEl, {
+                calendar = new FullCalendar.Calendar(calendarEl, {
                     initialView: 'timeGridWeek',
                     initialDate: initialDate, // <--- O SEGREDO ESTÁ AQUI
                     headerToolbar: {
@@ -93,18 +342,18 @@
                     allDaySlot: false,
                     slotDuration: '01:00:00',
                     expandRows: true,
-                    events: events, // Usar os eventos que já carregámos
+                    events: allEvents, // Usar os eventos que já carregámos
                     
                     eventClick: function(info) {
                         var props = info.event.extendedProps;
-                        var descLines = props.description.split('\n');
+                        var descLines = (props.description || '').split('\n');
                         
                         var content = `
                             <h2 style="margin-top:0">${info.event.title} <span class="tag" style="background:${info.event.backgroundColor}">${props.environment}</span></h2>
                             <p><strong>🕒 Início:</strong> ${info.event.start.toLocaleString()}</p>
                             <p><strong>🕒 Fim:</strong> ${info.event.end.toLocaleString()}</p>
                             <hr>
-                            <p><strong>${descLines[0]}</strong></p> <p><strong>${descLines[1]}</strong></p> <p><strong>${descLines[2]}</strong></p> <p>Prioridade: ${props.priority}</p>
+                            <p><strong>${descLines[0] || ''}</strong></p> <p><strong>${descLines[1] || ''}</strong></p> <p><strong>${descLines[2] || ''}</strong></p> <p>Prioridade: ${props.priority ?? ''}</p>
                         `;
                         
                         document.getElementById('modalContent').innerHTML = content;
@@ -117,6 +366,7 @@
                 });
                 
                 calendar.render();
+                applyServerFilter();
             })
             .catch(error => {
                 console.error('Erro ao carregar schedule.json:', error);
