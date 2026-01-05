@@ -19,6 +19,8 @@
         .filters input { width: min(520px, 90vw); padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
         .filters button { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; }
         .filters button:hover { background: #f7fafc; }
+        .filters .button-link { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
+        .filters .button-link:hover { background: #f7fafc; }
         
         /* Legenda */
         .legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
@@ -64,6 +66,7 @@
         <input id="serverFilter" type="text" list="serverTitles" placeholder="Ex: 12 (ou 'Servidores - 12')" autocomplete="off" />
         <datalist id="serverTitles"></datalist>
         <button id="clearFilter" type="button">Limpar</button>
+        <a class="button-link" href="failures.html">Ver Falhas</a>
     </div>
     
     <div class="legend">
@@ -307,9 +310,13 @@
         // [CORREÇÃO] Buscar o JSON PRIMEIRO para saber a data inicial
         fetch('schedule.json')
             .then(response => response.json())
-            .then(events => {
+            .then(data => {
 
-                allEvents = Array.isArray(events) ? events : [];
+                var events = Array.isArray(data)
+                    ? data
+                    : (data && Array.isArray(data.events) ? data.events : []);
+
+                allEvents = events;
                 populateServerTitlesDatalist();
                 
                 // Descobrir a data do primeiro evento para focar o calendário lá

@@ -144,7 +144,7 @@ def export_schedule_report(schedule: list[PatchTask], failures: list[FailedTask]
             
     print(f"\n[SUCESSO] Relatório detalhado gerado em '{filename}'")
 
-def export_schedule_json(schedule: list[PatchTask], filename="web/schedule.json"):
+def export_schedule_json(schedule: list[PatchTask], failures: list[FailedTask] | None = None, filename="web/schedule.json"):
     """
     [NOVO] Exporta para JSON compatível com FullCalendar.
     Permite visualizar o plano no browser.
@@ -200,7 +200,24 @@ def export_schedule_json(schedule: list[PatchTask], filename="web/schedule.json"
             }
         })
 
+    failures_payload = []
+    if failures:
+        for fail in failures:
+            failures_payload.append({
+                "server": {
+                    "id": fail.server.id,
+                    "environment": fail.server.environment,
+                },
+                "cve": {"id": fail.cve.id},
+                "reason": fail.reason,
+            })
+
+    payload = {
+        "events": events,
+        "failures": failures_payload,
+    }
+
     with open(filename, "w", encoding='utf-8') as f:
-        json.dump(events, f, indent=4)
+        json.dump(payload, f, indent=4, ensure_ascii=False)
     
     print(f"[JSON] Dados para Frontend exportados para '{filename}'")

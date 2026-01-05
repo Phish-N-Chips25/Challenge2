@@ -72,7 +72,7 @@ def main():
     
     # 6. Exportar Resultados (JSON para Frontend)
     # [NOVO] Gera o ficheiro para o calendário web
-    export_schedule_json(final_schedule)
+    export_schedule_json(final_schedule, failures)
 
 if __name__ == "__main__":
     main()

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falhas de Agendamento</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+        .container { max-width: 1600px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+        .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .title-wrap { display: grid; gap: 6px; }
+        h1 { margin: 0; color: #1a202c; font-size: 22px; letter-spacing: -0.01em; }
+        .subtitle { color: #718096; font-size: 13px; font-weight: 600; }
+
+        .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 18px 0; }
+        .topbar .meta { color: #4a5568; font-size: 13px; font-weight: 700; }
+
+        .btn-link { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
+        .btn-link:hover { background: #f7fafc; }
+
+        .kpis { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 10px; }
+        @media (min-width: 900px) {
+            .kpis { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        .kpi { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; background: white; }
+        .kpi .label { font-size: 12px; color: #718096; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; }
+        .kpi .value { margin-top: 6px; font-size: 22px; color: #1a202c; font-weight: 800; }
+        .kpi .hint { margin-top: 6px; font-size: 12px; color: #4a5568; font-weight: 600; }
+
+        .grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
+        @media (min-width: 1100px) {
+            .grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; background: white; }
+        .card h2 { margin: 0 0 10px 0; color: #1a202c; font-size: 15px; font-weight: 800; letter-spacing: -0.01em; }
+        .card p { margin: 0; color: #4a5568; font-size: 14px; }
+
+        .bar-chart { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; overflow-x: auto; }
+        .bar-chart-inner { display: grid; gap: 10px; }
+        .bar-row { display: grid; grid-template-columns: minmax(140px, 260px) 1fr minmax(44px, 64px); align-items: center; gap: 10px; }
+        .bar-label { font-size: 12px; color: #4a5568; font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bar { height: 12px; border-radius: 10px; background: #4a5568; }
+        .bar-count { font-size: 12px; color: #718096; font-weight: 700; text-align: right; }
+
+        .scroll-area { max-height: 420px; overflow: auto; padding-right: 4px; }
+
+        .empty { color: #718096; font-size: 14px; padding: 10px 2px; }
+
+        .table-scroll { max-height: 520px; overflow: auto; border: 1px solid #e2e8f0; border-radius: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #edf2f7; font-size: 13px; color: #2d3748; }
+        th { font-size: 12px; color: #4a5568; text-transform: uppercase; letter-spacing: 0.02em; position: sticky; top: 0; background: white; z-index: 1; }
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 800; color: #4a5568; background: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <div class="title-wrap">
+            <h1>Falhas de Agendamento</h1>
+            <div class="subtitle">Análise das tarefas que não foi possível agendar.</div>
+        </div>
+        <a class="btn-link" href="index.html">Voltar ao Dashboard</a>
+    </div>
+
+    <div class="kpis">
+        <div class="kpi">
+            <div class="label">Falhas</div>
+            <div class="value" id="kpiFailures">—</div>
+            <div class="hint">Total de tarefas falhadas</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Servidores</div>
+            <div class="value" id="kpiServers">—</div>
+            <div class="hint">Servidores com falhas</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Motivos</div>
+            <div class="value" id="kpiReasons">—</div>
+            <div class="hint">Motivos distintos</div>
+        </div>
+        <div class="kpi">
+            <div class="label">Eventos</div>
+            <div class="value" id="kpiEvents">—</div>
+            <div class="hint">Patches agendados no plano</div>
+        </div>
+    </div>
+
+    <div class="topbar">
+        <div class="meta" id="meta">A carregar…</div>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <h2>Falhas por servidor (Top 12)</h2>
+            <div class="bar-chart">
+                <div id="chartByServer" class="bar-chart-inner"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Falhas por motivo (todos)</h2>
+            <div class="bar-chart">
+                <div class="scroll-area">
+                    <div id="chartByReason" class="bar-chart-inner"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Falhas por ambiente</h2>
+            <div class="bar-chart">
+                <div id="chartByEnv" class="bar-chart-inner"></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Lista de falhas</h2>
+            <div class="table-scroll" style="overflow-x:auto">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Servidor</th>
+                            <th>Ambiente</th>
+                            <th>CVE</th>
+                            <th>Motivo</th>
+                        </tr>
+                    </thead>
+                    <tbody id="failureTable"></tbody>
+                </table>
+                <div id="tableEmpty" class="empty" style="display:none">Sem falhas para mostrar.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function normalize(text) {
+        return (text || '').toString().trim();
+    }
+
+    function normalizeEnv(value) {
+        var env = normalize(value).toLowerCase();
+        if (env === 'production') env = 'prod';
+        if (env === 'prod') return 'prod';
+        if (env === 'uat') return 'uat';
+        if (env === 'dev') return 'dev';
+        return env;
+    }
+
+    function envDisplay(envKey) {
+        var k = normalizeEnv(envKey);
+        if (k === 'dev') return 'DEV';
+        if (k === 'uat') return 'UAT';
+        if (k === 'prod') return 'PROD';
+        return (envKey || '').toString().toUpperCase();
+    }
+
+    function envColor(envKey) {
+        var k = normalizeEnv(envKey);
+        if (k === 'dev') return '#38a169';
+        if (k === 'uat') return '#dd6b20';
+        if (k === 'prod') return '#e53e3e';
+        return '#4a5568';
+    }
+
+    function normalizeKey(text) {
+        return normalize(text).toLowerCase();
+    }
+
+    function safeGet(obj, path, fallback) {
+        try {
+            var cur = obj;
+            for (var i = 0; i < path.length; i++) {
+                if (cur == null) return fallback;
+                cur = cur[path[i]];
+            }
+            return (cur == null) ? fallback : cur;
+        } catch (_) {
+            return fallback;
+        }
+    }
+
+    function parsePayload(data) {
+        // Compatível com formato antigo (array de events) e novo ({events, failures})
+        if (Array.isArray(data)) {
+            return { events: data, failures: [] };
+        }
+        var events = (data && Array.isArray(data.events)) ? data.events : [];
+        var failures = (data && Array.isArray(data.failures)) ? data.failures : [];
+        return { events: events, failures: failures };
+    }
+
+    function countBy(items, keyFn) {
+        var map = new Map();
+        for (var i = 0; i < items.length; i++) {
+            var k = normalize(keyFn(items[i])) || '(vazio)';
+            map.set(k, (map.get(k) || 0) + 1);
+        }
+        return map;
+    }
+
+    function mapToSortedEntries(map, limit) {
+        var entries = Array.from(map.entries());
+        entries.sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0], 'pt', { sensitivity: 'base' }));
+        if (typeof limit === 'number') entries = entries.slice(0, limit);
+        return entries;
+    }
+
+    function renderBars(containerEl, entries, colorForLabel) {
+        if (!containerEl) return;
+        containerEl.innerHTML = '';
+
+        if (!entries || entries.length === 0) {
+            var empty = document.createElement('div');
+            empty.className = 'empty';
+            empty.textContent = 'Sem dados para mostrar.';
+            containerEl.appendChild(empty);
+            return;
+        }
+
+        var maxCount = Math.max.apply(null, entries.map(e => e[1]));
+
+        for (var i = 0; i < entries.length; i++) {
+            var label = entries[i][0];
+            var count = entries[i][1];
+
+            var row = document.createElement('div');
+            row.className = 'bar-row';
+
+            var labelEl = document.createElement('div');
+            labelEl.className = 'bar-label';
+            labelEl.title = label;
+            labelEl.textContent = label;
+
+            var barEl = document.createElement('div');
+            barEl.className = 'bar';
+            var pct = (maxCount === 0) ? 0 : (count / maxCount);
+            barEl.style.width = Math.max(4, Math.round(pct * 100)) + '%';
+            if (typeof colorForLabel === 'function') {
+                barEl.style.background = colorForLabel(label);
+            }
+
+            var countEl = document.createElement('div');
+            countEl.className = 'bar-count';
+            countEl.textContent = count;
+
+            row.appendChild(labelEl);
+            row.appendChild(barEl);
+            row.appendChild(countEl);
+            containerEl.appendChild(row);
+        }
+    }
+
+    function renderTable(tbodyEl, emptyEl, failures) {
+        if (!tbodyEl) return;
+        tbodyEl.innerHTML = '';
+
+        if (!failures || failures.length === 0) {
+            if (emptyEl) emptyEl.style.display = 'block';
+            return;
+        }
+        if (emptyEl) emptyEl.style.display = 'none';
+
+        for (var i = 0; i < failures.length; i++) {
+            var f = failures[i];
+            var serverId = normalize(safeGet(f, ['server', 'id'], ''));
+            var env = normalize(safeGet(f, ['server', 'environment'], ''));
+            var cveId = normalize(safeGet(f, ['cve', 'id'], ''));
+            var reason = normalize(safeGet(f, ['reason'], ''));
+
+            var tr = document.createElement('tr');
+
+            var tdServer = document.createElement('td');
+            tdServer.textContent = serverId;
+
+            var tdEnv = document.createElement('td');
+            var pill = document.createElement('span');
+            pill.className = 'pill';
+            var envKey = normalizeEnv(env);
+            pill.textContent = env ? envDisplay(envKey) : '(sem env)';
+            if (envKey === 'dev' || envKey === 'uat' || envKey === 'prod') {
+                var c = envColor(envKey);
+                pill.style.background = c;
+                pill.style.borderColor = c;
+                pill.style.color = 'white';
+            }
+            tdEnv.appendChild(pill);
+
+            var tdCve = document.createElement('td');
+            tdCve.textContent = cveId;
+
+            var tdReason = document.createElement('td');
+            tdReason.textContent = reason;
+
+            tr.appendChild(tdServer);
+            tr.appendChild(tdEnv);
+            tr.appendChild(tdCve);
+            tr.appendChild(tdReason);
+            tbodyEl.appendChild(tr);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var metaEl = document.getElementById('meta');
+        var kpiFailuresEl = document.getElementById('kpiFailures');
+        var kpiServersEl = document.getElementById('kpiServers');
+        var kpiReasonsEl = document.getElementById('kpiReasons');
+        var kpiEventsEl = document.getElementById('kpiEvents');
+        var chartByServerEl = document.getElementById('chartByServer');
+        var chartByReasonEl = document.getElementById('chartByReason');
+        var chartByEnvEl = document.getElementById('chartByEnv');
+        var tableBodyEl = document.getElementById('failureTable');
+        var tableEmptyEl = document.getElementById('tableEmpty');
+
+        fetch('schedule.json')
+            .then(r => r.json())
+            .then(data => {
+                var payload = parsePayload(data);
+                var failures = payload.failures || [];
+
+                var uniqueServers = new Set(failures.map(f => normalize(safeGet(f, ['server', 'id'], ''))).filter(Boolean));
+                var uniqueReasons = new Set(failures.map(f => normalize(safeGet(f, ['reason'], ''))).filter(Boolean));
+                var eventCount = (payload.events || []).length;
+
+                if (kpiFailuresEl) kpiFailuresEl.textContent = failures.length;
+                if (kpiServersEl) kpiServersEl.textContent = uniqueServers.size;
+                if (kpiReasonsEl) kpiReasonsEl.textContent = uniqueReasons.size;
+                if (kpiEventsEl) kpiEventsEl.textContent = eventCount;
+
+                if (metaEl) {
+                    metaEl.textContent = `Falhas: ${failures.length} • Servidores: ${uniqueServers.size} • Motivos: ${uniqueReasons.size}`;
+                }
+
+                var byServer = countBy(failures, f => safeGet(f, ['server', 'id'], ''));
+                var byReason = countBy(failures, f => safeGet(f, ['reason'], ''));
+                var byEnv = countBy(failures, f => envDisplay(safeGet(f, ['server', 'environment'], '')));
+
+                renderBars(chartByServerEl, mapToSortedEntries(byServer, 12));
+                renderBars(chartByReasonEl, mapToSortedEntries(byReason));
+                renderBars(chartByEnvEl, mapToSortedEntries(byEnv), envColor);
+
+                // Ordenar lista por env, depois servidor, depois CVE
+                failures.sort((a, b) => {
+                    var ea = normalizeKey(safeGet(a, ['server', 'environment'], ''));
+                    var eb = normalizeKey(safeGet(b, ['server', 'environment'], ''));
+                    if (ea !== eb) return ea.localeCompare(eb, 'pt');
+                    var sa = normalizeKey(safeGet(a, ['server', 'id'], ''));
+                    var sb = normalizeKey(safeGet(b, ['server', 'id'], ''));
+                    if (sa !== sb) return sa.localeCompare(sb, 'pt');
+                    var ca = normalizeKey(safeGet(a, ['cve', 'id'], ''));
+                    var cb = normalizeKey(safeGet(b, ['cve', 'id'], ''));
+                    return ca.localeCompare(cb, 'pt');
+                });
+
+                renderTable(tableBodyEl, tableEmptyEl, failures);
+            })
+            .catch(err => {
+                console.error('Erro ao carregar schedule.json:', err);
+                if (metaEl) metaEl.textContent = 'Erro a carregar dados. Verifica o servidor web.';
+                renderBars(chartByServerEl, []);
+                renderBars(chartByReasonEl, []);
+                renderBars(chartByEnvEl, []);
+                if (tableEmptyEl) {
+                    tableEmptyEl.style.display = 'block';
+                    tableEmptyEl.textContent = 'Erro a carregar dados.';
+                }
+            });
+    });
+</script>
+
+</body>
+</html>
