@@ -6,10 +6,82 @@ Evaluate model performance by comparing predictions against actual EPSS scores
 import pandas as pd
 import numpy as np
 import joblib
+import json
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 import matplotlib.pyplot as plt
 import seaborn as sns
+
+def extract_model_parameters(model, model_name):
+    """
+    Extract and format model hyperparameters.
+    
+    Args:
+        model: Trained model object (may be FLAML wrapper or raw model)
+        model_name: Name of the model
+    
+    Returns:
+        dict: Key hyperparameters with actual values
+    """
+    # FLAML wraps models - extract the underlying model if wrapped
+    if hasattr(model, 'model'):
+        # FLAML wrapper - get underlying model
+        actual_model = model.model
+    elif hasattr(model, 'estimator'):
+        # Some wrappers use .estimator
+        actual_model = model.estimator
+    else:
+        # Already unwrapped
+        actual_model = model
+    
+    # Get all parameters
+    params = actual_model.get_params()
+    
+    # Define important parameters for each model type and extract with defaults
+    if 'Random Forest' in model_name:
+        important_params = {
+            'n_estimators': params.get('n_estimators', 100),
+            'max_depth': params.get('max_depth', 'unlimited') if params.get('max_depth') is not None else 'unlimited',
+            'min_samples_split': params.get('min_samples_split', 2),
+            'min_samples_leaf': params.get('min_samples_leaf', 1),
+            'max_features': params.get('max_features', 1.0),
+            'random_state': params.get('random_state', None)
+        }
+    elif 'XGBoost' in model_name:
+        important_params = {
+            'n_estimators': params.get('n_estimators', 100),
+            'max_depth': params.get('max_depth', 6),
+            'learning_rate': params.get('learning_rate', 0.3),
+            'subsample': params.get('subsample', 1.0),
+            'colsample_bytree': params.get('colsample_bytree', 1.0),
+            'reg_alpha': params.get('reg_alpha', 0.0),
+            'reg_lambda': params.get('reg_lambda', 1.0)
+        }
+    elif 'LightGBM' in model_name:
+        important_params = {
+            'n_estimators': params.get('n_estimators', 100),
+            'max_depth': params.get('max_depth', -1),
+            'learning_rate': params.get('learning_rate', 0.1),
+            'num_leaves': params.get('num_leaves', 31),
+            'subsample': params.get('subsample', 1.0),
+            'colsample_bytree': params.get('colsample_bytree', 1.0),
+            'reg_alpha': params.get('reg_alpha', 0.0),
+            'reg_lambda': params.get('reg_lambda', 0.0)
+        }
+    elif 'K-Nearest' in model_name:
+        important_params = {
+            'n_neighbors': params.get('n_neighbors', 5),
+            'weights': params.get('weights', 'uniform'),
+            'algorithm': params.get('algorithm', 'auto'),
+            'leaf_size': params.get('leaf_size', 30),
+            'p': params.get('p', 2)
+        }
+    else:
+        # Return all params if model type unknown
+        important_params = params
+    
+    return important_params
+
 
 def evaluate_model(model_path, X_test, actual_scores, model_name, use_scaled=False):
     """
@@ -33,6 +105,9 @@ def evaluate_model(model_path, X_test, actual_scores, model_name, use_scaled=Fal
     model = joblib.load(model_path)
     predictions = model.predict(X_test)
     
+    # Extract hyperparameters
+    hyperparameters = extract_model_parameters(model, model_name)
+    
     # Calculate metrics
     mae = mean_absolute_error(actual_scores, predictions)
     rmse = np.sqrt(mean_squared_error(actual_scores, predictions))
@@ -48,14 +123,19 @@ def evaluate_model(model_path, X_test, actual_scores, model_name, use_scaled=Fal
         'rmse': rmse,
         'r2': r2,
         'within_10%': within_tolerance * 100,
-        'predictions': predictions
+        'predictions': predictions,
+        'hyperparameters': hyperparameters
     }
     
-    print(f"\n Performance Metrics:")
+    print(f"\n📊 Performance Metrics:")
     print(f"  Mean Absolute Error (MAE):  {mae:.6f}")
     print(f"  Root Mean Squared Error:    {rmse:.6f}")
     print(f"  R² Score:                   {r2:.6f}")
     print(f"  Within 10% Tolerance:       {within_tolerance*100:.2f}%")
+    
+    print(f"\n  FLAML-Optimized Hyperparameters:")
+    for param, value in hyperparameters.items():
+        print(f"  {param:20s}: {value}")
     
     return metrics
 
@@ -197,18 +277,31 @@ def main():
             print(f"\n Error testing {model_name}: {str(e)}")
     
     if not results:
-        print("\n No models could be tested!")
+        print("\n❌ No models could be tested!")
         return
+    # Save hyperparameters to file
+    print(f"\n{'='*80}")
+    print("SAVING HYPERPARAMETERS")
+    print(f"{'='*80}")
+    
+    hyperparams_data = {}
+    for result in results:
+        hyperparams_data[result['model']] = result['hyperparameters']
+    
+    with open('model_hyperparameters.json', 'w') as f:
+        json.dump(hyperparams_data, f, indent=2, default=str)
+    print(f"\n Hyperparameters saved to: model_hyperparameters.json")
     
     # Create comparison report
     comparison_df = create_comparison_report(results)
     
     # Create visualization
-    print(f"\n{'='*80}")
-    print("CREATING VISUALIZATIONS")
+    print(f" MODEL TESTING COMPLETE!")
     print(f"{'='*80}")
-    plot_predictions_vs_actual(results, y_test)
-    
+    print("\nGenerated files:")
+    print("  - model_comparison_results.csv")
+    print("  - model_hyperparameters.json")
+    print("  - model_predictions_comparison.png")
     # Error distribution analysis
     print(f"\n{'='*80}")
     print("ERROR DISTRIBUTION ANALYSIS")

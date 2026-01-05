@@ -115,7 +115,7 @@ print("=" * 80)
 target = 'epss_score'
 
 # Define feature sets
-# NOTE: 'epss_perc' REMOVED - it's derived from epss_score (data leakage!)
+# NOTE: 'epss_perc' REMOVED - it's derived from epss_score
 numerical_features = ['base_score', 'exploitability_score', 'impact_score',
                       'days_since_publication', 'year_published', 'month_published', 
                       'quarter_published', 'num_affected_software', 'num_affected_versions']
