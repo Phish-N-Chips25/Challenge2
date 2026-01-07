@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Colaboradores</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+            .container { max-width: 1400px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+        .title-wrap { display: grid; gap: 6px; }
+        h1 { margin: 0; color: #1a202c; font-size: 22px; letter-spacing: -0.01em; }
+        .subtitle { color: #718096; font-size: 13px; font-weight: 600; }
+
+        .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 18px 0; }
+        .btn-link { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
+        .btn-link:hover { background: #f7fafc; }
+
+        .search { display: flex; align-items: center; gap: 10px; }
+        .search input { width: min(520px, 90vw); padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+
+        .table-scroll { max-height: 70vh; overflow: auto; border: 1px solid #e2e8f0; border-radius: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #edf2f7; font-size: 13px; color: #2d3748; }
+        th { font-size: 12px; color: #4a5568; text-transform: uppercase; letter-spacing: 0.02em; position: sticky; top: 0; background: white; z-index: 1; }
+
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 800; color: #4a5568; background: white; }
+        .pill.on { background: #38a169; border-color: #38a169; color: white; }
+        .pill.off { background: #e2e8f0; border-color: #e2e8f0; color: #4a5568; }
+
+        .empty { color: #718096; font-size: 14px; padding: 10px 2px; }
+        .skills { display: flex; flex-wrap: wrap; gap: 6px; }
+        .skill { background: #f7fafc; border: 1px solid #e2e8f0; color: #4a5568; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <div class="title-wrap">
+            <h1>Colaboradores</h1>
+            <div class="subtitle">Informação carregada de <strong>PLNTDIA/data/team.csv</strong>.</div>
+        </div>
+        <a class="btn-link" href="index.html">Voltar ao Dashboard</a>
+    </div>
+
+    <div class="topbar">
+        <div class="search">
+            <input id="searchBox" placeholder="Pesquisar por nome, nível ou skill…" />
+        </div>
+        <div id="meta" class="subtitle">A carregar…</div>
+    </div>
+
+    <div class="table-scroll" style="overflow-x:auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Nível</th>
+                    <th>Skills</th>
+                    <th>Horário</th>
+                    <th>Almoço</th>
+                    <th>On-call</th>
+                    <th>Dias</th>
+                </tr>
+            </thead>
+            <tbody id="teamBody"></tbody>
+        </table>
+        <div id="tableEmpty" class="empty" style="display:none">Sem colaboradores a mostrar.</div>
+    </div>
+</div>
+
+<script>
+(function(){
+    function normalize(t){return (t||'').toString().trim();}
+    function toTime(h){
+        var n = parseFloat(h);
+        if (isNaN(n)) return '';
+        var hours = Math.floor(n);
+        var minutes = Math.round((n - hours) * 60);
+        var hh = String(hours).padStart(2,'0');
+        var mm = String(minutes).padStart(2,'0');
+        return hh + ':' + mm;
+    }
+    var dayMap = ['Seg','Ter','Qua','Qui','Sex','Sáb','Dom'];
+    function mapDays(s){
+        var parts = normalize(s).split(';').map(p=>p.trim()).filter(Boolean);
+        var names = [];
+        for (var i=0;i<parts.length;i++){
+            var idx = parseInt(parts[i],10);
+            if (!isNaN(idx)) {
+                // 0..6 => Seg..Dom
+                var name = dayMap[(idx%7+7)%7] || parts[i];
+                names.push(name);
+            }
+        }
+        return names.join(', ');
+    }
+
+    function parseCSV(text){
+        var lines = text.split(/\r?\n/).filter(l=>l.trim().length>0);
+        if (lines.length === 0) return [];
+        var headers = lines[0].split(',').map(h=>h.trim());
+        var rows = [];
+        for (var i=1;i<lines.length;i++){
+            var line = lines[i];
+            var cols = [];
+            var cur = '';
+            var inQuotes = false;
+            for (var j=0;j<line.length;j++){
+                var ch = line[j];
+                if (ch === '"'){
+                    if (inQuotes && line[j+1] === '"'){ cur += '"'; j++; }
+                    else { inQuotes = !inQuotes; }
+                } else if (ch === ',' && !inQuotes){
+                    cols.push(cur); cur='';
+                } else {
+                    cur += ch;
+                }
+            }
+            cols.push(cur);
+            var obj = {};
+            for (var k=0;k<headers.length;k++){
+                obj[headers[k]] = (cols[k]||'').trim();
+            }
+            rows.push(obj);
+        }
+        return rows;
+    }
+
+    function renderTeam(list){
+        var tbody = document.getElementById('teamBody');
+        var empty = document.getElementById('tableEmpty');
+        var meta = document.getElementById('meta');
+        tbody.innerHTML = '';
+        if (!list || list.length===0){
+            if (empty) empty.style.display='block';
+            if (meta) meta.textContent = '0 colaboradores';
+            return;
+        }
+        if (empty) empty.style.display='none';
+        if (meta) meta.textContent = list.length + ' colaboradores';
+
+        for (var i=0;i<list.length;i++){
+            var r = list[i];
+            var tr = document.createElement('tr');
+
+            var skills = normalize(r.skills).split(';').map(s=>s.trim()).filter(Boolean);
+            var skillsEl = document.createElement('div');
+            skillsEl.className = 'skills';
+            for (var s=0;s<skills.length;s++){
+                var sk = document.createElement('span');
+                sk.className = 'skill';
+                sk.textContent = skills[s];
+                skillsEl.appendChild(sk);
+            }
+
+            var tdId = document.createElement('td'); tdId.textContent = r.tech_id || '';
+            var tdName = document.createElement('td'); tdName.textContent = r.tech_name || '';
+            var tdLevel = document.createElement('td'); tdLevel.textContent = r.level || '';
+            var tdSkills = document.createElement('td'); tdSkills.appendChild(skillsEl);
+            var tdSchedule = document.createElement('td'); tdSchedule.textContent = toTime(r.work_start_h) + ' - ' + toTime(r.work_end_h);
+            var tdLunch = document.createElement('td'); tdLunch.textContent = toTime(r.lunch_start_h) + ' - ' + toTime(r.lunch_end_h);
+            var tdOnCall = document.createElement('td');
+            var pill = document.createElement('span');
+            var isOn = String(r.on_call||'').trim() === '1';
+            pill.className = 'pill ' + (isOn ? 'on' : 'off');
+            pill.textContent = isOn ? 'Sim' : 'Não';
+            tdOnCall.appendChild(pill);
+            var tdDays = document.createElement('td'); tdDays.textContent = mapDays(r.work_days);
+
+            tr.appendChild(tdId);
+            tr.appendChild(tdName);
+            tr.appendChild(tdLevel);
+            tr.appendChild(tdSkills);
+            tr.appendChild(tdSchedule);
+            tr.appendChild(tdLunch);
+            tr.appendChild(tdOnCall);
+            tr.appendChild(tdDays);
+
+            tbody.appendChild(tr);
+        }
+    }
+
+    function filterList(list, q){
+        var n = (q||'').toLowerCase();
+        if (!n) return list;
+        return list.filter(r =>
+            (r.tech_id||'').toLowerCase().includes(n) ||
+            (r.tech_name||'').toLowerCase().includes(n) ||
+            (r.level||'').toLowerCase().includes(n) ||
+            (r.skills||'').toLowerCase().includes(n)
+        );
+    }
+
+    var fullList = [];
+
+    document.addEventListener('DOMContentLoaded', function(){
+        var search = document.getElementById('searchBox');
+        function apply(){ renderTeam(filterList(fullList, search.value)); }
+        search.addEventListener('input', apply);
+
+        // Importante: servir a partir da raiz PLNTDIA (abrir /web/colaboradores.html)
+        // Assim, este caminho resolve para /data/team.csv
+        fetch('../data/team.csv')
+            .then(r => {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.text();
+            })
+            .then(txt => { fullList = parseCSV(txt); apply(); })
+            .catch(err => {
+                console.error('Erro a carregar team.csv:', err);
+                // Fallback: tentar team.csv na mesma pasta (caso o ficheiro seja copiado para /web)
+                return fetch('team.csv').then(r=>{
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.text();
+                }).then(txt=>{ fullList = parseCSV(txt); apply(); })
+                .catch(err2 => {
+                    console.error('Fallback falhou:', err2);
+                    var meta = document.getElementById('meta');
+                    if (meta) meta.textContent = "Erro a carregar dados. Serve o site a partir da pasta 'PLNTDIA' e abre /web/colaboradores.html";
+                    renderTeam([]);
+                });
+            });
+    });
+})();
+</script>
+</body>
+</html>

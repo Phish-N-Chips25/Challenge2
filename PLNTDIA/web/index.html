@@ -14,12 +14,16 @@
         h1 { text-align: center; color: #1a202c; margin-bottom: 20px; }
 
         /* Filtro */
-        .filters { display: flex; justify-content: center; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+        .filters { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+        .filters-left { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+        .filters-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+        .field { display: grid; grid-template-columns: 1fr; gap: 6px; }
         .filters label { font-size: 14px; font-weight: 600; color: #4a5568; }
-        .filters input { width: min(520px, 90vw); padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
-        .filters button { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; }
+        .filters input { width: 240px; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; }
+        .filters select { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; }
+        .filters button { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 13px; font-weight: 600; color: #4a5568; }
         .filters button:hover { background: #f7fafc; }
-        .filters .button-link { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
+        .filters .button-link { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 13px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
         .filters .button-link:hover { background: #f7fafc; }
         
         /* Legenda */
@@ -62,11 +66,34 @@
     <h1>🗓️ Plano de Patching Otimizado (AI)</h1>
 
     <div class="filters">
-        <label for="serverFilter">Filtrar por servidor (número):</label>
-        <input id="serverFilter" type="text" list="serverTitles" placeholder="Ex: 12 (ou 'Servidores - 12')" autocomplete="off" />
-        <datalist id="serverTitles"></datalist>
-        <button id="clearFilter" type="button">Limpar</button>
-        <a class="button-link" href="failures.html">Ver Falhas</a>
+        <div class="filters-left">
+            <div class="field">
+                <label for="serverFilter">Filtrar por servidor (número):</label>
+                <input id="serverFilter" type="text" list="serverTitles" placeholder="Ex: 12 (ou 'Servidores - 12')" autocomplete="off" />
+                <datalist id="serverTitles"></datalist>
+            </div>
+            <div class="field">
+                <label for="techFilter">Colaborador:</label>
+                <input id="techFilter" type="text" list="techNames" placeholder="Ex: Rui Costa" autocomplete="off" />
+                <datalist id="techNames"></datalist>
+            </div>
+            <div class="field">
+                <label for="levelFilter">Nível:</label>
+                <select id="levelFilter">
+                    <option value="">Todos níveis</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Mid">Mid</option>
+                    <option value="Senior">Senior</option>
+                </select>
+            </div>
+            <div class="field">
+                <button id="clearFilter" type="button">Limpar</button>
+            </div>
+        </div>
+        <div class="filters-right">
+            <a class="button-link" href="failures.html">Ver Falhas</a>
+            <a class="button-link" href="colaboradores.html">Ver Colaboradores</a>
+        </div>
     </div>
     
     <div class="legend">
@@ -102,11 +129,23 @@
         var serverFilterInput = document.getElementById('serverFilter');
         var clearFilterBtn = document.getElementById('clearFilter');
         var serverTitlesDatalist = document.getElementById('serverTitles');
+        var techFilterInput = document.getElementById('techFilter');
+        var techNamesDatalist = document.getElementById('techNames');
+        var levelFilterSelect = document.getElementById('levelFilter');
         var barChartEl = document.getElementById('barChart');
         var chartTitleEl = document.getElementById('chartTitle');
 
         var allEvents = [];
         var calendar = null;
+        var techLevelByName = new Map(); // nome -> nível
+        function getLevelForName(name) {
+            var n = normalize(name).toLowerCase();
+            if (!n) return '';
+            for (var pair of techLevelByName.entries()) {
+                if (pair[0].toLowerCase() === n) return pair[1];
+            }
+            return '';
+        }
 
         span.onclick = function() { modal.style.display = "none"; }
         window.onclick = function(event) { if (event.target == modal) modal.style.display = "none"; }
@@ -145,6 +184,42 @@
             if (envKey === 'uat') return '#dd6b20';
             if (envKey === 'prod') return '#e53e3e';
             return '#4a5568';
+        }
+
+        function parseTechs(description) {
+            var lines = (description || '').toString().split('\n');
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (line.toLowerCase().startsWith('techs:')) {
+                    var raw = line.split(':').slice(1).join(':');
+                    return raw.split(/[,;]/).map(function(s){ return s.trim(); }).filter(Boolean);
+                }
+            }
+            return [];
+        }
+
+        function eventHasTech(eventObj, nameQuery) {
+            var nq = normalize(nameQuery);
+            if (!nq) return true;
+            var desc = (eventObj && eventObj.description) || (eventObj && eventObj.extendedProps && eventObj.extendedProps.description) || eventObj.extendedProps?.description || eventObj.description;
+            var techs = parseTechs(desc);
+            var nqLower = nq.toLowerCase();
+            for (var i = 0; i < techs.length; i++) {
+                if (techs[i].toLowerCase().includes(nqLower)) return true;
+            }
+            return false;
+        }
+
+        function eventMatchesLevel(eventObj, levelQuery) {
+            var lq = normalize(levelQuery);
+            if (!lq) return true;
+            var desc = (eventObj && eventObj.description) || (eventObj && eventObj.extendedProps && eventObj.extendedProps.description) || eventObj.extendedProps?.description || eventObj.description;
+            var techs = parseTechs(desc);
+            for (var i = 0; i < techs.length; i++) {
+                var lvl = techLevelByName.get(techs[i]) || techLevelByName.get(techs[i].trim());
+                if (normalize(lvl).toLowerCase() === lq.toLowerCase()) return true;
+            }
+            return false;
         }
 
         function renderBarChart(events, queryNumber) {
@@ -261,7 +336,7 @@
             }
         }
 
-        function applyServerFilter() {
+        function applyAllFilters() {
             if (!calendar) return;
             var query = normalize(serverFilterInput.value);
             var queryNumber = extractServerNumber(query);
@@ -275,19 +350,26 @@
                 }
             }
 
+            var techQuery = normalize(techFilterInput.value);
+            var levelQuery = normalize(levelFilterSelect.value);
+            filtered = filtered.filter(function(e){
+                return eventHasTech(e, techQuery) && eventMatchesLevel(e, levelQuery);
+            });
+
             calendar.removeAllEvents();
             calendar.addEventSource(filtered);
 
             renderBarChart(filtered, queryNumber);
         }
 
-        function populateServerTitlesDatalist() {
+        function populateServerTitlesDatalist(sourceEvents) {
             if (!serverTitlesDatalist) return;
             serverTitlesDatalist.innerHTML = '';
 
+            var base = Array.isArray(sourceEvents) ? sourceEvents : allEvents;
             var numbers = Array.from(
                 new Set(
-                    allEvents
+                    base
                         .map(e => extractServerNumber(e && e.title))
                         .filter(n => n && n.length > 0)
                 )
@@ -300,12 +382,112 @@
             }
         }
 
-        serverFilterInput.addEventListener('input', applyServerFilter);
+        serverFilterInput.addEventListener('input', applyAllFilters);
+        techFilterInput.addEventListener('input', function(){
+            // Se nível vazio, auto-preencher com nível do colaborador
+            if (!normalize(levelFilterSelect.value)) {
+                var lvl = getLevelForName(techFilterInput.value);
+                if (lvl) {
+                    levelFilterSelect.value = lvl;
+                    updateTechNamesDatalistForLevel();
+                    // Atualizar servidores com eventos que tenham colaboradores deste nível
+                    var eventsByLevel = allEvents.filter(function(e){ return eventMatchesLevel(e, lvl); });
+                    populateServerTitlesDatalist(eventsByLevel);
+                }
+            }
+            applyAllFilters();
+        });
+        levelFilterSelect.addEventListener('change', function(){
+            updateTechNamesDatalistForLevel();
+            var lvl = normalize(levelFilterSelect.value);
+            var eventsByLevel = lvl ? allEvents.filter(function(e){ return eventMatchesLevel(e, lvl); }) : allEvents;
+            populateServerTitlesDatalist(eventsByLevel);
+            applyAllFilters();
+        });
         clearFilterBtn.addEventListener('click', function() {
             serverFilterInput.value = '';
-            applyServerFilter();
+            techFilterInput.value = '';
+            levelFilterSelect.value = '';
+            updateTechNamesDatalistForLevel();
+            populateServerTitlesDatalist(allEvents);
+            applyAllFilters();
             serverFilterInput.focus();
         });
+
+        function populateTechNamesDatalist(names) {
+            if (!techNamesDatalist) return;
+            techNamesDatalist.innerHTML = '';
+            var uniq = Array.from(new Set(names.filter(Boolean))).sort(function(a,b){
+                return a.localeCompare(b, 'pt', { sensitivity: 'base' });
+            });
+            for (var i = 0; i < uniq.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = uniq[i];
+                techNamesDatalist.appendChild(opt);
+            }
+        }
+
+        function updateTechNamesDatalistForLevel() {
+            var lvl = normalize(levelFilterSelect.value);
+            if (!lvl) {
+                populateTechNamesDatalist(Array.from(techLevelByName.keys()));
+                return;
+            }
+            var names = [];
+            for (var pair of techLevelByName.entries()) {
+                if (normalize(pair[1]).toLowerCase() === lvl.toLowerCase()) names.push(pair[0]);
+            }
+            populateTechNamesDatalist(names);
+        }
+
+        function parseCSVTeam(text) {
+            var lines = text.split(/\r?\n/).filter(function(l){ return l.trim().length > 0; });
+            if (lines.length === 0) return [];
+            var headers = lines[0].split(',').map(function(h){ return h.trim(); });
+            var idxName = headers.indexOf('tech_name');
+            var idxLevel = headers.indexOf('level');
+            var res = [];
+            for (var i = 1; i < lines.length; i++) {
+                var cols = [];
+                var cur = '';
+                var inQ = false;
+                var line = lines[i];
+                for (var j = 0; j < line.length; j++) {
+                    var ch = line[j];
+                    if (ch === '"') {
+                        if (inQ && line[j+1] === '"') { cur += '"'; j++; }
+                        else { inQ = !inQ; }
+                    } else if (ch === ',' && !inQ) {
+                        cols.push(cur); cur = '';
+                    } else {
+                        cur += ch;
+                    }
+                }
+                cols.push(cur);
+                var name = (idxName >= 0 ? (cols[idxName]||'').trim() : '');
+                var level = (idxLevel >= 0 ? (cols[idxLevel]||'').trim() : '');
+                if (name) res.push({ name: name, level: level });
+            }
+            return res;
+        }
+
+        // Carregar lista de colaboradores (para filtro por Nome/Nível)
+        fetch('../data/team.csv')
+            .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
+            .then(function(txt){
+                var items = parseCSVTeam(txt);
+                var names = [];
+                techLevelByName.clear();
+                for (var i = 0; i < items.length; i++) {
+                    names.push(items[i].name);
+                    techLevelByName.set(items[i].name, items[i].level);
+                }
+                populateTechNamesDatalist(names);
+            })
+            .catch(function(err){
+                console.warn('Não foi possível carregar team.csv (filtro por colaborador):', err);
+                // Fallback simples: deixa filtro por nome livre sem lista
+            });
 
         // [CORREÇÃO] Buscar o JSON PRIMEIRO para saber a data inicial
         fetch('schedule.json')
@@ -317,7 +499,7 @@
                     : (data && Array.isArray(data.events) ? data.events : []);
 
                 allEvents = events;
-                populateServerTitlesDatalist();
+                populateServerTitlesDatalist(allEvents);
                 
                 // Descobrir a data do primeiro evento para focar o calendário lá
                 var initialDate = new Date(); // Default hoje
@@ -366,7 +548,7 @@
                 });
                 
                 calendar.render();
-                applyServerFilter();
+                applyAllFilters();
             })
             .catch(error => {
                 console.error('Erro ao carregar schedule.json:', error);
