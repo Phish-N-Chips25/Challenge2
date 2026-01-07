@@ -1,5 +1,6 @@
 ﻿import pandas as pd
 import random
+import re
 
 INPUT_CSV = "../../AAUTIA/cve_cisa_epss_enriched_dataset_with_nvd.csv"
 OUTPUT_CSV = "cves_windows_ready_for_loader.csv"
@@ -35,9 +36,38 @@ def is_potentially_windows_applicable(software_field: str) -> bool:
     return not any(k in software_field for k in EXCLUDED_KEYWORDS)
 
 
+def clean_first_value(value: str) -> str:
+    if pd.isna(value):
+        return ""
+    value = str(value).strip().replace('"', '')
+    return value.split(",")[0].strip()
+
+
+def clean_version(version: str) -> str:
+    if pd.isna(version):
+        return ""
+
+    v = str(version).strip()
+
+    # remover aspas
+    v = v.replace('"', '')
+
+    # remover tudo a partir de '&'
+    v = v.split("&")[0].strip()
+
+    # ficar só com o primeiro se houver lista
+    v = v.split(",")[0].strip()
+
+    # remover operadores apenas no início
+    v = re.sub(r'^(<=|>=|<|>)\s*', '', v)
+
+    return v
+
+
+
+
 def main():
     cutoff_date = pd.Timestamp.now(tz="UTC") - pd.Timedelta(days=365 * YEARS_BACK)
-
     selected_by_bin = {b: [] for b in EPSS_BINS}
 
     for chunk in pd.read_csv(INPUT_CSV, chunksize=CHUNK_SIZE):
@@ -67,7 +97,6 @@ def main():
         if all(len(v) >= TARGET_PER_BIN for v in selected_by_bin.values()):
             break
 
-    # Consolidar seleção
     df = pd.DataFrame(
         [row for rows in selected_by_bin.values() for row in rows]
     ).sample(frac=1)
@@ -75,16 +104,15 @@ def main():
     if len(df) > TARGET_COUNT:
         df = df.sample(TARGET_COUNT)
 
-    # Criar colunas esperadas pelo loader
+    # Construir CSV final com limpeza
     df_final = pd.DataFrame({
         "id": df["cve_id"],
         "severity": df["base_severity"],
         "epss": df["epss_score"].astype(float),
-        "software": df["affected_software"],
-        "version": df["affected_versions"].fillna("").astype(str),
+        "software": df["affected_software"].apply(clean_first_value),
+        "version": df["affected_versions"].apply(clean_version),
     })
 
-    # ops (1–3)
     df_final["ops"] = random.choices(
         population=[1, 2, 3],
         weights=[0.45, 0.4, 0.15],

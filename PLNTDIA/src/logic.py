@@ -31,7 +31,7 @@ def calculate_priority(cve: CVE, software: Software) -> float:
         sev_score = float(cve.severity)
     except ValueError:
         severity_map = {"Low": 2.0, "Medium": 5.0, "High": 8.0, "Critical": 10.0}
-        sev_score = severity_map.get(cve.severity, 2.0)
+        sev_score = severity_map.get(str(cve.severity).capitalize(), 2.0)
     
     crit_score = software.criticality
     epss_scaled = cve.epss_score * 10.0
