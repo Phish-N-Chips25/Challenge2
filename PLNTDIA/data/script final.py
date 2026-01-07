@@ -46,7 +46,7 @@ output_rows = []
 # Loop para criar 100 conjuntos de servidores (001 a 100)
 for i in range(1, 101):
     # Escolhe aleatoriamente entre 1 e 3 CVEs para aplicar a este conjunto de servidores
-    num_cves_for_server = random.randint(1, 3)
+    num_cves_for_server = random.randint(1, 7)
 
     # Seleciona as CVEs aleatoriamente da nossa pool de 20
     server_cves = selected_cves.sample(n=num_cves_for_server)
