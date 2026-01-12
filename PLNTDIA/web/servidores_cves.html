@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Servidores ↔ CVEs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
+    .container { max-width: 1600px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    .title-wrap { display: grid; gap: 6px; }
+    h1 { margin: 0; color: #1a202c; font-size: 22px; letter-spacing: -0.01em; }
+    .subtitle { color: #718096; font-size: 13px; font-weight: 600; }
+
+    .topbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin: 14px 0 18px 0; }
+    .btn-link { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 14px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
+    .btn-link:hover { background: #f7fafc; }
+
+    .filters { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .filters input, .filters select { padding: 10px 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 14px; }
+
+    .table-scroll { max-height: 72vh; overflow: auto; border: 1px solid #e2e8f0; border-radius: 12px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid #edf2f7; font-size: 13px; color: #2d3748; vertical-align: top; }
+    th { font-size: 12px; color: #4a5568; text-transform: uppercase; letter-spacing: 0.02em; position: sticky; top: 0; background: white; z-index: 1; }
+
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; border: 1px solid #e2e8f0; font-size: 12px; font-weight: 800; color: #4a5568; background: white; }
+    .pill.dev { background: #38a169; border-color: #38a169; color: white; }
+    .pill.uat { background: #dd6b20; border-color: #dd6b20; color: white; }
+    .pill.prod { background: #e53e3e; border-color: #e53e3e; color: white; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .chip { background: #f7fafc; border: 1px solid #e2e8f0; color: #4a5568; padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 800; cursor: pointer; user-select: none; }
+    .chip:hover { background: #edf2f7; }
+
+    .sev { border-left: 4px solid #e2e8f0; padding-left: 8px; }
+    .sev.rto { border-left-color: #000000; }
+
+    .muted { color: #718096; }
+    .empty { color: #718096; font-size: 14px; padding: 10px 2px; }
+
+    .legend { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 8px 0 0 0; }
+    .legend .label { color: #4a5568; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.02em; }
+    .legend .note { color: #718096; font-size: 12px; font-weight: 600; }
+
+    .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+    .modal-content { background-color: white; margin: 6% auto; padding: 18px; border-radius: 10px; width: min(820px, 92vw); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+    .close { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: #aaa; }
+    .close:hover { color: black; }
+    .kv { display: grid; grid-template-columns: 180px 1fr; gap: 8px 14px; font-size: 13px; }
+    .kv .k { color: #718096; font-weight: 800; text-transform: uppercase; font-size: 11px; letter-spacing: 0.02em; }
+    .kv .v { color: #2d3748; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title-wrap">
+        <h1>Servidores ↔ CVEs</h1>
+        <div class="subtitle">Esta listagem usa a mesma fonte do calendário: <strong>/schedule.json</strong> (apenas tarefas agendadas).</div>
+        <div class="legend">
+          <span class="label">Cores</span>
+          <span class="note">Ambiente:</span>
+          <span class="pill dev">DEV</span>
+          <span class="pill uat">UAT</span>
+          <span class="pill prod">PROD</span>
+          <span class="note">| Risco:</span>
+          <span class="chip sev rto" title="RTO breach">⚠️ RTO breach</span>
+        </div>
+        <div class="subtitle" style="margin-top:6px;">Nota: se uma tarefa não aparece aqui, ela também não está no calendário.</div>
+      </div>
+      <a class="btn-link" href="index.html">Voltar ao Dashboard</a>
+    </div>
+
+    <div class="topbar">
+      <div class="filters">
+        <input id="q" placeholder="Pesquisar por servidor, CVE, software…" />
+        <select id="env">
+          <option value="">Todos ambientes</option>
+          <option value="DEV">DEV</option>
+          <option value="UAT">UAT</option>
+          <option value="PROD">PROD</option>
+        </select>
+        <select id="onlyAffected">
+          <option value="all">Mostrar todos</option>
+          <option value="affected">Apenas servidores com CVEs</option>
+        </select>
+      </div>
+      <div id="meta" class="subtitle">A carregar…</div>
+    </div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Servidor</th>
+            <th>Ambiente</th>
+            <th>SO</th>
+            <th>RTO</th>
+            <th>#CVEs</th>
+            <th>CVEs (clique para detalhes)</th>
+          </tr>
+        </thead>
+        <tbody id="body"></tbody>
+      </table>
+      <div id="empty" class="empty" style="display:none">Sem resultados.</div>
+    </div>
+  </div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2 style="margin:0 0 10px 0; font-size:18px; color:#1a202c;">Detalhes do CVE</h2>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    function $(id){ return document.getElementById(id); }
+
+    function openModal(html){
+      $('modalContent').innerHTML = html;
+      $('modal').style.display = 'block';
+    }
+    function closeModal(){ $('modal').style.display = 'none'; }
+    window.onclick = function(event){ if (event.target && event.target.id === 'modal') closeModal(); }
+
+    function pillForEnv(env){
+      var cls = (env||'').toLowerCase();
+      return '<span class="pill ' + cls + '">' + (env||'') + '</span>';
+    }
+
+    function norm(t){ return (t||'').toString().toLowerCase().trim(); }
+
+    function render(rows){
+      var tbody = $('body');
+      var empty = $('empty');
+      tbody.innerHTML = '';
+
+      if (!rows || rows.length === 0){
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      for (var i=0;i<rows.length;i++){
+        var r = rows[i];
+        var s = r.server;
+        var tr = document.createElement('tr');
+
+        var tdSrv = document.createElement('td'); tdSrv.textContent = s.id;
+        var tdEnv = document.createElement('td'); tdEnv.innerHTML = pillForEnv(s.environment);
+        var tdOs = document.createElement('td'); tdOs.innerHTML = '<div><strong>' + s.os_name + '</strong></div><div class="muted">' + s.os_version + '</div>';
+        var tdRto = document.createElement('td'); tdRto.textContent = (s.rto_hours != null ? s.rto_hours + 'h' : '');
+        var tdCnt = document.createElement('td'); tdCnt.textContent = r.cve_count;
+
+        var tdCves = document.createElement('td');
+        if (!r.cves || r.cves.length === 0){
+          tdCves.innerHTML = '<span class="muted">Sem CVEs correspondentes</span>';
+        } else {
+          var wrap = document.createElement('div');
+          wrap.className = 'chips';
+          for (var j=0;j<r.cves.length;j++){
+            (function(c){
+              var chip = document.createElement('span');
+              chip.className = 'chip sev ' + (c.rto_breach ? 'rto' : '');
+              chip.textContent = c.cve_id + (c.rto_breach ? ' ⚠️' : '');
+              chip.onclick = function(){
+                var html = '';
+                html += '<div class="kv">';
+                html += '<div class="k">Servidor</div><div class="v">' + s.id + ' (' + s.environment + ')</div>';
+                html += '<div class="k">CVE</div><div class="v">' + c.cve_id + '</div>';
+                html += '<div class="k">App</div><div class="v">' + (c.app || '') + '</div>';
+                html += '<div class="k">Técnicos</div><div class="v">' + (c.techs || '') + '</div>';
+                html += '<div class="k">Início</div><div class="v">' + (c.start || '') + '</div>';
+                html += '<div class="k">Fim</div><div class="v">' + (c.end || '') + '</div>';
+                html += '<div class="k">Prioridade</div><div class="v">' + (c.priority != null ? Number(c.priority).toFixed(2) : '') + '</div>';
+                html += '<div class="k">RTO breach</div><div class="v">' + (c.rto_breach ? 'Sim' : 'Não') + '</div>';
+                html += '</div>';
+                openModal(html);
+              };
+              wrap.appendChild(chip);
+            })(r.cves[j]);
+          }
+          tdCves.appendChild(wrap);
+        }
+
+        tr.appendChild(tdSrv);
+        tr.appendChild(tdEnv);
+        tr.appendChild(tdOs);
+        tr.appendChild(tdRto);
+        tr.appendChild(tdCnt);
+        tr.appendChild(tdCves);
+        tbody.appendChild(tr);
+      }
+    }
+
+    var allRows = [];
+
+    function parseDescription(desc){
+      var out = { cve_id: '', app: '', techs: '' };
+      var text = (desc || '').toString();
+      var lines = text.split(/\r?\n/);
+      for (var i=0;i<lines.length;i++){
+        var line = lines[i].trim();
+        if (line.toLowerCase().startsWith('cve:')) out.cve_id = line.split(':').slice(1).join(':').trim();
+        if (line.toLowerCase().startsWith('app:')) out.app = line.split(':').slice(1).join(':').trim();
+        if (line.toLowerCase().startsWith('techs:')) out.techs = line.split(':').slice(1).join(':').trim();
+      }
+      return out;
+    }
+
+    function toRowsFromScheduleJson(data){
+      var events = [];
+      if (Array.isArray(data)) events = data;
+      else if (data && Array.isArray(data.events)) events = data.events;
+
+      var byServer = new Map();
+
+      for (var i=0;i<events.length;i++){
+        var e = events[i] || {};
+        var rawTitle = (e.title || '').toString();
+        var rto = rawTitle.trim().startsWith('⚠️');
+        var serverId = rawTitle.replace(/^\s*⚠️\s*/,'').trim();
+        if (!serverId) continue;
+
+        var env = (e.extendedProps && e.extendedProps.environment) ? e.extendedProps.environment : '';
+        var priority = (e.extendedProps && e.extendedProps.priority != null) ? e.extendedProps.priority : null;
+
+        var parsed = parseDescription(e.description);
+        var cveId = parsed.cve_id || '';
+
+        if (!byServer.has(serverId)){
+          byServer.set(serverId, {
+            server: { id: serverId, environment: env, os_name: '', os_version: '', rto_hours: null },
+            cves: [],
+          });
+        }
+
+        var row = byServer.get(serverId);
+        if (!row.server.environment && env) row.server.environment = env;
+
+        row.cves.push({
+          cve_id: cveId || '(sem CVE)',
+          app: parsed.app || '',
+          techs: parsed.techs || '',
+          start: e.start || '',
+          end: e.end || '',
+          priority: priority,
+          rto_breach: rto,
+        });
+      }
+
+      var out = Array.from(byServer.values()).map(r => {
+        r.cves.sort((a,b) => {
+          var ap = (a.priority == null ? -1 : Number(a.priority));
+          var bp = (b.priority == null ? -1 : Number(b.priority));
+          return bp - ap;
+        });
+        return {
+          server: r.server,
+          cves: r.cves,
+          cve_count: r.cves.length,
+        };
+      });
+
+      var envRank = { DEV: 1, UAT: 2, PROD: 3 };
+      out.sort((a,b) => {
+        if (b.cve_count !== a.cve_count) return b.cve_count - a.cve_count;
+        var ar = envRank[a.server.environment] || 99;
+        var br = envRank[b.server.environment] || 99;
+        if (ar !== br) return ar - br;
+        return (a.server.id || '').localeCompare(b.server.id || '');
+      });
+      return out;
+    }
+
+    function applyFilters(){
+      var q = norm($('q').value);
+      var env = $('env').value;
+      var only = $('onlyAffected').value;
+
+      var out = allRows.slice();
+      if (env){
+        out = out.filter(r => r.server && r.server.environment === env);
+      }
+      if (only === 'affected'){
+        out = out.filter(r => (r.cve_count || 0) > 0);
+      }
+      if (q){
+        out = out.filter(r => {
+          var s = r.server || {};
+          if (norm(s.id).includes(q)) return true;
+          if (norm(s.os_name).includes(q) || norm(s.os_version).includes(q)) return true;
+          for (var i=0;i<(r.cves||[]).length;i++){
+            var c = r.cves[i];
+            if (norm(c.cve_id).includes(q)) return true;
+            if (norm(c.app).includes(q)) return true;
+            if (norm(c.techs).includes(q)) return true;
+          }
+          return false;
+        });
+      }
+
+      $('meta').textContent = out.length + ' servidores (de ' + allRows.length + ')';
+      render(out);
+    }
+
+    document.addEventListener('DOMContentLoaded', function(){
+      $('q').addEventListener('input', applyFilters);
+      $('env').addEventListener('change', applyFilters);
+      $('onlyAffected').addEventListener('change', applyFilters);
+
+      fetch('/schedule.json')
+        .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+        .then(data => {
+          allRows = toRowsFromScheduleJson(data);
+          var totalTasks = 0;
+          for (var i=0;i<allRows.length;i++) totalTasks += (allRows[i].cve_count || 0);
+          $('meta').textContent = 'OK: ' + allRows.length + ' servidores | ' + totalTasks + ' tarefas (do calendário)';
+          applyFilters();
+        })
+        .catch(err => {
+          console.error(err);
+          $('meta').textContent = 'Erro a carregar /schedule.json';
+          render([]);
+        });
+    });
+  </script>
+</body>
+</html>
