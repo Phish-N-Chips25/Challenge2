@@ -1,6 +1,13 @@
 === HISTÓRICO DE EXECUÇÃO ===
 -> A iniciar evolução genética (1 gerações) com Gestão Inteligente + Fallback...
    Geração 00: Melhor Fitness = -4184583.35 | Falhas: 42
+==================================================
+🚨 INTERVENÇÃO DE EMERGÊNCIA: CVE-2026-ZERO-DAY
+   Agendado em 60 servidores.
+   Prioridade Final: 13.95 (Boost Aplicado)
+   Tarefas Reagendadas (Salvas): 157
+   Tarefas Sacrificadas (Removidas): 83
+==================================================
 
 ========================================
 
@@ -9,22 +16,22 @@
 ========================================
 
 --- ESTATÍSTICAS GERAIS ---
-✅ Total de Patches Agendados: 498
-⚠️  Total de Patches Falhados:  42
-🚨 Agendados com Violação de RTO: 20 (Requerem Aprovação)
-📊 Taxa de Sucesso Global:    92.2%
+✅ Total de Patches Agendados: 475
+⚠️  Total de Patches Falhados:  125
+🚨 Agendados com Violação de RTO: 17 (Requerem Aprovação)
+📊 Taxa de Sucesso Global:    87.8%
 
 --- MÉTRICAS DE PIPELINE (Cadeia de Valor) ---
-🚀 Pipelines Completos (DEV+UAT+PROD): 138
-🧪 Apenas Testes (DEV+UAT):           42
-🛠️  Retidos em Dev (Apenas DEV):      0
-📈 Eficiência de Entrega em PROD:     76.7%
+🚀 Pipelines Completos (DEV+UAT+PROD): 106
+🧪 Apenas Testes (DEV+UAT):           63
+🛠️  Retidos em Dev (Apenas DEV):      31
+📈 Eficiência de Entrega em PROD:     53.0%
 
 --- ANÁLISE DE CARGA (DIÁRIA E SEMANAL) ---
 👤 Ana Martins     (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 36h | Sem 3: 20h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 8h
-   Custo Total: 4,800.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,280.00€
 ------------------------------
 👤 André Sousa     (Senior)
    Semanal: Sem 1: 20h | Sem 2: 12h
@@ -32,9 +39,9 @@
    Custo Total: 1,920.00€
 ------------------------------
 👤 Beatriz Pereira (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 34h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 4h
-   Custo Total: 5,160.00€
+   Semanal: Sem 1: 20h | Sem 2: 28h | Sem 3: 36h
+   Diário:  Sáb(D5): 12h | Dom(D6): 8h | Ter(D8): 4h | Qua(D9): 2h | Qui(D10): 2h | Sáb(D12): 8h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,040.00€
 ------------------------------
 👤 Bruno Ferreira  (Mid)
    Semanal: Sem 1: 21h
@@ -42,9 +49,9 @@
    Custo Total: 840.00€
 ------------------------------
 👤 Carla Carvalho  (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 34h | Sem 3: 32h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 8h
-   Custo Total: 5,400.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 36h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 2h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,520.00€
 ------------------------------
 👤 Carla Oliveira  (Senior)
    Semanal: Sem 1: 20h | Sem 2: 11h
@@ -52,19 +59,19 @@
    Custo Total: 1,860.00€
 ------------------------------
 👤 Cátia Martins   (Mid)
-   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 20h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 4h
-   Custo Total: 3,040.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 3,520.00€
 ------------------------------
 👤 Cátia Rodrigues (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 34h | Sem 3: 24h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h
-   Custo Total: 4,920.00€
+   Semanal: Sem 1: 24h | Sem 2: 34h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 2h | Qua(D16): 4h | Qui(D17): 2h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,400.00€
 ------------------------------
 👤 Diana Ferreira  (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 35h | Sem 3: 22h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 3h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 10h
-   Custo Total: 4,860.00€
+   Semanal: Sem 1: 24h | Sem 2: 35h | Sem 3: 34h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 3h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 2h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,580.00€
 ------------------------------
 👤 Diana Pereira   (Senior)
    Semanal: Sem 1: 21h | Sem 2: 11h
@@ -72,14 +79,14 @@
    Custo Total: 1,920.00€
 ------------------------------
 👤 Diogo Santos    (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 30h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 4h
-   Custo Total: 4,920.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,280.00€
 ------------------------------
 👤 Elsa Almeida    (Mid)
-   Semanal: Sem 1: 24h | Sem 2: 28h | Sem 3: 20h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Sáb(D12): 12h | Dom(D13): 12h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 4h
-   Custo Total: 2,880.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 3,520.00€
 ------------------------------
 👤 Hugo Moreira    (Mid)
    Semanal: Sem 1: 19h
@@ -92,8 +99,8 @@
    Custo Total: 200.00€
 ------------------------------
 👤 Hugo Rodrigues  (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 34h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 2h | Sex(D18): 2h | Sáb(D19): 12h | Dom(D20): 4h
+   Semanal: Sem 1: 24h | Sem 2: 26h | Sem 3: 36h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Qui(D10): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 2h | Sex(D18): 2h | Sáb(D19): 12h | Dom(D20): 12h
    Custo Total: 5,160.00€
 ------------------------------
 👤 Joana Carvalho  (Senior)
@@ -102,34 +109,34 @@
    Custo Total: 1,860.00€
 ------------------------------
 👤 João Martins    (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 36h | Sem 3: 22h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 2h | Sáb(D19): 12h
-   Custo Total: 4,920.00€
+   Semanal: Sem 1: 24h | Sem 2: 28h | Sem 3: 26h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Qui(D10): 4h | Sáb(D12): 12h | Dom(D13): 12h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 10h
+   Custo Total: 4,680.00€
 ------------------------------
 👤 João Pinto      (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 35h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 3h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 4h
-   Custo Total: 5,220.00€
+   Semanal: Sem 1: 24h | Sem 2: 35h | Sem 3: 36h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 3h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,700.00€
 ------------------------------
 👤 Miguel Carvalho (Mid)
-   Semanal: Sem 1: 24h | Sem 2: 28h | Sem 3: 24h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 4h
-   Custo Total: 3,040.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 3,520.00€
 ------------------------------
 👤 Miguel Pereira  (Mid)
-   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 22h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 2h
-   Custo Total: 3,120.00€
+   Semanal: Sem 1: 24h | Sem 2: 24h | Sem 3: 22h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Sáb(D12): 12h | Dom(D13): 12h | Sáb(D19): 12h | Dom(D20): 10h
+   Custo Total: 2,800.00€
 ------------------------------
 👤 Pedro Fernandes (Mid)
-   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 8h
-   Custo Total: 3,360.00€
+   Semanal: Sem 1: 20h | Sem 2: 24h | Sem 3: 28h
+   Diário:  Sáb(D5): 8h | Dom(D6): 12h | Sáb(D12): 12h | Dom(D13): 12h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 2,880.00€
 ------------------------------
 👤 Pedro Pinto     (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 30h | Sem 3: 24h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h
-   Custo Total: 4,680.00€
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,280.00€
 ------------------------------
 👤 Ricardo Martins (Junior)
    Semanal: Sem 1: 8h
@@ -142,35 +149,31 @@
    Custo Total: 840.00€
 ------------------------------
 👤 Rui Costas      (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 35h | Sem 3: 24h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 3h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 2h | Sáb(D19): 12h | Dom(D20): 2h
-   Custo Total: 4,980.00€
+   Semanal: Sem 1: 24h | Sem 2: 27h | Sem 3: 34h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Qui(D10): 3h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 2h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 5,100.00€
 ------------------------------
 👤 Rui Martins     (Mid)
-   Semanal: Sem 1: 24h | Sem 2: 36h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Qui(D10): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 4h
+   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
    Custo Total: 3,520.00€
 ------------------------------
 👤 Sofia Costa     (Senior)
-   Semanal: Sem 1: 24h | Sem 2: 32h | Sem 3: 32h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 4h | Qua(D9): 4h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 8h
-   Custo Total: 5,280.00€
+   Semanal: Sem 1: 24h | Sem 2: 26h | Sem 3: 32h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Ter(D8): 2h | Sáb(D12): 12h | Dom(D13): 12h | Ter(D15): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 12h
+   Custo Total: 4,920.00€
 ------------------------------
 👤 Sofia Silva     (Mid)
    Semanal: Sem 1: 24h | Sem 2: 24h | Sem 3: 28h
-   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Sáb(D12): 12h | Dom(D13): 12h | Qua(D16): 4h | Qui(D17): 4h | Sáb(D19): 12h | Dom(D20): 8h
+   Diário:  Sáb(D5): 12h | Dom(D6): 12h | Sáb(D12): 12h | Dom(D13): 12h | Qua(D16): 4h | Sáb(D19): 12h | Dom(D20): 12h
    Custo Total: 3,040.00€
 ------------------------------
 
-💰 CUSTO TOTAL ESTIMADO: 92,700.00€
+💰 CUSTO TOTAL ESTIMADO: 96,140.00€
 
 ========================================
    DETALHE CRONOLÓGICO E PRIORIDADES
 ========================================
-🗓️  [DEV] Sáb 00h-02h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Rui Martins (Mid)
-----------------------------------------
 🗓️  [DEV] Sáb 00h-01h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
@@ -183,21 +186,9 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     Miguel Pereira (Mid)
 ----------------------------------------
-🗓️  [DEV] Sáb 00h-02h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Martins (Mid)
-----------------------------------------
 🗓️  [DEV] Sáb 00h-01h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Rui Costa (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Miguel Carvalho (Mid), Sofia Costa (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Carla Carvalho (Senior), Hugo Rodrigues (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 00h-01h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
@@ -211,21 +202,9 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     João Pinto (Senior)
 ----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid), Ana Martins (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 00h-01h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Diana Pereira (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior), Diogo Santos (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior), Cátia Rodrigues (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 00h-04h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
@@ -242,6 +221,30 @@
 🗓️  [DEV] Sáb 00h-01h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Joana Carvalho (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Carla Carvalho (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Cátia Rodrigues (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Sofia Costa (Senior), Hugo Rodrigues (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 01h-03h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
@@ -275,22 +278,6 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Joana Carvalho (Senior)
 ----------------------------------------
-🗓️  [DEV] Sáb 02h-06h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Pedro Fernandes (Mid), João Pinto (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 02h-04h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Martins (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 02h-04h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Rui Martins (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 02h-04h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Miguel Pereira (Mid)
-----------------------------------------
 🗓️  [UAT] Sáb 02h-03h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
@@ -311,6 +298,14 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Joana Carvalho (Senior)
 ----------------------------------------
+🗓️  [DEV] Sáb 02h-04h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Miguel Pereira (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 02h-04h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     João Pinto (Senior)
+----------------------------------------
 🗓️  [UAT] Sáb 03h-05h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Rui Costa (Mid)
@@ -327,53 +322,21 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Carla Oliveira (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Rui Martins (Mid), Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
-----------------------------------------
 🗓️  [DEV] Sáb 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Silva (Mid), Sofia Costa (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Carla Carvalho (Senior), Hugo Rodrigues (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 04h-06h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior)
 ----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Miguel Carvalho (Mid), João Martins (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-06h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-06h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 04h-06h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
-🗓️  [DEV] Sáb 04h-06h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 04h-06h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-06h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Diogo Santos (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 04h-05h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
@@ -399,6 +362,30 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Joana Carvalho (Senior)
 ----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), Ana Martins (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Pedro Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     João Pinto (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-08h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), Hugo Rodrigues (Senior)
+----------------------------------------
 🗓️  [UAT] Sáb 05h-06h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
@@ -423,29 +410,9 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Carla Oliveira (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 06h-10h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Pedro Fernandes (Mid), Diogo Santos (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 06h-10h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Pedro Pinto (Senior), Rui Costas (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 06h-08h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 06h-08h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     João Pinto (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 06h-08h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Diana Ferreira (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 06h-08h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 06h-08h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -475,6 +442,10 @@
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
 ----------------------------------------
+🗓️  [DEV] Sáb 06h-08h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Rui Costas (Senior)
+----------------------------------------
 🗓️  [UAT] Sáb 07h-09h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Diana Pereira (Senior)
@@ -499,29 +470,9 @@
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
 ----------------------------------------
-🗓️  [DEV] Sáb 08h-10h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Rui Martins (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 08h-12h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Pinto (Senior), Cátia Rodrigues (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 08h-12h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 08h-12h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Sofia Costa (Senior), Carla Carvalho (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 08h-12h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Silva (Mid), Beatriz Pereira (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 08h-12h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 08h-12h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
@@ -538,6 +489,34 @@
 🗓️  [UAT] Sáb 08h-09h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid), Rui Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), João Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Cátia Rodrigues (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-10h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-10h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Rui Costas (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 09h-11h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
@@ -563,21 +542,9 @@
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
 ----------------------------------------
-🗓️  [UAT] Sáb 10h-14h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Miguel Pereira (Mid), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Rui Martins (Mid)
-----------------------------------------
 🗓️  [DEV] Sáb 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Pedro Fernandes (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 10h-12h | CVE-2024-AD02
-    Prioridade: 8.60 | App: Active Directory
-    Equipa:     Diogo Santos (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 10h-12h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -643,6 +610,14 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Pinto (Junior)
 ----------------------------------------
+🗓️  [DEV] Sáb 12h-16h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Pedro Fernandes (Mid), Sofia Costa (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 12h-16h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), João Martins (Senior)
+----------------------------------------
 🗓️  [UAT] Sáb 13h-14h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Pinto (Junior)
@@ -671,33 +646,9 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Pinto (Junior)
 ----------------------------------------
-🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
-----------------------------------------
-🗓️  [DEV] Dom 00h-04h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Miguel Pereira (Mid), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid), Ana Martins (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 00h-04h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Sofia Costa (Senior), Carla Carvalho (Senior)
-----------------------------------------
 🗓️  [DEV] Dom 00h-04h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
-----------------------------------------
-🗓️  [UAT] Dom 00h-02h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     João Pinto (Senior), Diogo Santos (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 00h-02h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -710,10 +661,6 @@
 🗓️  [DEV] Dom 00h-02h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Cátia Rodrigues (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 00h-02h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 00h-02h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -747,6 +694,26 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
 ----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Carla Carvalho (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), João Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diogo Santos (Senior), Diana Ferreira (Senior)
+----------------------------------------
 🗓️  [DEV] Dom 01h-03h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Diana Pereira (Senior)
@@ -758,14 +725,6 @@
 🗓️  [UAT] Dom 01h-02h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
-----------------------------------------
-🗓️  [DEV] Dom 02h-06h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Hugo Rodrigues (Senior), Pedro Pinto (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 02h-04h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 02h-04h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
@@ -799,6 +758,10 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
 ----------------------------------------
+🗓️  [DEV] Dom 02h-06h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Sofia Costa (Senior), Hugo Rodrigues (Senior)
+----------------------------------------
 🗓️  [DEV] Dom 03h-04h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
@@ -811,41 +774,13 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
 ----------------------------------------
-🗓️  [UAT] Dom 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
-----------------------------------------
-🚨 [UAT] Dom 04h-08h | CVE-2024-SQL01 | [RTO BREACH]
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Carla Carvalho (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Miguel Pereira (Mid), Miguel Carvalho (Mid)
-----------------------------------------
 🗓️  [DEV] Dom 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
 ----------------------------------------
-🗓️  [DEV] Dom 04h-06h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid)
-----------------------------------------
-🗓️  [UAT] Dom 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Rui Costas (Senior)
-----------------------------------------
 🗓️  [DEV] Dom 04h-06h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Pinto (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Diogo Santos (Senior), Cátia Rodrigues (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 04h-06h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [UAT] Dom 04h-06h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
@@ -875,6 +810,34 @@
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
 ----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
+----------------------------------------
+🚨 [UAT] Dom 04h-08h | CVE-2026-ZERO-DAY | [RTO BREACH]
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Carla Carvalho (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 04h-08h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), João Martins (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 04h-06h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Rui Costas (Senior)
+----------------------------------------
 🗓️  [UAT] Dom 05h-06h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
@@ -890,22 +853,6 @@
 🗓️  [UAT] Dom 05h-06h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Hugo Moreira (Mid)
-----------------------------------------
-🚨 [UAT] Dom 06h-10h | CVE-2024-EXC01 | [RTO BREACH]
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Sofia Costa (Senior), Hugo Rodrigues (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 06h-10h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Beatriz Pereira (Senior), João Pinto (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 06h-08h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Pedro Pinto (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 06h-10h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid), Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [UAT] Dom 06h-07h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
@@ -935,6 +882,14 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Joana Carvalho (Senior)
 ----------------------------------------
+🗓️  [DEV] Dom 06h-08h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     João Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 06h-10h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Sofia Costa (Senior), Hugo Rodrigues (Senior)
+----------------------------------------
 🗓️  [UAT] Dom 07h-08h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
@@ -951,29 +906,9 @@
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
 ----------------------------------------
-🗓️  [DEV] Dom 08h-12h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Rui Martins (Mid), Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [UAT] Dom 08h-12h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Carla Carvalho (Senior), Diogo Santos (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 08h-12h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Martins (Mid), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [UAT] Dom 08h-12h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Pedro Pinto (Senior)
-----------------------------------------
 🗓️  [DEV] Dom 08h-10h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 08h-10h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 08h-10h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -982,6 +917,26 @@
 🗓️  [UAT] Dom 08h-09h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Bruno Ferreira (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Ana Martins (Senior)
+----------------------------------------
+🚨 [UAT] Dom 08h-12h | CVE-2026-ZERO-DAY | [RTO BREACH]
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), João Pinto (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 10h-14h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
@@ -993,43 +948,19 @@
 ----------------------------------------
 🗓️  [DEV] Dom 10h-12h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
-    Equipa:     João Pinto (Senior)
-----------------------------------------
-🗓️  [DEV] Dom 10h-12h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
     Equipa:     Cátia Rodrigues (Senior)
 ----------------------------------------
-🗓️  [DEV] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid)
+🗓️  [DEV] Dom 10h-14h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), Rui Costas (Senior)
 ----------------------------------------
-🗓️  [DEV] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 12h-14h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Rui Costas (Senior)
+🗓️  [DEV] Dom 14h-18h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), João Martins (Senior)
 ----------------------------------------
 🗓️  [PROD] Ter 01h-02h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Carla Oliveira (Senior)
-----------------------------------------
-🚨 [PROD] Ter 01h-05h | CVE-2024-AD01 | [RTO BREACH]
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Sofia Costa (Senior), Pedro Fernandes (Mid)
-----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Carla Carvalho (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Hugo Rodrigues (Senior), Rui Martins (Mid)
 ----------------------------------------
 🗓️  [PROD] Ter 01h-02h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
@@ -1039,22 +970,6 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     André Sousa (Senior)
 ----------------------------------------
-🚨 [PROD] Ter 01h-05h | CVE-2024-EXC01 | [RTO BREACH]
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Pedro Pinto (Senior)
-----------------------------------------
-🚨 [PROD] Ter 01h-05h | CVE-2024-SQL01 | [RTO BREACH]
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Cátia Martins (Mid)
-----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Rui Costas (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 01h-05h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Diogo Santos (Senior), Elsa Almeida (Mid)
-----------------------------------------
 🗓️  [PROD] Ter 01h-03h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Joana Carvalho (Senior)
@@ -1063,17 +978,33 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Pinto (Senior)
 ----------------------------------------
-🗓️  [PROD] Ter 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Cátia Rodrigues (Senior), Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [PROD] Ter 01h-02h | CVE-2024-IIS01
-    Prioridade: 5.05 | App: IIS
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
 🗓️  [PROD] Ter 01h-03h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Beatriz Pereira (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Rui Martins (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diogo Santos (Senior), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [PROD] Ter 01h-03h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Sofia Costa (Senior)
 ----------------------------------------
 🗓️  [PROD] Ter 02h-03h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
@@ -1082,10 +1013,6 @@
 🗓️  [PROD] Ter 02h-03h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
     Equipa:     Carla Oliveira (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 02h-04h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [PROD] Ter 03h-04h | CVE-2024-IIS01
     Prioridade: 5.05 | App: IIS
@@ -1103,10 +1030,6 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Joana Carvalho (Senior)
 ----------------------------------------
-🗓️  [PROD] Ter 03h-05h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Rui Costas (Senior)
-----------------------------------------
 🗓️  [PROD] Ter 03h-05h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Beatriz Pereira (Senior)
@@ -1114,10 +1037,6 @@
 🗓️  [PROD] Ter 03h-04h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     João Pinto (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 03h-05h | CVE-2024-AD02
-    Prioridade: 8.60 | App: Active Directory
-    Equipa:     Carla Carvalho (Senior)
 ----------------------------------------
 🗓️  [PROD] Ter 04h-05h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
@@ -1135,45 +1054,9 @@
     Prioridade: 4.90 | App: Nginx
     Equipa:     João Pinto (Senior)
 ----------------------------------------
-🗓️  [PROD] Ter 04h-05h | CVE-2024-IIS01
-    Prioridade: 5.05 | App: IIS
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Carla Carvalho (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior), Cátia Martins (Mid)
-----------------------------------------
 🗓️  [PROD] Qua 01h-03h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Carla Oliveira (Senior)
-----------------------------------------
-🚨 [PROD] Qua 01h-05h | CVE-2024-AD01 | [RTO BREACH]
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Sofia Costa (Senior), Pedro Fernandes (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Cátia Rodrigues (Senior), Rui Martins (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Pinto (Senior), Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diogo Santos (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Hugo Rodrigues (Senior), Rui Costas (Senior)
 ----------------------------------------
 🗓️  [PROD] Qua 01h-03h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
@@ -1187,17 +1070,25 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Joana Carvalho (Senior)
 ----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-AD02
-    Prioridade: 8.60 | App: Active Directory
-    Equipa:     Beatriz Pereira (Senior)
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), Rui Martins (Mid)
 ----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
+🚨 [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY | [RTO BREACH]
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     João Pinto (Senior), Cátia Martins (Mid)
 ----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior)
+🚨 [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY | [RTO BREACH]
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diogo Santos (Senior), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Ana Martins (Senior)
 ----------------------------------------
 🗓️  [PROD] Qua 03h-05h | CVE-2024-SHP01
     Prioridade: 7.45 | App: SharePoint
@@ -1223,10 +1114,6 @@
     Prioridade: 7.45 | App: SharePoint
     Equipa:     Beatriz Pereira (Senior)
 ----------------------------------------
-🗓️  [PROD] Qua 03h-05h | CVE-2024-SHP01
-    Prioridade: 7.45 | App: SharePoint
-    Equipa:     Ana Martins (Senior)
-----------------------------------------
 🗓️  [PROD] Qua 04h-05h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Diana Pereira (Senior)
@@ -1242,10 +1129,6 @@
 🗓️  [PROD] Qui 01h-02h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
     Equipa:     Diana Pereira (Senior)
-----------------------------------------
-🚨 [PROD] Qui 01h-05h | CVE-2024-SQL01 | [RTO BREACH]
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Rui Martins (Mid)
 ----------------------------------------
 🗓️  [PROD] Qui 01h-02h | CVE-2024-NGINX01
     Prioridade: 4.90 | App: Nginx
@@ -1355,45 +1238,41 @@
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Silva (Mid), Pedro Fernandes (Mid)
 ----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Beatriz Pereira (Senior), João Pinto (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Carla Carvalho (Senior), Sofia Costa (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior), Cátia Rodrigues (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 00h-02h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Rui Costas (Senior), Hugo Rodrigues (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 00h-02h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Diogo Santos (Senior)
 ----------------------------------------
-🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Pedro Pinto (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 00h-02h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Martins (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Carla Carvalho (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), João Pinto (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 00h-04h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Cátia Rodrigues (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Rui Costas (Senior), Sofia Costa (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 02h-06h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
@@ -1407,33 +1286,9 @@
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Silva (Mid), Pedro Fernandes (Mid)
 ----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Miguel Carvalho (Mid), Rui Martins (Mid)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Cátia Rodrigues (Senior), Carla Carvalho (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Rui Costas (Senior), João Pinto (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 04h-06h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior)
-----------------------------------------
-🗓️  [DEV] Sáb 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior), Ana Martins (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior), Diogo Santos (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 04h-06h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -1442,6 +1297,26 @@
 🗓️  [DEV] Sáb 04h-06h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [UAT] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Pedro Pinto (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diogo Santos (Senior), Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 04h-08h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), João Pinto (Senior)
 ----------------------------------------
 🗓️  [DEV] Sáb 06h-10h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
@@ -1487,17 +1362,9 @@
     Prioridade: 9.30 | App: Exchange
     Equipa:     Miguel Pereira (Mid), Rui Costas (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 08h-10h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 08h-10h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Martins (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 08h-10h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 08h-10h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -1507,9 +1374,9 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Diogo Santos (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 08h-10h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior)
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Ana Martins (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -1527,14 +1394,6 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     João Pinto (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
-----------------------------------------
 🗓️  [UAT] Sáb 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior)
@@ -1547,13 +1406,17 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Martins (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior)
-----------------------------------------
 🗓️  [DEV] Sáb 12h-14h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Pedro Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 12h-16h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 12h-16h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Rui Costas (Senior), Hugo Rodrigues (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 00h-04h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
@@ -1567,17 +1430,9 @@
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior), Diogo Santos (Senior)
 ----------------------------------------
-🗓️  [UAT] Dom 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Miguel Carvalho (Mid), Rui Martins (Mid)
-----------------------------------------
 🗓️  [DEV] Dom 00h-04h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
     Equipa:     Miguel Pereira (Mid), Cátia Rodrigues (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 00h-04h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Sofia Costa (Senior), Carla Carvalho (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
     Prioridade: 9.75 | App: SQL Server
@@ -1595,9 +1450,21 @@
     Prioridade: 9.75 | App: SQL Server
     Equipa:     Ana Martins (Senior), Diana Ferreira (Senior)
 ----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid), Rui Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 00h-02h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior)
+----------------------------------------
 🗓️  [UAT] Dom 02h-04h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Martins (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 02h-04h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
@@ -1618,10 +1485,6 @@
 🗓️  [UAT] Dom 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     João Pinto (Senior), Hugo Rodrigues (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Miguel Carvalho (Mid), Rui Costas (Senior)
 ----------------------------------------
 🗓️  [UAT] Dom 04h-06h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -1647,17 +1510,25 @@
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
-🚨 [UAT] Dom 06h-10h | CVE-2024-AD01 | [RTO BREACH]
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Beatriz Pereira (Senior), Diogo Santos (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 06h-10h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid), Cátia Martins (Mid)
+🗓️  [DEV] Dom 04h-06h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid)
 ----------------------------------------
 🗓️  [UAT] Dom 06h-08h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 06h-10h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 06h-08h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [DEV] Dom 06h-08h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Diogo Santos (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 08h-10h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -1690,10 +1561,6 @@
 🗓️  [UAT] Dom 08h-10h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior)
-----------------------------------------
-🚨 [UAT] Dom 08h-12h | CVE-2024-EXC01 | [RTO BREACH]
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Pedro Pinto (Senior)
 ----------------------------------------
 🗓️  [DEV] Dom 08h-10h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -1711,6 +1578,10 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     Cátia Rodrigues (Senior)
 ----------------------------------------
+🗓️  [DEV] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Diogo Santos (Senior), Pedro Pinto (Senior)
+----------------------------------------
 🗓️  [UAT] Dom 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Sofia Silva (Mid)
@@ -1727,10 +1598,6 @@
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Rui Martins (Mid)
 ----------------------------------------
-🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Martins (Mid)
-----------------------------------------
 🗓️  [UAT] Dom 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Pedro Fernandes (Mid)
@@ -1739,17 +1606,9 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     Miguel Pereira (Mid)
 ----------------------------------------
-🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Carla Carvalho (Senior)
-----------------------------------------
 🗓️  [UAT] Dom 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior)
-----------------------------------------
-🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diogo Santos (Senior)
 ----------------------------------------
 🗓️  [UAT] Dom 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -1759,33 +1618,33 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior)
 ----------------------------------------
-🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     João Pinto (Senior)
-----------------------------------------
 🗓️  [UAT] Dom 10h-12h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
 ----------------------------------------
-🗓️  [UAT] Dom 10h-12h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     Cátia Rodrigues (Senior)
+🗓️  [DEV] Dom 10h-12h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Cátia Martins (Mid)
 ----------------------------------------
-🗓️  [PROD] Ter 01h-05h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Rui Martins (Mid)
-----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-SQL02
+🗓️  [DEV] Dom 10h-12h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
     Equipa:     Carla Carvalho (Senior)
 ----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-SQL02
+🗓️  [DEV] Dom 10h-12h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior)
+    Equipa:     Cátia Rodrigues (Senior)
 ----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-SQL02
+🗓️  [DEV] Dom 10h-12h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
     Equipa:     João Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 12h-16h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Sofia Costa (Senior), Beatriz Pereira (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 12h-16h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Rui Costas (Senior), João Martins (Senior)
 ----------------------------------------
 🗓️  [PROD] Ter 01h-03h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -1799,37 +1658,33 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior)
 ----------------------------------------
-🚨 [PROD] Ter 01h-05h | CVE-2024-EXC01 | [RTO BREACH]
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diogo Santos (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 01h-05h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [PROD] Ter 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior)
-----------------------------------------
 🗓️  [PROD] Ter 01h-03h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
 ----------------------------------------
+🚨 [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY | [RTO BREACH]
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Rui Martins (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [PROD] Ter 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     João Pinto (Senior), Diogo Santos (Senior)
+----------------------------------------
 🗓️  [PROD] Ter 03h-05h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Sofia Costa (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 03h-05h | CVE-2024-AD02
-    Prioridade: 8.60 | App: Active Directory
-    Equipa:     Diogo Santos (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 03h-05h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Carla Carvalho (Senior)
 ----------------------------------------
 🗓️  [PROD] Ter 03h-05h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -1847,49 +1702,13 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior)
 ----------------------------------------
-🗓️  [PROD] Ter 03h-05h | CVE-2024-AD02
-    Prioridade: 8.60 | App: Active Directory
-    Equipa:     João Pinto (Senior)
-----------------------------------------
-🗓️  [PROD] Ter 03h-05h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     João Pinto (Senior), Cátia Martins (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Sofia Costa (Senior), Pedro Fernandes (Mid)
-----------------------------------------
 🗓️  [PROD] Qua 01h-05h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior), Sofia Silva (Mid)
 ----------------------------------------
-🚨 [PROD] Qua 01h-05h | CVE-2024-EXC01 | [RTO BREACH]
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Carla Carvalho (Senior), Rui Martins (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Pedro Pinto (Senior), Miguel Pereira (Mid)
-----------------------------------------
-🗓️  [PROD] Qua 01h-05h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Cátia Rodrigues (Senior), Miguel Carvalho (Mid)
-----------------------------------------
 🚨 [PROD] Qua 01h-05h | CVE-2024-AD01 | [RTO BREACH]
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior), Diogo Santos (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [PROD] Qua 01h-03h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -1899,17 +1718,29 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
 ----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Pedro Pinto (Senior), Cátia Martins (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     João Pinto (Senior), Elsa Almeida (Mid)
+----------------------------------------
+🚨 [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY | [RTO BREACH]
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Miguel Carvalho (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Rui Martins (Mid)
+----------------------------------------
+🗓️  [PROD] Qua 01h-05h | CVE-2026-ZERO-DAY
+    Prioridade: 13.95 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), Ana Martins (Senior)
+----------------------------------------
 🗓️  [PROD] Qua 03h-05h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     João Martins (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 03h-05h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
-🗓️  [PROD] Qua 03h-05h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Ana Martins (Senior)
 ----------------------------------------
 🗓️  [PROD] Qua 03h-05h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
@@ -1935,29 +1766,9 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Beatriz Pereira (Senior)
 ----------------------------------------
-🗓️  [PROD] Qui 01h-05h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Ana Martins (Senior), Elsa Almeida (Mid)
-----------------------------------------
-🗓️  [PROD] Qui 01h-05h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Diogo Santos (Senior), Sofia Silva (Mid)
-----------------------------------------
-🗓️  [PROD] Qui 01h-03h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
-----------------------------------------
 🗓️  [PROD] Qui 01h-03h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
-----------------------------------------
-🚨 [PROD] Qui 01h-05h | CVE-2024-SQL01 | [RTO BREACH]
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Pedro Pinto (Senior), Rui Martins (Mid)
-----------------------------------------
-🗓️  [PROD] Qui 01h-03h | CVE-2024-EXC02
-    Prioridade: 7.55 | App: Exchange
-    Equipa:     João Martins (Senior)
 ----------------------------------------
 🗓️  [PROD] Qui 01h-03h | CVE-2024-SQL02
     Prioridade: 8.10 | App: SQL Server
@@ -1979,10 +1790,6 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     João Pinto (Senior)
 ----------------------------------------
-🗓️  [PROD] Qui 03h-05h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior)
-----------------------------------------
 🗓️  [PROD] Sex 01h-03h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
     Equipa:     Hugo Rodrigues (Senior)
@@ -1990,14 +1797,6 @@
 🗓️  [DEV] Sáb 00h-04h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Rui Martins (Mid), Miguel Pereira (Mid)
 ----------------------------------------
 🗓️  [UAT] Sáb 00h-04h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
@@ -2007,25 +1806,29 @@
     Prioridade: 9.75 | App: SQL Server
     Equipa:     Carla Carvalho (Senior), Pedro Pinto (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-AD01
-    Prioridade: 9.90 | App: Active Directory
-    Equipa:     Hugo Rodrigues (Senior), Beatriz Pereira (Senior)
-----------------------------------------
 🚨 [UAT] Sáb 00h-04h | CVE-2024-SQL01 | [RTO BREACH]
     Prioridade: 9.75 | App: SQL Server
     Equipa:     Ana Martins (Senior), João Pinto (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-SQL01
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
     Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Rodrigues (Senior), Diogo Santos (Senior)
+    Equipa:     Cátia Martins (Mid), Rui Martins (Mid)
 ----------------------------------------
-🗓️  [UAT] Sáb 00h-04h | CVE-2024-EXC01
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Cátia Rodrigues (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Sofia Costa (Senior), Hugo Rodrigues (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 00h-04h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
-    Equipa:     João Martins (Senior), Sofia Costa (Senior)
-----------------------------------------
-🗓️  [UAT] Sáb 00h-02h | CVE-2024-SQL02
-    Prioridade: 8.10 | App: SQL Server
-    Equipa:     Diana Ferreira (Senior)
+    Equipa:     Miguel Pereira (Mid), João Martins (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 04h-08h | CVE-2024-SQL01
     Prioridade: 9.75 | App: SQL Server
@@ -2034,10 +1837,6 @@
 🗓️  [UAT] Sáb 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Silva (Mid), Pedro Fernandes (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 04h-08h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Cátia Martins (Mid), Miguel Carvalho (Mid)
 ----------------------------------------
 🗓️  [UAT] Sáb 04h-08h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
@@ -2051,10 +1850,6 @@
     Prioridade: 9.75 | App: SQL Server
     Equipa:     Diana Ferreira (Senior), Ana Martins (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 04h-08h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Hugo Rodrigues (Senior), João Martins (Senior)
-----------------------------------------
 🗓️  [UAT] Sáb 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Diogo Santos (Senior), Beatriz Pereira (Senior)
@@ -2067,13 +1862,21 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     Cátia Rodrigues (Senior)
 ----------------------------------------
+🗓️  [DEV] Sáb 04h-06h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Cátia Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 04h-06h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid)
+----------------------------------------
 🗓️  [UAT] Sáb 06h-08h | CVE-2024-EXC02
     Prioridade: 7.55 | App: Exchange
     Equipa:     Cátia Rodrigues (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 08h-12h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Elsa Almeida (Mid), Cátia Martins (Mid)
+🗓️  [DEV] Sáb 06h-08h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Cátia Martins (Mid)
 ----------------------------------------
 🗓️  [UAT] Sáb 08h-12h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
@@ -2082,10 +1885,6 @@
 🗓️  [UAT] Sáb 08h-12h | CVE-2024-EXC01
     Prioridade: 9.30 | App: Exchange
     Equipa:     Miguel Pereira (Mid), Miguel Carvalho (Mid)
-----------------------------------------
-🗓️  [UAT] Sáb 08h-12h | CVE-2024-SQL01
-    Prioridade: 9.75 | App: SQL Server
-    Equipa:     Rui Martins (Mid), Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 08h-10h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -2107,9 +1906,17 @@
     Prioridade: 9.30 | App: Exchange
     Equipa:     João Martins (Senior), Pedro Pinto (Senior)
 ----------------------------------------
-🗓️  [UAT] Sáb 08h-12h | CVE-2024-EXC01
-    Prioridade: 9.30 | App: Exchange
-    Equipa:     Rui Costas (Senior), Cátia Rodrigues (Senior)
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Martins (Mid), Rui Martins (Mid)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid), Ana Martins (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Diana Ferreira (Senior)
 ----------------------------------------
 🗓️  [UAT] Sáb 10h-12h | CVE-2024-AD02
     Prioridade: 8.60 | App: Active Directory
@@ -2119,13 +1926,21 @@
     Prioridade: 8.60 | App: Active Directory
     Equipa:     João Pinto (Senior)
 ----------------------------------------
-🗓️  [UAT] Dom 00h-04h | CVE-2024-AD01
+🗓️  [DEV] Sáb 12h-16h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
-    Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
+    Equipa:     Hugo Rodrigues (Senior), Beatriz Pereira (Senior)
+----------------------------------------
+🗓️  [DEV] Sáb 12h-16h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     João Martins (Senior), Rui Costas (Senior)
+----------------------------------------
+🗓️  [UAT] Sáb 12h-14h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Miguel Carvalho (Mid)
 ----------------------------------------
 🗓️  [UAT] Dom 00h-04h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
-    Equipa:     Sofia Costa (Senior), Carla Carvalho (Senior)
+    Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
 ----------------------------------------
 🗓️  [UAT] Dom 00h-04h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
@@ -2151,6 +1966,30 @@
     Prioridade: 7.55 | App: Exchange
     Equipa:     Rui Costas (Senior)
 ----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Pedro Pinto (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 00h-04h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 00h-04h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Sofia Costa (Senior), Carla Carvalho (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 00h-02h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     João Martins (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 02h-06h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), João Martins (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 02h-04h | CVE-2024-EXC02
+    Prioridade: 7.55 | App: Exchange
+    Equipa:     Rui Costas (Senior)
+----------------------------------------
 🗓️  [UAT] Dom 04h-08h | CVE-2024-AD01
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Silva (Mid), Pedro Fernandes (Mid)
@@ -2158,6 +1997,82 @@
 🚨 [UAT] Dom 04h-08h | CVE-2024-AD01 | [RTO BREACH]
     Prioridade: 9.90 | App: Active Directory
     Equipa:     Sofia Costa (Senior), Carla Carvalho (Senior)
+----------------------------------------
+🗓️  [DEV] Dom 04h-08h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Miguel Carvalho (Mid), Rui Martins (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Martins (Mid), Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Pedro Pinto (Senior), Rui Costas (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 04h-06h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ana Martins (Senior)
+----------------------------------------
+🚨 [UAT] Dom 04h-08h | CVE-2024-SQL01 | [RTO BREACH]
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Diogo Santos (Senior), Cátia Rodrigues (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Diana Ferreira (Senior), João Pinto (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 04h-08h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Hugo Rodrigues (Senior), Beatriz Pereira (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 06h-10h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Pereira (Mid), João Martins (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 06h-08h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Ana Martins (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Rui Martins (Mid), Cátia Martins (Mid)
+----------------------------------------
+🚨 [UAT] Dom 08h-12h | CVE-2024-EXC01 | [RTO BREACH]
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Miguel Carvalho (Mid), Sofia Costa (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-10h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Ana Martins (Senior), Pedro Pinto (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-EXC01
+    Prioridade: 9.30 | App: Exchange
+    Equipa:     Rui Costas (Senior), Diogo Santos (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Cátia Rodrigues (Senior), Diana Ferreira (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-SQL01
+    Prioridade: 9.75 | App: SQL Server
+    Equipa:     Carla Carvalho (Senior), João Pinto (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 08h-12h | CVE-2024-AD01
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Pedro Fernandes (Mid), Sofia Silva (Mid)
+----------------------------------------
+🚨 [UAT] Dom 08h-12h | CVE-2024-AD01 | [RTO BREACH]
+    Prioridade: 9.90 | App: Active Directory
+    Equipa:     Hugo Rodrigues (Senior), Beatriz Pereira (Senior)
+----------------------------------------
+🗓️  [UAT] Dom 10h-12h | CVE-2024-SQL02
+    Prioridade: 8.10 | App: SQL Server
+    Equipa:     Elsa Almeida (Mid)
 ----------------------------------------
 
 ========================================
@@ -2288,4 +2203,253 @@
 ----------------------------------------
 ❌ [PROD] Srv_PROD_052 | CVE-2024-EXC02
    MOTIVO: Sem Recursos/Janela
+----------------------------------------
+❌ [UAT] Srv_UAT_018 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_033 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_029 | CVE-2024-AD02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_044 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_046 | CVE-2024-EXC02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_045 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_011 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_013 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_004 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_010 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_019 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_006 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_057 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_018 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_046 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_003 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_009 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_005 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_007 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_013 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_053 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_002 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_021 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_016 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_041 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_043 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_009 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_002 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_019 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_052 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [UAT] Srv_UAT_028 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_007 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_042 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_047 | CVE-2024-EXC02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_033 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_001 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_051 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_045 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_066 | CVE-2024-IIS01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_018 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_046 | CVE-2024-EXC02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_023 | CVE-2024-AD02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_070 | CVE-2024-IIS01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_045 | CVE-2024-EXC02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_059 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_008 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_001 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_058 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_037 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_020 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_029 | CVE-2024-AD02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_010 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_048 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_044 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_062 | CVE-2024-SHP01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_011 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_004 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_010 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_017 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_019 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_016 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_012 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_013 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_046 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_003 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_006 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_025 | CVE-2024-AD02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_024 | CVE-2024-AD02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_057 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_034 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_011 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_050 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_009 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_006 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_054 | CVE-2024-EXC01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_017 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_012 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_020 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_005 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_050 | CVE-2024-EXC02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_027 | CVE-2024-AD01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_018 | CVE-2024-SQL01
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
+----------------------------------------
+❌ [PROD] Srv_PROD_007 | CVE-2024-SQL02
+   MOTIVO: Desalojado por Emergência CVE-2026-ZERO-DAY (Sem vaga alternativa)
 ----------------------------------------

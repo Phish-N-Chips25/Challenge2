@@ -1,8 +1,16 @@
+# src/planner.py
 import random
 from typing import List, Tuple, Dict, Set
 from .domain import Server, CVE, Software, Worker, PatchTask, FailedTask
-# Certifica-te que LEVEL_RANK está no logic.py (como definimos antes)
-from .logic import is_server_available, is_worker_available, get_patch_duration, LEVEL_RANK, can_worker_handle_level, LEVEL_HOURLY_RATE
+# [ATUALIZADO] Importamos check_labor_limits para consistência total com a Emergência
+from .logic import (
+    is_server_available, 
+    is_worker_available, 
+    get_patch_duration, 
+    LEVEL_RANK, 
+    LEVEL_HOURLY_RATE,
+    check_labor_limits # <--- A função que garante que ninguém passa das 40h/48h
+)
 
 def calculate_fitness(schedule: List[PatchTask], total_tasks: int) -> float:
     """
@@ -43,7 +51,6 @@ def calculate_fitness(schedule: List[PatchTask], total_tasks: int) -> float:
             
         # [NOVO] Penalização por Violação de RTO (Soft RTO)
         # Se a flag estiver ativa, penalizamos mas não "matamos" o plano.
-        # 500 pontos é suficiente para o AG tentar evitar, mas aceitar se não houver opção.
         if task.rto_violation:
             score -= 500.0
             
@@ -60,7 +67,6 @@ def calculate_fitness(schedule: List[PatchTask], total_tasks: int) -> float:
 
     # 7. PENALIZAÇÃO "NUCLEAR" POR FALHAS DE AGENDAMENTO
     # Se uma tarefa ficar por fazer, a penalização é massiva.
-    # [ALTERADO] Aumentado para 100.000 para garantir que o Fallback é sempre preferido a falhar
     scheduled_count = len(schedule)
     failed_count = total_tasks - scheduled_count
     if failed_count > 0:
@@ -72,13 +78,7 @@ def calculate_fitness(schedule: List[PatchTask], total_tasks: int) -> float:
 def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[Worker], max_hours: int) -> Tuple[List[PatchTask], List[FailedTask]]:
     """
     Transforma a 'ordem' (gene) num calendário real.
-    [ATUALIZADO] Agora retorna (schedule, failures) e identifica motivos de falha.
-    
-    ESTRATÉGIA DE GESTÃO DE RH (Heurística Best-Fit):
-    1. PROD: Exige 1 Senior (Regra de Ouro) + tenta preencher resto com Juniores (Mentoria).
-    2. DEV/UAT: Evita usar Seniores se houver Juniores/Mids disponíveis (Poupança de Recursos).
-    3. BALANCEAMENTO: Em caso de empate, escolhe quem trabalhou menos horas na semana.
-    4. [NOVO] FALLBACK + SOFT RTO: Se a estratégia otimizada falhar, tenta agendar "como der" (aceitando violação de RTO).
+    [ATUALIZADO] Agora usa check_labor_limits e valida Skills.
     """
     schedule = []
     failures = [] # Lista para guardar os falhados
@@ -151,20 +151,18 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                 for w in workers:
                     # Filtros Básicos
                     if server.id not in w.authorized_server_ids: continue
+                    
+                    # [NOVO] Validação de Skill (Consistência com Emergency)
+                    if hasattr(w, 'skills') and software.id not in w.skills: continue
+
                     if not is_worker_available(w, absolute_hour, duration): continue
 
-                    # [CORREÇÃO] Removido o filtro de nível aqui para permitir Junior em PROD
-                    # A validação de Senior obrigatório é feita na seleção abaixo.
-                    
-                    # Verificação de Limites Legais (Diário)
-                    limit_day = 12 if w.is_on_call else 8
+                    # [ATUALIZADO] Verificação de Limites Legais (Centralizada)
                     hours_today = worker_daily_load.get((w.id, current_day), 0)
-                    if hours_today + duration > limit_day: continue
-
-                    # Verificação de Limites Legais (Semanal)
-                    limit_week = 48 if w.is_on_call else 40
                     hours_this_week = worker_weekly_load.get((w.id, current_week), 0)
-                    if hours_this_week + duration > limit_week: continue
+                    
+                    if not check_labor_limits(w, duration, hours_today, hours_this_week):
+                        continue
 
                     # Verificação de Ocupação no Horário
                     if not any(f"{w.id}_{h}" in busy_workers for h in range(absolute_hour, absolute_hour + duration)):
@@ -182,28 +180,21 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
 
                 # Critério de Desempate: Quem trabalhou menos nesta semana (Balanceamento de Carga)
                 seniors.sort(key=lambda w: worker_weekly_load.get((w.id, current_week), 0))
-                
-                # Nos 'others', preferimos Juniores (Rank 1) primeiro para ser barato, depois Carga
                 others.sort(key=lambda w: (LEVEL_RANK.get(w.level, 0), worker_weekly_load.get((w.id, current_week), 0)))
 
                 if server.environment == "PROD":
                     # REGRA PROD: Obrigatório pelo menos 1 Senior
                     if not seniors: continue # Sem Senior disponível, não podemos fazer PROD
                     
-                    # 1. Aloca o Senior mais livre (para cumprir a regra)
                     potential_chosen.append(seniors.pop(0))
                     
-                    # 2. Preenche o resto das vagas
                     slots_needed = cve.operators_required - 1
                     if slots_needed > 0:
-                        # Preferência: Usar 'others' (Juniors/Mids) para ganhar Mentoria e poupar outros Seniores
                         pool_rest = others + seniors 
                         if len(pool_rest) < slots_needed: continue
                         potential_chosen.extend(pool_rest[:slots_needed])
-                
                 else:
-                    # REGRA DEV/UAT: Tenta NÃO usar Seniores (guarda-os para PROD e tarefas críticas)
-                    # Coloca os seniors no fim da fila de prioridade
+                    # REGRA DEV/UAT: Tenta NÃO usar Seniores
                     pool_all = others + seniors 
                     potential_chosen = pool_all[:cve.operators_required]
 
@@ -211,11 +202,9 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                 if len(potential_chosen) == cve.operators_required:
                     end_time = absolute_hour + duration
                     
-                    # Registar ocupação do servidor
                     for h in range(absolute_hour, end_time):
                         busy_servers.add(f"{server.id}_{h}")
                     
-                    # Registar ocupação dos técnicos e atualizar cargas horárias
                     for w in potential_chosen:
                         for h in range(absolute_hour, end_time):
                             busy_workers.add(f"{w.id}_{h}")
@@ -223,27 +212,21 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                         worker_daily_load[(w.id, current_day)] = worker_daily_load.get((w.id, current_day), 0) + duration
                         worker_weekly_load[(w.id, current_week)] = worker_weekly_load.get((w.id, current_week), 0) + duration
 
-                    # [NOVO] Passamos rto_violation=False porque passou no filtro rígido acima
+                    # [NOVO] Passamos rto_violation=False
                     schedule.append(PatchTask(cve, server, software, potential_chosen, absolute_hour, end_time, rto_violation=False))
                     pipeline_success[(chain, cve.id, env)] = end_time
                     scheduled = True
                     progress_made = True
 
             # --- TENTATIVA 2: MODO "FALLBACK" (Desespero + SOFT RTO) ---
-            # Se a tentativa otimizada falhou (ex: não encontrou Juniores para DEV),
-            # tentamos novamente aceitando QUALQUER equipa válida (ex: Seniores em DEV),
-            # desde que cumpra os requisitos mínimos técnicos e de segurança.
             if not scheduled:
                 for absolute_hour in range(min_start_hour, max_hours):
                     if scheduled: break
 
-                    # (Repetimos as verificações de disponibilidade básica...)
-                    
                     # [NOVO] Detetar Violação de RTO (Soft RTO)
                     is_violation = False
                     if duration > server.rto_hours:
                         is_violation = True
-                    # NOTA: Não fazemos 'continue' aqui. Aceitamos a violação.
 
                     if not is_server_available(server, absolute_hour, duration): continue
                     if any(f"{server.id}_{h}" in busy_servers for h in range(absolute_hour, absolute_hour + duration)): continue
@@ -254,15 +237,19 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                     available_pool = []
                     for w in workers:
                         if server.id not in w.authorized_server_ids: continue
+                        
+                        # [NOVO] Validação Skill (Mesmo no Fallback)
+                        if hasattr(w, 'skills') and software.id not in w.skills: continue
+
                         if not is_worker_available(w, absolute_hour, duration): continue
                         
-                        # [CORREÇÃO] Removido o filtro de nível aqui também
+                        # [ATUALIZADO] Verificação de Limites Legais (Centralizada)
+                        hours_today = worker_daily_load.get((w.id, current_day), 0)
+                        hours_this_week = worker_weekly_load.get((w.id, current_week), 0)
                         
-                        # Filtros de Fadiga (Mantêm-se)
-                        limit_day = 12 if w.is_on_call else 8
-                        if worker_daily_load.get((w.id, current_day), 0) + duration > limit_day: continue
-                        limit_week = 48 if w.is_on_call else 40
-                        if worker_weekly_load.get((w.id, current_week), 0) + duration > limit_week: continue
+                        if not check_labor_limits(w, duration, hours_today, hours_this_week):
+                            continue
+
                         if any(f"{w.id}_{h}" in busy_workers for h in range(absolute_hour, absolute_hour + duration)): continue
                         
                         available_pool.append(w)
@@ -273,7 +260,6 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                     potential_chosen = []
                     
                     if server.environment == "PROD":
-                        # PROD continua a exigir Senior, isso é inegociável
                         seniors = [w for w in available_pool if w.level == "Senior"]
                         if not seniors: continue
                         potential_chosen.append(seniors[0])
@@ -281,7 +267,6 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                         if len(others) >= cve.operators_required - 1:
                             potential_chosen.extend(others[:cve.operators_required - 1])
                     else:
-                        # DEV/UAT: Aceita os primeiros N disponíveis, mesmo que sejam Seniores
                         potential_chosen = available_pool[:cve.operators_required]
 
                     if len(potential_chosen) == cve.operators_required:
@@ -302,22 +287,17 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
             # Se não foi agendado em nenhuma tentativa, vai para a lista de restantes
             if not scheduled:
                 remaining_tasks.append(task_tuple)
-                # Se chegou aqui, é porque tentou todas as horas e falhou.
-                # Se não era dependência, é falta de recurso.
                 if f"{cve.id}_{server.id}" not in current_round_failures:
                     current_round_failures[f"{cve.id}_{server.id}"] = "Sem Recursos/Janela"
         
         # [NOVO] Fim do loop for (passagem pela lista de pendentes).
-        # Verificamos se houve progresso. Se não houve, paramos para evitar loop infinito.
         if not progress_made:
-            # Ao sair do loop, processar os falhados definitivos para retorno
             for t_fail in remaining_tasks:
                 cve_f, server_f, _ = t_fail
                 reason = current_round_failures.get(f"{cve_f.id}_{server_f.id}", "Desconhecido")
                 failures.append(FailedTask(cve_f, server_f, reason))
             break
         
-        # [NOVO] Atualizamos a lista de tarefas para a próxima volta (apenas as que sobraram)
         pending_tasks = remaining_tasks
         if not pending_tasks:
             break # Tudo agendado!
@@ -333,7 +313,7 @@ def create_genetic_schedule(tasks, workers, max_hours, pop_size=100, generations
     if num_tasks == 0: return [], [], [] 
 
     logs = []
-    # População 100% Aleatória (O Decode Inteligente faz o trabalho pesado de alocação)
+    # População 100% Aleatória
     population = [random.sample(range(num_tasks), num_tasks) for _ in range(pop_size)]
     
     best_schedule = []
@@ -351,27 +331,23 @@ def create_genetic_schedule(tasks, workers, max_hours, pop_size=100, generations
             current_schedule, current_failures = decode_chromosome(chromo, tasks, workers, max_hours)
             
             fit = calculate_fitness(current_schedule, num_tasks)
-            
-            # Guardamos apenas o fitness e o cromossoma para a seleção natural
             results.append((fit, chromo))
             
             if fit > best_fitness:
                 best_fitness = fit
                 best_schedule = current_schedule
-                best_failures = current_failures # [NOVO] Atualizamos as falhas do melhor candidato
+                best_failures = current_failures
         
         # Ordenar por Fitness
         results.sort(key=lambda x: x[0], reverse=True)
         
-        # Elitismo: Mantém Top 20
+        # Elitismo
         new_population = [r[1] for r in results[:20]] 
         
         while len(new_population) < pop_size:
-            # Mutação Radical (30%): Troca totalmente a ordem para explorar novas semanas
             if random.random() < 0.3:
                 new_population.append(random.sample(range(num_tasks), num_tasks))
             else:
-                # Mutação Swap Multiplo (Refinamento)
                 parent = random.choice(results[:30])[1]
                 child = parent[:]
                 for _ in range(3):

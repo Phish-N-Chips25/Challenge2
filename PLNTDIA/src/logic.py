@@ -2,6 +2,32 @@
 from typing import List, Tuple
 from .domain import Server, CVE, Software, Worker
 
+# --- 1. CONFIGURAÇÃO CENTRAL DE LEIS LABORAIS ---
+# "Single Source of Truth" para o Planner e para a Emergência
+MAX_DAILY_NORMAL = 8
+MAX_DAILY_ONCALL = 12
+
+MAX_WEEKLY_NORMAL = 40
+MAX_WEEKLY_ONCALL = 48 
+
+# --- 2. RANKING DE SENIORIDADE ---
+LEVEL_RANK = {
+    "Junior": 1,
+    "Mid": 2,
+    "Senior": 3
+}
+
+# Custo por hora de cada nível (Exemplo em Euros)
+LEVEL_HOURLY_RATE = {
+    "Junior": 25.0,
+    "Mid": 40.0,
+    "Senior": 60.0
+}
+
+# ==========================================
+# FUNÇÕES DE VALIDAÇÃO (Regras de Negócio)
+# ==========================================
+
 def get_patch_duration(severity: str) -> int:
     """
     Centraliza a estimativa de tempo (horas) baseada na severidade.
@@ -41,7 +67,8 @@ def calculate_priority(cve: CVE, software: Software) -> float:
 
 def is_worker_available(worker: Worker, absolute_start_h: int, duration: int) -> bool:
     """
-    Verifica disponibilidade usando modulo 168 para suportar múltiplas semanas.
+    Verifica disponibilidade FÍSICA (Turno) usando modulo 168.
+    NOTA: Não verifica carga horária acumulada (isso é feito pelo check_labor_limits).
     """
     # Converter tempo absoluto para tempo relativo da semana (0-167)
     rel_start = absolute_start_h % 168
@@ -53,9 +80,29 @@ def is_worker_available(worker: Worker, absolute_start_h: int, duration: int) ->
 
     for shift_day, shift_start, shift_end in worker.weekly_shifts:
         if shift_day == day:
+            # Verifica se o turno cobre toda a duração da tarefa
             if shift_start <= hour_start and hour_end <= shift_end:
                 return True
     return False
+
+def check_labor_limits(worker: Worker, duration: int, current_daily_load: float, current_weekly_load: float) -> bool:
+    """
+    [NOVO] Valida se adicionar 'duration' viola os limites legais do trabalhador.
+    Retorna True se estiver OK (Legal), False se for Ilegal.
+    """
+    # 1. Definir limites baseados no estatuto (On-Call vs Normal)
+    limit_day = MAX_DAILY_ONCALL if worker.is_on_call else MAX_DAILY_NORMAL
+    limit_week = MAX_WEEKLY_ONCALL if worker.is_on_call else MAX_WEEKLY_NORMAL
+    
+    # 2. Verificar Teto Diário
+    if (current_daily_load + duration) > limit_day:
+        return False # Ilegal: Excede horas diárias
+        
+    # 3. Verificar Teto Semanal
+    if (current_weekly_load + duration) > limit_week:
+        return False # Ilegal: Excede horas semanais
+        
+    return True # Tudo OK
 
 def is_server_available(server: Server, absolute_start_h: int, duration: int) -> bool:
     """
@@ -72,6 +119,10 @@ def is_server_available(server: Server, absolute_start_h: int, duration: int) ->
             if win_start <= hour_start and hour_end <= win_end:
                 return True
     return False
+
+def can_worker_handle_level(worker_level: str, required_level: str) -> bool:
+    """Verifica se o ranking do trabalhador chega para o exigido."""
+    return LEVEL_RANK.get(worker_level, 0) >= LEVEL_RANK.get(required_level, 0)
 
 def prepare_patching_tasks(cves: List[CVE], servers: List[Server]) -> List[Tuple[CVE, Server, Software]]:
     """
@@ -102,26 +153,6 @@ def prepare_patching_tasks(cves: List[CVE], servers: List[Server]) -> List[Tuple
             
             # Opcional: print para debug se necessário (apenas informativo)
             if duration > server.rto_hours:
-                # print(f"⚠️ INFO: {cve.id} ({duration}h) excede RTO do {server.id} ({server.rto_hours}h), mas segue para planeamento.")
                 pass
             
     return tasks_to_plan
-
-# src/logic.py
-
-LEVEL_RANK = {
-    "Junior": 1,
-    "Mid": 2,
-    "Senior": 3
-}
-
-def can_worker_handle_level(worker_level: str, required_level: str) -> bool:
-    """Verifica se o ranking do trabalhador chega para o exigido."""
-    return LEVEL_RANK.get(worker_level, 0) >= LEVEL_RANK.get(required_level, 0)
-
-# Custo por hora de cada nível (Exemplo em Euros)
-LEVEL_HOURLY_RATE = {
-    "Junior": 25.0,
-    "Mid": 40.0,
-    "Senior": 60.0
-}

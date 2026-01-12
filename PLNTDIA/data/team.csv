@@ -31,7 +31,7 @@ Tech_29,Carla Almeida,Mid,Firewall Mgmt;Backup & Recovery;Active Directory;Share
 Tech_30,Rui Costa,Mid,Patch Management;Firewall Mgmt;SharePoint;Nginx,9.0,13.0,14.0,18.0,1,0;1;2;3;4
 Tech_31,Bruno Moreira,Mid,Exchange;Backup & Recovery;SQL Server;Windows Server,14.0,18.0,19.0,23.0,0,0;1;2;3;4
 Tech_32,Joana Rodrigues,Junior,IIS;Linux Administration;SQL Server,9.0,13.0,14.0,18.0,0,0;1;2;3;4
-Tech_33,Rui Costa,Senior,Exchange;Nginx;Backup & Recovery;Security Hardening;Patch Management,10.0,14.0,15.0,19.0,1,4;5;6;0;1
+Tech_33,Rui Costas,Senior,Exchange;Nginx;Backup & Recovery;Security Hardening;Patch Management,10.0,14.0,15.0,19.0,1,4;5;6;0;1
 Tech_34,Rui Ferreira,Senior,SharePoint;Linux Administration;Backup & Recovery;SQL Server;Firewall Mgmt,14.0,18.0,19.0,23.0,0,0;1;2;3;4
 Tech_35,Beatriz Pereira,Senior,Backup & Recovery;Firewall Mgmt;SharePoint;Security Hardening;Active Directory,14.0,18.0,19.0,23.0,1,0;1;2;3;4
 Tech_36,Maria Santos,Junior,Active Directory;Firewall Mgmt;Backup & Recovery,9.0,13.0,14.0,18.0,0,0;1;2;3;4
