@@ -121,13 +121,34 @@
             <a class="button-link" href="colaboradores.html">Ver Colaboradores</a>
         </div>
     </div>
-    
     <div class="legend">
-        <div class="legend-item"><span class="dot dev"></span>DEV</div>
-        <div class="legend-item"><span class="dot uat"></span>UAT</div>
-        <div class="legend-item"><span class="dot prod"></span>PROD</div>
-        <div class="legend-item"><span class="dot risk"></span>⚠️ Risco</div>
+        <div class="legend-item" tabindex="0" aria-label="DEV: Ambiente de desenvolvimento">
+            <span class="dot dev"></span>DEV
+            <div class="tooltip">DEV — Ambiente de desenvolvimento: alterações e testes internos.</div>
+        </div>
+        <div class="legend-item" tabindex="0" aria-label="UAT: Ambiente de validação">
+            <span class="dot uat"></span>UAT
+            <div class="tooltip">UAT — Ambiente de validação: testes pelos utilizadores e homologação.</div>
+        </div>
+        <div class="legend-item" tabindex="0" aria-label="PROD: Ambiente de produção">
+            <span class="dot prod"></span>PROD
+            <div class="tooltip">PROD — Ambiente de produção: sistemas em uso pelos utilizadores finais.</div>
+        </div>
+        <div class="legend-item" tabindex="0" aria-label="Risco: Indica possível violação ou alta criticidade">
+            <span class="dot risk"></span>⚠️ Risco
+            <div class="tooltip">Risco — Indica evento de alta criticidade ou possível violação de segurança.</div>
     </div>
+    </div>
+
+    <style>
+    /* Tooltip simples e acessível */
+    .legend { display:flex; justify-content:center; gap:20px; margin-bottom:25px; flex-wrap:wrap; }
+    .legend-item { position:relative; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#4a5568; cursor:default; outline:none; }
+    .legend-item .tooltip { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:8px 10px; border-radius:6px; white-space:nowrap; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,0.15); z-index:10000; }
+    .legend-item:hover .tooltip,
+    .legend-item:focus .tooltip { display:block; }
+    .legend-item .tooltip::after { content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%); border-width:6px; border-style:solid; border-color:#111 transparent transparent transparent; }
+    </style>
 
     <div id='calendar'></div>
 
@@ -156,25 +177,25 @@
 
         <form id="emergencyForm" onsubmit="submitEmergency(event)">
             <div class="form-group">
-                <label>ID do CVE:</label>
-                <input type="text" id="em_cve" value="CVE-2026-ZERO-DAY" required placeholder="Ex: CVE-2026-001">
+                <label for="em_cve">ID do CVE: <span title="Identificador do CVE a reportar. Ex: CVE-2026-001" aria-hidden="true">ⓘ</span></label>
+                <input type="text" id="em_cve" value="CVE-2026-ZERO-DAY" required placeholder="Ex: CVE-2026-001" title="Identificador do CVE a reportar. Ex: CVE-2026-001">
             </div>
 
             <div class="form-group">
-                <label>Software Afetado (Selecione da Lista):</label>
-                <select id="em_software" required style="background-color: #fff;">
+                <label for="em_software">Software Afetado (Selecione da Lista): <span title="Selecione o software afetado pelo CVE a partir do inventário carregado." aria-hidden="true">ⓘ</span></label>
+                <select id="em_software" required style="background-color: #fff;" title="Selecione o software afetado pelo CVE a partir do inventário carregado.">
                     <option value="" disabled selected>⏳ A carregar inventário...</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label>EPSS Score (Risco 0.0 - 1.0):</label>
-                <input type="number" step="0.01" id="em_epss" value="0.99" min="0" max="1" required>
+                <label for="em_epss">EPSS Score (Risco 0.0 - 1.0): <span title="Probabilidade de exploração (0.00 a 1.00). Valores mais altos indicam maior prioridade." aria-hidden="true">ⓘ</span></label>
+                <input type="number" step="0.01" id="em_epss" value="0.99" min="0" max="1" required title="Probabilidade de exploração (0.00 a 1.00). Valores mais altos indicam maior prioridade.">
             </div>
 
             <div class="form-group">
-                <label>Operadores Necessários:</label>
-                <input type="number" id="em_ops" value="2" min="1" max="10" required>
+                <label for="em_ops">Operadores Necessários: <span title="Número de operadores necessários para aplicar o patch (1-10)." aria-hidden="true">ⓘ</span></label>
+                <input type="number" id="em_ops" value="2" min="1" max="10" required title="Número de operadores necessários para aplicar o patch (1-10).">
             </div>
 
             <button type="submit" class="btn-submit" id="btnSubmitEm">🚀 Executar Patch de Emergência</button>
