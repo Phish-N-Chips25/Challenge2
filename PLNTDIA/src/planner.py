@@ -78,28 +78,27 @@ def calculate_fitness(schedule: List[PatchTask], total_tasks: int) -> float:
 def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[Worker], max_hours: int) -> Tuple[List[PatchTask], List[FailedTask]]:
     """
     Transforma a 'ordem' (gene) num calendário real.
-    [ATUALIZADO] Agora usa check_labor_limits e valida Skills.
+    
+    ESTRUTURA:
+    1. Multi-Pass Loop (Externo): Resolve dependências fora de ordem.
+    2. Unified Search (Interno): Procura vaga ideal e vaga de recurso (fallback) no mesmo loop de horas.
     """
     schedule = []
-    failures = [] # Lista para guardar os falhados
+    failures = [] 
     
     busy_workers: Set[str] = set()
     busy_servers: Set[str] = set()
     pipeline_success: Dict[Tuple[str, str, str], int] = {}
 
-    # Controladores de Fadiga (Diária e Semanal)
     worker_daily_load: Dict[Tuple[str, int], float] = {}
     worker_weekly_load: Dict[Tuple[str, int], float] = {}
 
-    # Lista inicial de tarefas baseada na ordem do cromossoma
     pending_tasks = [tasks[i] for i in chromosome]
 
-    # [NOVO] Loop infinito para reavaliação (Multi-Pass)
+    # [MANTIDO] Loop Multi-Pass para resolução de dependências (Seção 6.3 do Relatório)
     while True:
-        progress_made = False # Controla se conseguimos agendar algo nesta volta
-        remaining_tasks = []  # Tarefas que não conseguimos agendar nesta volta
-        
-        # Dicionário temporário para guardar o motivo da falha nesta volta
+        progress_made = False 
+        remaining_tasks = []  
         current_round_failures = {} 
 
         for task_tuple in pending_tasks:
@@ -107,7 +106,7 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
             duration = get_patch_duration(cve.severity)
             min_start_hour = 0
             can_proceed = True
-            fail_reason = "Sem disponibilidade (Recursos/Janela)" # Motivo default
+            fail_reason = "Sem disponibilidade (Recursos/Janela)" 
             
             # --- Lógica de Dependência (Cadeia de Valor) ---
             env, chain = server.environment, server.chain_id
@@ -130,14 +129,15 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                 continue
 
             scheduled = False
+            best_rto_breach_option = None # "Bolso" para guardar a opção de recurso (Violação RTO)
 
-            # --- TENTATIVA 1: MODO OTIMIZADO (Poupar Seniores, Mentoria + RTO RÍGIDO) ---
+            # [ALTERADO] ESTRATÉGIA DE PROCURA UNIFICADA (Smart Greedy)
+            # Percorre as horas uma única vez.
+            # - Se encontrar vaga perfeita (Sem violação) -> Agenda e pára.
+            # - Se encontrar vaga imperfeita (Com violação) -> Guarda e continua a procurar melhor.
             for absolute_hour in range(min_start_hour, max_hours):
                 if scheduled: break
                 
-                # [NOVO] Filtro RTO Rígido: Se violar a política, não agendamos nesta fase.
-                if duration > server.rto_hours: continue
-
                 # Verificar Disponibilidade do Servidor
                 if not is_server_available(server, absolute_hour, duration): continue
                 if any(f"{server.id}_{h}" in busy_servers for h in range(absolute_hour, absolute_hour + duration)):
@@ -146,151 +146,102 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
                 current_day = absolute_hour // 24
                 current_week = absolute_hour // 168
 
-                # 1. Recolher TODOS os técnicos disponíveis nesta hora (Pool de Candidatos)
+                # 1. Pool de Candidatos (Verifica Skills, Horário e Leis Laborais)
                 available_pool = []
                 for w in workers:
-                    # Filtros Básicos
                     if server.id not in w.authorized_server_ids: continue
-                    
-                    # [NOVO] Validação de Skill (Consistência com Emergency)
                     if hasattr(w, 'skills') and software.id not in w.skills: continue
-
                     if not is_worker_available(w, absolute_hour, duration): continue
 
-                    # [ATUALIZADO] Verificação de Limites Legais (Centralizada)
                     hours_today = worker_daily_load.get((w.id, current_day), 0)
                     hours_this_week = worker_weekly_load.get((w.id, current_week), 0)
                     
                     if not check_labor_limits(w, duration, hours_today, hours_this_week):
                         continue
 
-                    # Verificação de Ocupação no Horário
                     if not any(f"{w.id}_{h}" in busy_workers for h in range(absolute_hour, absolute_hour + duration)):
                         available_pool.append(w)
                 
-                # Se não houver gente suficiente, tenta na próxima hora
                 if len(available_pool) < cve.operators_required: continue
 
-                # --- SELEÇÃO INTELIGENTE DE EQUIPA ---
+                # 2. Seleção de Equipa
                 potential_chosen = []
-                
-                # Separar técnicos por nível (Seniores vs Resto)
                 seniors = [w for w in available_pool if w.level == "Senior"]
-                others = [w for w in available_pool if w.level != "Senior"] # Juniores e Mids
+                others = [w for w in available_pool if w.level != "Senior"] 
 
-                # Critério de Desempate: Quem trabalhou menos nesta semana (Balanceamento de Carga)
+                # Ordenar por carga para balanceamento
                 seniors.sort(key=lambda w: worker_weekly_load.get((w.id, current_week), 0))
                 others.sort(key=lambda w: (LEVEL_RANK.get(w.level, 0), worker_weekly_load.get((w.id, current_week), 0)))
 
                 if server.environment == "PROD":
-                    # REGRA PROD: Obrigatório pelo menos 1 Senior
-                    if not seniors: continue # Sem Senior disponível, não podemos fazer PROD
-                    
+                    if not seniors: continue 
                     potential_chosen.append(seniors.pop(0))
-                    
                     slots_needed = cve.operators_required - 1
                     if slots_needed > 0:
                         pool_rest = others + seniors 
                         if len(pool_rest) < slots_needed: continue
                         potential_chosen.extend(pool_rest[:slots_needed])
                 else:
-                    # REGRA DEV/UAT: Tenta NÃO usar Seniores
                     pool_all = others + seniors 
                     potential_chosen = pool_all[:cve.operators_required]
 
-                # Agendar se equipa estiver completa
                 if len(potential_chosen) == cve.operators_required:
-                    end_time = absolute_hour + duration
-                    
-                    for h in range(absolute_hour, end_time):
-                        busy_servers.add(f"{server.id}_{h}")
-                    
-                    for w in potential_chosen:
-                        for h in range(absolute_hour, end_time):
-                            busy_workers.add(f"{w.id}_{h}")
-                        
-                        worker_daily_load[(w.id, current_day)] = worker_daily_load.get((w.id, current_day), 0) + duration
-                        worker_weekly_load[(w.id, current_week)] = worker_weekly_load.get((w.id, current_week), 0) + duration
+                    # Temos Vaga e Equipa. Decisão:
+                    is_rto_violation = (duration > server.rto_hours)
 
-                    # [NOVO] Passamos rto_violation=False
-                    schedule.append(PatchTask(cve, server, software, potential_chosen, absolute_hour, end_time, rto_violation=False))
-                    pipeline_success[(chain, cve.id, env)] = end_time
-                    scheduled = True
-                    progress_made = True
-
-            # --- TENTATIVA 2: MODO "FALLBACK" (Desespero + SOFT RTO) ---
-            if not scheduled:
-                for absolute_hour in range(min_start_hour, max_hours):
-                    if scheduled: break
-
-                    # [NOVO] Detetar Violação de RTO (Soft RTO)
-                    is_violation = False
-                    if duration > server.rto_hours:
-                        is_violation = True
-
-                    if not is_server_available(server, absolute_hour, duration): continue
-                    if any(f"{server.id}_{h}" in busy_servers for h in range(absolute_hour, absolute_hour + duration)): continue
-                    
-                    current_day = absolute_hour // 24
-                    current_week = absolute_hour // 168
-
-                    available_pool = []
-                    for w in workers:
-                        if server.id not in w.authorized_server_ids: continue
-                        
-                        # [NOVO] Validação Skill (Mesmo no Fallback)
-                        if hasattr(w, 'skills') and software.id not in w.skills: continue
-
-                        if not is_worker_available(w, absolute_hour, duration): continue
-                        
-                        # [ATUALIZADO] Verificação de Limites Legais (Centralizada)
-                        hours_today = worker_daily_load.get((w.id, current_day), 0)
-                        hours_this_week = worker_weekly_load.get((w.id, current_week), 0)
-                        
-                        if not check_labor_limits(w, duration, hours_today, hours_this_week):
-                            continue
-
-                        if any(f"{w.id}_{h}" in busy_workers for h in range(absolute_hour, absolute_hour + duration)): continue
-                        
-                        available_pool.append(w)
-                    
-                    if len(available_pool) < cve.operators_required: continue
-
-                    # SELEÇÃO SIMPLIFICADA (Sem regras de "Poupança")
-                    potential_chosen = []
-                    
-                    if server.environment == "PROD":
-                        seniors = [w for w in available_pool if w.level == "Senior"]
-                        if not seniors: continue
-                        potential_chosen.append(seniors[0])
-                        others = [w for w in available_pool if w.id != seniors[0].id]
-                        if len(others) >= cve.operators_required - 1:
-                            potential_chosen.extend(others[:cve.operators_required - 1])
-                    else:
-                        potential_chosen = available_pool[:cve.operators_required]
-
-                    if len(potential_chosen) == cve.operators_required:
-                        # Agendar (Modo Fallback)
+                    if not is_rto_violation:
+                        # CENÁRIO IDEAL: Cumpre RTO. Agendar imediatamente.
                         end_time = absolute_hour + duration
+                        
+                        # Commit
                         for h in range(absolute_hour, end_time): busy_servers.add(f"{server.id}_{h}")
                         for w in potential_chosen:
                             for h in range(absolute_hour, end_time): busy_workers.add(f"{w.id}_{h}")
                             worker_daily_load[(w.id, current_day)] = worker_daily_load.get((w.id, current_day), 0) + duration
                             worker_weekly_load[(w.id, current_week)] = worker_weekly_load.get((w.id, current_week), 0) + duration
-                        
-                        # [NOVO] Passamos a flag de violação
-                        schedule.append(PatchTask(cve, server, software, potential_chosen, absolute_hour, end_time, rto_violation=is_violation))
+
+                        schedule.append(PatchTask(cve, server, software, potential_chosen, absolute_hour, end_time, rto_violation=False))
                         pipeline_success[(chain, cve.id, env)] = end_time
                         scheduled = True
                         progress_made = True
+                        break # Sai do loop de procura, tarefa resolvida.
+                    
+                    else:
+                        # CENÁRIO IMPERFEITO: Viola RTO.
+                        # Se ainda não temos uma opção de recurso guardada, guardamos esta.
+                        # Continuamos o loop na esperança de encontrar um cenário ideal mais à frente.
+                        if best_rto_breach_option is None:
+                            best_rto_breach_option = {
+                                "hour": absolute_hour,
+                                "workers": list(potential_chosen),
+                                "day": current_day,
+                                "week": current_week
+                            }
+
+            # --- FIM DO LOOP DE PROCURA ---
             
-            # Se não foi agendado em nenhuma tentativa, vai para a lista de restantes
+            # Se não agendou o ideal, mas temos um "Plano B" (com violação RTO) guardado:
+            if not scheduled and best_rto_breach_option:
+                opt = best_rto_breach_option
+                end_time = opt["hour"] + duration
+                
+                for h in range(opt["hour"], end_time): busy_servers.add(f"{server.id}_{h}")
+                for w in opt["workers"]:
+                    for h in range(opt["hour"], end_time): busy_workers.add(f"{w.id}_{h}")
+                    worker_daily_load[(w.id, opt["day"])] = worker_daily_load.get((w.id, opt["day"]), 0) + duration
+                    worker_weekly_load[(w.id, opt["week"])] = worker_weekly_load.get((w.id, opt["week"]), 0) + duration
+                
+                schedule.append(PatchTask(cve, server, software, opt["workers"], opt["hour"], end_time, rto_violation=True))
+                pipeline_success[(chain, cve.id, env)] = end_time
+                scheduled = True
+                progress_made = True
+
             if not scheduled:
                 remaining_tasks.append(task_tuple)
                 if f"{cve.id}_{server.id}" not in current_round_failures:
                     current_round_failures[f"{cve.id}_{server.id}"] = "Sem Recursos/Janela"
         
-        # [NOVO] Fim do loop for (passagem pela lista de pendentes).
+        # Lógica Multi-Pass: Se não houve progresso nesta volta completa, paramos.
         if not progress_made:
             for t_fail in remaining_tasks:
                 cve_f, server_f, _ = t_fail
@@ -300,7 +251,7 @@ def decode_chromosome(chromosome: List[int], tasks: List[Tuple], workers: List[W
         
         pending_tasks = remaining_tasks
         if not pending_tasks:
-            break # Tudo agendado!
+            break 
 
     return schedule, failures
 
@@ -320,7 +271,7 @@ def create_genetic_schedule(tasks, workers, max_hours, pop_size=100, generations
     best_failures = [] # [NOVO] Variável para guardar as falhas do melhor plano
     best_fitness = -float('inf') 
 
-    msg_start = f"-> A iniciar evolução genética ({generations} gerações) com Gestão Inteligente + Fallback..."
+    msg_start = f"-> A iniciar evolução genética ({generations} gerações) com Gestão Inteligente"
     print(msg_start)
     logs.append(msg_start)
 
