@@ -4,6 +4,11 @@ from flask_cors import CORS
 import os
 import sys
 
+# Garante que todos os paths relativos (ex: data/*.csv, web/*) funcionam
+# mesmo quando o script é executado a partir de outra pasta.
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+os.chdir(BASE_DIR)
+
 # --- IMPORTAÇÕES ORIGINAIS DO MAIN.PY ---
 from src.repository import initialize_infrastructure_from_csv, load_cves
 # [ATUALIZADO] Adicionei calculate_priority aqui
@@ -41,6 +46,11 @@ def index():
 def static_files(path):
     """Serve ficheiros estáticos (CSS, JS, JSON gerado)"""
     return send_from_directory('web', path)
+
+@app.route('/data/<path:filename>')
+def data_files(filename):
+    """Serve CSVs e outros ficheiros de dados usados pelo frontend (ex: team.csv)."""
+    return send_from_directory('data', filename)
 
 @app.route('/schedule.json')
 def get_schedule_json():
