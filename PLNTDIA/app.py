@@ -70,6 +70,65 @@ def get_software_list():
     
     return jsonify(sorted(list(unique_software)))
 
+
+@app.route('/api/server_cves')
+def get_server_cves():
+    """Retorna a correlação Servidor -> CVEs (match por software_id + version)."""
+    server_rows = []
+
+    # Para cada servidor, ver quais CVEs batem no inventário instalado
+    for srv in SERVERS:
+        matched = []
+        max_priority = 0.0
+
+        for cve in REAL_CVES:
+            for soft in srv.installed_software:
+                if soft.id == cve.affected_software_id and soft.version == cve.affected_software_version:
+                    priority = float(calculate_priority(cve, soft))
+                    if priority > max_priority:
+                        max_priority = priority
+
+                    matched.append({
+                        "cve_id": cve.id,
+                        "severity": cve.severity,
+                        "epss": float(cve.epss_score),
+                        "software": {
+                            "id": soft.id,
+                            "version": soft.version,
+                            "criticality": float(getattr(soft, 'criticality', 0.0)),
+                        },
+                        "operators_required": int(cve.operators_required),
+                        "priority": priority,
+                    })
+                    break
+
+        # Ordenar CVEs por prioridade desc, depois EPSS desc
+        matched.sort(key=lambda x: (x.get('priority', 0.0), x.get('epss', 0.0)), reverse=True)
+
+        server_rows.append({
+            "server": {
+                "id": srv.id,
+                "environment": srv.environment,
+                "os_name": srv.os_name,
+                "os_version": srv.os_version,
+                "rto_hours": int(srv.rto_hours),
+            },
+            "cves": matched,
+            "cve_count": len(matched),
+            "max_priority": max_priority,
+        })
+
+    # Ordenar servidores com mais CVEs primeiro; depois por env_rank e id
+    env_rank = {"DEV": 1, "UAT": 2, "PROD": 3}
+    server_rows.sort(key=lambda r: (-r.get('cve_count', 0), env_rank.get(r['server']['environment'], 99), r['server']['id']))
+
+    payload = {
+        "total_servers": len(server_rows),
+        "total_cves": len(REAL_CVES),
+        "rows": server_rows,
+    }
+    return jsonify(payload)
+
 @app.route('/api/emergency', methods=['POST'])
 def trigger_emergency():
     global FINAL_SCHEDULE, FAILURES 
