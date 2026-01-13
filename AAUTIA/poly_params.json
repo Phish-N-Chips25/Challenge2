@@ -1,0 +1,7 @@
+{
+  "best_degree": 2,
+  "use_ridge": true,
+  "best_alpha": 0.7072114131472232,
+  "n_features_original": 33,
+  "n_features_transformed": 594
+}

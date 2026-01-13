@@ -1,0 +1,20 @@
+{
+  "params": {
+    "n_estimators": 159,
+    "max_leaves": 329,
+    "min_child_weight": 4.478804539284201,
+    "learning_rate": 0.02627617080614561,
+    "subsample": 0.9139232955333052,
+    "colsample_bylevel": 0.40127243760268744,
+    "colsample_bytree": 0.8609388729903706,
+    "reg_alpha": 0.1910741946618848,
+    "reg_lambda": 10.456019749270524,
+    "n_jobs": -1,
+    "max_depth": 0,
+    "grow_policy": "lossguide",
+    "tree_method": "hist",
+    "verbosity": 0,
+    "task": "regression",
+    "_estimator_type": "regressor"
+  }
+}

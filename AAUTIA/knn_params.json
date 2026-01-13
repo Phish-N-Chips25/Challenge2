@@ -1,0 +1,9 @@
+{
+  "params": {
+    "n_neighbors": 129,
+    "n_jobs": -1,
+    "weights": "distance",
+    "task": "regression",
+    "_estimator_type": "regressor"
+  }
+}
