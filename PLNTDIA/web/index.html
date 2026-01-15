@@ -177,25 +177,34 @@
 
         <form id="emergencyForm" onsubmit="submitEmergency(event)">
             <div class="form-group">
-                <label for="em_cve">ID do CVE: <span title="Identificador do CVE a reportar. Ex: CVE-2026-001" aria-hidden="true">ⓘ</span></label>
-                <input type="text" id="em_cve" value="CVE-2026-ZERO-DAY" required placeholder="Ex: CVE-2026-001" title="Identificador do CVE a reportar. Ex: CVE-2026-001">
+                <label>ID do CVE:</label>
+                <div style="display: flex; gap: 10px;">
+                    <input type="text" id="em_cve" placeholder="Ex: CVE-2024-3094" required style="flex: 1;">
+                    
+                    <button type="button" class="btn-emergency" style="padding: 10px; width: auto;" onclick="analyzeCVE()">
+                        🔍 Analisar (AI)
+                    </button>
+                </div>
+                <small style="color: #718096; font-weight: bold; margin-top: 5px; display: block;" id="analysisStatus"></small>
             </div>
 
             <div class="form-group">
-                <label for="em_software">Software Afetado (Selecione da Lista): <span title="Selecione o software afetado pelo CVE a partir do inventário carregado." aria-hidden="true">ⓘ</span></label>
-                <select id="em_software" required style="background-color: #fff;" title="Selecione o software afetado pelo CVE a partir do inventário carregado.">
-                    <option value="" disabled selected>⏳ A carregar inventário...</option>
+                <label>Software Afetado:</label>
+                <input type="text" id="em_software_text" placeholder="O software detetado pela AI aparecerá aqui..." readonly style="background-color: #edf2f7; color: #4a5568; margin-bottom: 8px; border: 1px dashed #cbd5e0;">
+                
+                <select id="em_software" required style="background-color: #fff;">
+                    <option value="" disabled selected>⬇️ Confirme o software do inventário...</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="em_epss">EPSS Score (Risco 0.0 - 1.0): <span title="Probabilidade de exploração (0.00 a 1.00). Valores mais altos indicam maior prioridade." aria-hidden="true">ⓘ</span></label>
-                <input type="number" step="0.01" id="em_epss" value="0.99" min="0" max="1" required title="Probabilidade de exploração (0.00 a 1.00). Valores mais altos indicam maior prioridade.">
+                <label>EPSS Score (Predição ML):</label>
+                <input type="number" step="0.0001" id="em_epss" placeholder="0.00" min="0" max="1" required>
             </div>
 
             <div class="form-group">
-                <label for="em_ops">Operadores Necessários: <span title="Número de operadores necessários para aplicar o patch (1-10)." aria-hidden="true">ⓘ</span></label>
-                <input type="number" id="em_ops" value="2" min="1" max="10" required title="Número de operadores necessários para aplicar o patch (1-10).">
+                <label>Operadores Necessários:</label>
+                <input type="number" id="em_ops" value="2" min="1" max="10" required>
             </div>
 
             <button type="submit" class="btn-submit" id="btnSubmitEm">🚀 Executar Patch de Emergência</button>
@@ -223,6 +232,79 @@
     }
 
     // --- LÓGICA DE INJEÇÃO (ATUALIZADA) ---
+    // --- FUNÇÃO DE INTELIGÊNCIA ARTIFICIAL ---
+
+    function analyzeCVE() {
+        const cveId = document.getElementById('em_cve').value.trim();
+        const statusEl = document.getElementById('analysisStatus');
+        const btn = document.querySelector('#emergencyForm .btn-emergency'); // Seleciona o botão de lupa
+        
+        if (!cveId) {
+            alert("Por favor, introduza um ID de CVE primeiro (ex: CVE-2024-3094).");
+            return;
+        }
+
+        // Estado de Carregamento
+        statusEl.innerHTML = "⏳ A consultar NVD e a correr Modelo ML...";
+        statusEl.style.color = "#3182ce"; // Azul
+        btn.disabled = true;
+        btn.style.opacity = "0.7";
+
+        fetch('/api/analyze_cve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ cve_id: cveId })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // 1. Preencher EPSS e Software Texto
+                document.getElementById('em_epss').value = data.predicted_epss;
+                document.getElementById('em_software_text').value = data.software || "Software não especificado na NVD";
+                
+                // 2. Tentar selecionar automaticamente o software na lista (Fuzzy Match)
+                const select = document.getElementById('em_software');
+                const detected = (data.software || "").toLowerCase();
+                let found = false;
+                
+                // Procura na lista de inventário se algum item contém o texto detetado (ou vice-versa)
+                for (let i = 0; i < select.options.length; i++) {
+                    const optText = select.options[i].text.toLowerCase();
+                    const optVal = select.options[i].value.toLowerCase();
+                    
+                    // Lógica de match flexível
+                    if (optVal && (detected.includes(optVal) || optVal.includes(detected) || detected.includes(optText))) {
+                        select.selectedIndex = i;
+                        found = true;
+                        break;
+                    }
+                }
+                
+                // 3. Feedback Visual
+                statusEl.innerHTML = `✅ <b>Sucesso!</b> Severidade NVD: ${data.base_severity} | Risco ML: ${(data.predicted_epss * 100).toFixed(2)}%`;
+                statusEl.style.color = "#38a169"; // Verde
+                
+                if (!found) {
+                    alert(`⚠️ AVISO: A AI detetou "${data.software}", mas não encontrei correspondência exata no teu inventário.\n\nPor favor, seleciona manualmente o software mais apropriado na lista.`);
+                }
+
+            } else {
+                statusEl.innerHTML = "❌ " + data.error;
+                statusEl.style.color = "#e53e3e"; // Vermelho
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            statusEl.innerHTML = "❌ Erro de comunicação com o servidor.";
+            statusEl.style.color = "#e53e3e";
+        })
+        .finally(() => {
+            btn.disabled = false;
+            btn.style.opacity = "1";
+        });
+    }
+
+    
     function submitEmergency(e) {
         e.preventDefault();
         const btn = document.getElementById('btnSubmitEm');

@@ -17,6 +17,7 @@ from src.planner import create_genetic_schedule
 from src.reporting import export_schedule_report, export_schedule_json
 from src.domain import CVE, FailedTask
 from src.emergency import solve_emergency # A nova lógica blindada
+from src.intelligence import intelligence_engine
 
 app = Flask(__name__, static_folder='web')
 CORS(app)
@@ -128,6 +129,46 @@ def get_server_cves():
         "rows": server_rows,
     }
     return jsonify(payload)
+
+@app.route('/api/analyze_cve', methods=['POST'])
+def analyze_cve():
+    """
+    Rota de Inteligência: Recebe um CVE ID, consulta a NVD,
+    extrai features e corre o modelo de ML para prever o EPSS.
+    """
+    data = request.json
+    cve_id = data.get('cve_id')
+    
+    if not cve_id:
+        return jsonify({"success": False, "error": "CVE ID obrigatório"})
+    
+    print(f"\n🔍 [AI] A analisar {cve_id}...")
+    
+    # 1. Fetch de dados brutos (NVD API)
+    cve_data = intelligence_engine.fetch_nvd_data(cve_id)
+    
+    if not cve_data:
+        return jsonify({
+            "success": False, 
+            "error": "CVE não encontrado na NVD ou erro de conexão."
+        })
+    
+    # 2. Predição via Modelo ML (Random Forest)
+    predicted_epss = intelligence_engine.predict_epss(cve_data)
+    
+    print(f"   🤖 Previsão EPSS: {predicted_epss:.4f}")
+
+    # 3. Retornar resposta ao Frontend
+    response = {
+        "success": True,
+        "cve_id": cve_data['cve_id'],
+        "software": cve_data['affected_software'],
+        "base_severity": cve_data.get('base_severity', 'MEDIUM'),
+        "predicted_epss": round(predicted_epss, 4),
+        "description": cve_data.get('description', '')[:150] + "..." # Truncar descrição
+    }
+    
+    return jsonify(response)
 
 @app.route('/api/emergency', methods=['POST'])
 def trigger_emergency():
