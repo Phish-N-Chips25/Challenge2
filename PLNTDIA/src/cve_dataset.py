@@ -50,7 +50,15 @@ class CVEDataset:
             return None
         
         row = self.df[self.df['cve_id'] == cve_id].iloc[0]
-        return row.to_dict()
+        row_dict = row.to_dict()
+        
+        # Replace NaN values with appropriate defaults
+        for key, value in row_dict.items():
+            if pd.isna(value):
+                if isinstance(value, float):
+                    row_dict[key] = '' if key in ['description', 'affected_software', 'affected_versions'] else 0
+        
+        return row_dict
     
     def add_cve(self, cve_data: dict, predicted_epss: float) -> bool:
         """

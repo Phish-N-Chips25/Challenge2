@@ -300,6 +300,10 @@ class CVEIntelligence:
         if cve_dataset.cve_exists(cve_id):
             print(f"   📋 CVE encontrado no dataset AAUTIA")
             existing_cve = cve_dataset.get_cve(cve_id)
+            # Safely get description (handle NaN)
+            desc = existing_cve.get('description', '')
+            if not isinstance(desc, str):
+                desc = ''
             return {
                 'success': True,
                 'status': 'exists',
@@ -307,7 +311,7 @@ class CVEIntelligence:
                 'epss_score': float(existing_cve.get('epss_score', 0)),
                 'epss_perc': float(existing_cve.get('epss_perc', 0)),
                 'severity': existing_cve.get('base_severity', 'MEDIUM'),
-                'description': existing_cve.get('description', '')[:150],
+                'description': desc[:150] if desc else '',
                 'source': 'aautia-dataset',
                 'message': f'EPSS Score: {float(existing_cve.get("epss_score", 0)):.4f}'
             }
