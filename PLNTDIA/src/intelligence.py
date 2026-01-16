@@ -304,6 +304,9 @@ class CVEIntelligence:
             desc = existing_cve.get('description', '')
             if not isinstance(desc, str):
                 desc = ''
+            software = existing_cve.get('affected_software', '')
+            if not isinstance(software, str):
+                software = ''
             return {
                 'success': True,
                 'status': 'exists',
@@ -312,8 +315,9 @@ class CVEIntelligence:
                 'epss_perc': float(existing_cve.get('epss_perc', 0)),
                 'severity': existing_cve.get('base_severity', 'MEDIUM'),
                 'description': desc[:150] if desc else '',
+                'software': software,
                 'source': 'aautia-dataset',
-                'message': f'EPSS Score: {float(existing_cve.get("epss_score", 0)):.4f}'
+                'message': f'✅ CVE encontrado no dataset. EPSS Score: {float(existing_cve.get("epss_score", 0)):.4f}'
             }
         
         # Step 2: Fetch from NVD

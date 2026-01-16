@@ -539,10 +539,13 @@
         style="border-top: 5px solid #3182ce; max-width: 700px"
       >
         <span class="close" onclick="closePredictionModal()">&times;</span>
-        <h2 style="color: #3182ce; margin-top: 0">
+        <h2 style="color: #3182ce; margin-top: 0" id="predictionModalTitle">
           🤖 Seleção de Previsão EPSS
         </h2>
-        <p style="font-size: 13px; color: #718096; margin-bottom: 20px">
+        <p
+          style="font-size: 13px; color: #718096; margin-bottom: 20px"
+          id="predictionModalDesc"
+        >
           Escolha qual previsão deseja usar para o patch de emergência:
         </p>
 
@@ -665,9 +668,17 @@
           .then((res) => res.json())
           .then((data) => {
             if (data.success) {
-              // Store result and show prediction selection modal
               cveAnalysisResult = data;
-              showPredictionModal(data);
+
+              // If CVE already exists in dataset, skip predictions modal
+              if (data.status === "exists") {
+                statusEl.innerHTML = "✅ CVE encontrado no dataset!";
+                statusEl.style.color = "#38a169";
+                showExistingCVEForm(data);
+              } else {
+                // New CVE - show prediction selection modal
+                showPredictionModal(data);
+              }
             } else {
               statusEl.innerHTML = "❌ " + data.error;
               statusEl.style.color = "#e53e3e";
@@ -684,7 +695,61 @@
           });
       }
 
+      function showExistingCVEForm(data) {
+        // Close first modal and show prediction modal in "existing" mode
+        closeModal("emergencyModal");
+        document.getElementById("predictionModal").style.display = "block";
+
+        // Update modal title and description
+        document.getElementById("predictionModalTitle").innerHTML =
+          "✅ CVE do Dataset";
+        document.getElementById(
+          "predictionModalDesc"
+        ).innerHTML = `CVE encontrado na base de dados AAUTIA. Confirme o software e prossiga com o patch de emergência:`;
+
+        // Hide predictions list (not needed for existing CVEs)
+        document.getElementById("predictionsList").style.display = "none";
+
+        // Fill software and EPSS from dataset
+        document.getElementById("em_software_text").value =
+          data.software || "Software não especificado no NVD";
+        document.getElementById("em_epss").value = data.epss_score.toFixed(4);
+
+        // Update selected model display
+        document.getElementById(
+          "selectedModelName"
+        ).innerHTML = `<b>Dataset AAUTIA</b> (EPSS: ${data.epss_score.toFixed(
+          4
+        )})`;
+
+        // Try to auto-select software
+        const select = document.getElementById("em_software");
+        const detected = (data.software || "").toLowerCase();
+        for (let i = 0; i < select.options.length; i++) {
+          const optText = select.options[i].text.toLowerCase();
+          const optVal = select.options[i].value.toLowerCase();
+          if (
+            optVal &&
+            (detected.includes(optVal) ||
+              optVal.includes(detected) ||
+              detected.includes(optText))
+          ) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+      }
+
       function showPredictionModal(data) {
+        // Show predictions list (for new CVEs)
+        document.getElementById("predictionsList").style.display = "block";
+
+        // Update modal title and description for new CVE
+        document.getElementById("predictionModalTitle").innerHTML =
+          "🤖 Seleção de Previsão EPSS";
+        document.getElementById("predictionModalDesc").innerHTML =
+          "Selecione qual previsão deseja utilizar para o patch de emergência:";
+
         // Hide first modal, show second modal
         closeModal("emergencyModal");
         document.getElementById("predictionModal").style.display = "block";
