@@ -1,0 +1,64 @@
+{
+  "top_features": [
+    {
+      "feature": "cisa_kev",
+      "importance": 0.7127884030342102
+    },
+    {
+      "feature": "attack_vector_LOCAL",
+      "importance": 0.02994471974670887
+    },
+    {
+      "feature": "attack_vector_NETWORK",
+      "importance": 0.027758480980992317
+    },
+    {
+      "feature": "confidentiality_impact_HIGH",
+      "importance": 0.02121645212173462
+    },
+    {
+      "feature": "base_score",
+      "importance": 0.01782870851457119
+    },
+    {
+      "feature": "base_severity_encoded",
+      "importance": 0.016390174627304077
+    },
+    {
+      "feature": "exploitability_score",
+      "importance": 0.015733836218714714
+    },
+    {
+      "feature": "privileges_required_NONE",
+      "importance": 0.011748001910746098
+    },
+    {
+      "feature": "user_interaction_REQUIRED",
+      "importance": 0.010196618735790253
+    },
+    {
+      "feature": "user_interaction_NONE",
+      "importance": 0.009441741742193699
+    },
+    {
+      "feature": "confidentiality_impact_NONE",
+      "importance": 0.009210326708853245
+    },
+    {
+      "feature": "year_published",
+      "importance": 0.00799629744142294
+    },
+    {
+      "feature": "integrity_impact_HIGH",
+      "importance": 0.007726505398750305
+    },
+    {
+      "feature": "attack_complexity_HIGH",
+      "importance": 0.007630921434611082
+    },
+    {
+      "feature": "impact_score",
+      "importance": 0.007349102757871151
+    }
+  ]
+}

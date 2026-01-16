@@ -4,38 +4,69 @@ import joblib
 import pandas as pd
 import requests
 from datetime import datetime
+from .cve_dataset import cve_dataset
 
 # --- CONFIGURAÇÃO ---
 # Caminhos relativos à raiz do projeto (onde corre o app.py)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MODEL_PATH = os.path.join(BASE_DIR, "ml_models", "rf_epss_model.pkl")
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # PLNTDIA root
 MAPPING_PATH = os.path.join(BASE_DIR, "ml_models", "feature_mapping.json")
+
+# AAUTIA models directory (all trained models)
+CHALLENGE2_DIR = os.path.dirname(BASE_DIR)  # Challenge2 root
+AAUTIA_MODELS_DIR = os.path.join(CHALLENGE2_DIR, "AAUTIA", "models")
 
 NVD_API_URL = "https://services.nvd.nist.gov/rest/json/cves/2.0"
 
 class CVEIntelligence:
     def __init__(self):
-        self.model = None
+        self.models = {}  # Dictionary to store all models
         self.feature_mapping = None
         self.feature_columns = []
 
-        # --- ADICIONA ESTAS LINHAS PARA DEBUG ---
-        print(f"DEBUG: Estou à procura do modelo em: {MODEL_PATH}")
-        print(f"DEBUG: O ficheiro existe? {os.path.exists(MODEL_PATH)}")
-        # ----------------------------------------
+        print(f"🔍 [Intelligence] Carregando modelos AAUTIA...")
         
-        # Carregar Modelo ML e Mappings ao iniciar
+        # Load feature mapping (same for all models)
         try:
-            if os.path.exists(MODEL_PATH) and os.path.exists(MAPPING_PATH):
-                self.model = joblib.load(MODEL_PATH)
+            if os.path.exists(MAPPING_PATH):
                 with open(MAPPING_PATH, 'r') as f:
                     self.feature_mapping = json.load(f)
                 self.feature_columns = self.feature_mapping.get('all_features', [])
-                print(f"✅ [Intelligence] Modelo carregado: {MODEL_PATH}")
+                print(f"   ✓ Feature mapping: {len(self.feature_columns)} features")
             else:
-                print(f"❌ [Intelligence] Ficheiros de modelo não encontrados em {MODEL_PATH}")
+                print(f"   [ERROR] Feature mapping não encontrado em {MAPPING_PATH}")
         except Exception as e:
-            print(f"⚠️ [Intelligence] Erro ao carregar modelo: {e}")
+            print(f"   [ERROR] Erro ao carregar feature mapping: {e}")
+        
+        # Load all available models from AAUTIA directory
+        self._load_all_models()
+    
+    def _load_all_models(self):
+        """Load all trained models from AAUTIA directory"""
+        model_files = {
+            'random_forest': os.path.join(AAUTIA_MODELS_DIR, 'rf_epss_model.pkl'),
+            'lightgbm': os.path.join(AAUTIA_MODELS_DIR, 'lgb_epss_model.pkl'),
+            'xgboost': os.path.join(AAUTIA_MODELS_DIR, 'xgb_epss_model.pkl'),
+            'knn': os.path.join(AAUTIA_MODELS_DIR, 'knn_epss_model.pkl'),
+            'lasso': os.path.join(AAUTIA_MODELS_DIR, 'lasso_epss_model.pkl'),
+            'elasticnet': os.path.join(AAUTIA_MODELS_DIR, 'elasticnet_epss_model.pkl'),
+            'linear_regression': os.path.join(AAUTIA_MODELS_DIR, 'linreg_epss_model.pkl'),
+            'polynomial': os.path.join(AAUTIA_MODELS_DIR, 'poly_epss_model.pkl'),
+            'sgd': os.path.join(AAUTIA_MODELS_DIR, 'sgd_epss_model.pkl'),
+        }
+        
+        # Try to load each model
+        for model_name, model_path in model_files.items():
+            try:
+                if os.path.exists(model_path):
+                    self.models[model_name] = joblib.load(model_path)
+                    print(f"   ✓ {model_name.replace('_', ' ').title()}")
+            except Exception as e:
+                print(f"   ✗ {model_name}: {str(e)[:50]}")
+        
+        if self.models:
+            print(f"✅ [Intelligence] {len(self.models)} modelos carregados")
+        else:
+            print(f"❌ [Intelligence] Nenhum modelo carregado!")
 
     def fetch_nvd_data(self, cve_id):
         """Vai à API da NVD buscar os dados brutos."""
@@ -127,10 +158,13 @@ class CVEIntelligence:
         return row
 
     def predict_epss(self, cve_data):
-        """Usa o modelo carregado para prever o EPSS."""
-        if not self.model: 
-            print("⚠️ Modelo não carregado, retornando valor default.")
-            return 0.5 
+        """
+        Ensemble prediction using all available models.
+        Returns dictionary with individual predictions and ensemble result.
+        """
+        if not self.models: 
+            print("[ERROR] Nenhum modelo carregado, retornando valor default.")
+            return {'ensemble': 0.5, 'predictions': {}, 'method': 'default'}
 
         # Preparar features (Dicionário -> DataFrame)
         features = {}
@@ -139,7 +173,6 @@ class CVEIntelligence:
         features['base_score'] = float(cve_data.get('base_score', 0))
         features['exploitability_score'] = float(cve_data.get('exploitability_score', 0))
         features['impact_score'] = float(cve_data.get('impact_score', 0))
-        features['epss_perc'] = 0 # Dummy (o modelo espera esta coluna, mesmo que vazia na previsão)
         
         # 2. Temporais
         if cve_data.get('published_date'):
@@ -200,13 +233,136 @@ class CVEIntelligence:
         # Reordenar exatamente como no treino
         df = df[self.feature_columns]
         
-        # Previsão
+        # Previsão com todos os modelos
+        predictions = {}
         try:
-            prediction = self.model.predict(df)[0]
-            return float(prediction)
+            for model_name, model in self.models.items():
+                try:
+                    pred = model.predict(df)[0]
+                    # Clip predictions to [0, 1] range (EPSS scores are probabilities)
+                    pred = max(0.0, min(1.0, pred))
+                    predictions[model_name] = float(pred)
+                except Exception as e:
+                    print(f"   [ERROR] Erro em {model_name}: {str(e)[:50]}")
+            
+            if not predictions:
+                return {'ensemble': 0.5, 'predictions': {}, 'method': 'default'}
+            
+            # Ensemble: Média ponderada (dar mais peso aos melhores modelos)
+            # Baseado nos resultados do AAUTIA: LightGBM > RF > XGBoost
+            weights = {
+                'lightgbm': 0.25,
+                'random_forest': 0.22,
+                'xgboost': 0.20,
+                'polynomial': 0.10,
+                'elasticnet': 0.08,
+                'lasso': 0.05,
+                'linear_regression': 0.05,
+                'knn': 0.03,
+                'sgd': 0.02
+            }
+            
+            # Calcular média ponderada
+            weighted_sum = 0
+            total_weight = 0
+            for model_name, pred_value in predictions.items():
+                weight = weights.get(model_name, 0.10)  # Default weight se não especificado
+                weighted_sum += pred_value * weight
+                total_weight += weight
+            
+            ensemble_prediction = weighted_sum / total_weight if total_weight > 0 else sum(predictions.values()) / len(predictions)
+            
+            return {
+                'ensemble': float(ensemble_prediction),
+                'predictions': predictions,
+                'method': 'weighted_average',
+                'models_used': len(predictions)
+            }
+            
         except Exception as e:
             print(f"❌ Erro na previsão ML: {e}")
-            return 0.5
+            return {'ensemble': 0.5, 'predictions': {}, 'method': 'error'}
+
+    def analyze_zero_day(self, cve_id: str) -> dict:
+        """
+        Complete zero-day analysis workflow:
+        1. Check if CVE exists in AAUTIA dataset
+        2. If not, fetch from NVD
+        3. Predict EPSS using ML model
+        4. Add to AAUTIA dataset (main source of truth)
+        5. Sync to PLNTDIA dataset for scheduling
+        
+        Returns dictionary with analysis results
+        """
+        print(f"\n🚨 [Zero-Day Analysis] Iniciando análise de {cve_id}...")
+        
+        # Step 1: Check if CVE already exists
+        if cve_dataset.cve_exists(cve_id):
+            print(f"   📋 CVE encontrado no dataset AAUTIA")
+            existing_cve = cve_dataset.get_cve(cve_id)
+            return {
+                'success': True,
+                'status': 'exists',
+                'cve_id': cve_id,
+                'epss_score': float(existing_cve.get('epss_score', 0)),
+                'epss_perc': float(existing_cve.get('epss_perc', 0)),
+                'severity': existing_cve.get('base_severity', 'MEDIUM'),
+                'description': existing_cve.get('description', '')[:150],
+                'source': 'aautia-dataset',
+                'message': f'EPSS Score: {float(existing_cve.get("epss_score", 0)):.4f}'
+            }
+        
+        # Step 2: Fetch from NVD
+        print(f"   🔍 CVE não encontrado. Consultando NVD...")
+        cve_data = self.fetch_nvd_data(cve_id)
+        
+        if not cve_data:
+            print(f"   [FAILED] CVE não encontrado na NVD")
+            return {
+                'success': False,
+                'error': f'CVE {cve_id} não encontrado na NVD ou erro de conexão'
+            }
+        
+        # Step 3: Predict EPSS
+        print(f"   🤖 Executando modelos ML (AAUTIA Ensemble) para previsão EPSS...")
+        prediction_result = self.predict_epss(cve_data)
+        predicted_epss = prediction_result['ensemble']
+        
+        print(f"   ✅ EPSS Ensemble: {predicted_epss:.4f}")
+        if prediction_result.get('models_used'):
+            print(f"   📊 Modelos usados: {prediction_result['models_used']}")
+            # Show individual predictions
+            for model_name, pred in prediction_result.get('predictions', {}).items():
+                print(f"      • {model_name.replace('_', ' ').title()}: {pred:.4f}")
+        
+        # Step 4: Add to AAUTIA dataset (main source of truth)
+        print(f"   💾 Adicionando CVE ao dataset AAUTIA...")
+        success = cve_dataset.add_cve(cve_data, predicted_epss)
+        
+        if not success:
+            return {
+                'success': False,
+                'error': f'Erro ao adicionar {cve_id} ao dataset AAUTIA'
+            }
+        
+        # Step 5: Sync to PLNTDIA dataset for scheduling
+        print(f"   🔄 Sincronizando com dataset PLNTDIA...")
+        cve_dataset.sync_to_plntdia_dataset(cve_id)
+        
+        return {
+            'success': True,
+            'status': 'new',
+            'cve_id': cve_id,
+            'epss_score': float(predicted_epss),
+            'epss_perc': round(predicted_epss * 100, 2),
+            'severity': cve_data.get('base_severity', 'MEDIUM'),
+            'description': cve_data.get('description', '')[:150],
+            'source': 'ml-prediction',
+            'ensemble_method': prediction_result.get('method', 'unknown'),
+            'models_used': prediction_result.get('models_used', 0),
+            'individual_predictions': prediction_result.get('predictions', {}),
+            'message': f'✅ Zero-Day criado com EPSS ensemble: {predicted_epss:.4f} ({prediction_result.get("models_used", 0)} modelos)'
+        }
 
 # Singleton para usar na app
 intelligence_engine = CVEIntelligence()

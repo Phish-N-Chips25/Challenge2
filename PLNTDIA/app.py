@@ -18,6 +18,7 @@ from src.reporting import export_schedule_report, export_schedule_json
 from src.domain import CVE, FailedTask
 from src.emergency import solve_emergency # A nova lógica blindada
 from src.intelligence import intelligence_engine
+from src.cve_dataset import cve_dataset
 
 app = Flask(__name__, static_folder='web')
 CORS(app)
@@ -70,6 +71,12 @@ def get_software_list():
             unique_software.add(soft.id)
     
     return jsonify(sorted(list(unique_software)))
+
+@app.route('/api/available_cves')
+def get_available_cves():
+    """Retorna lista de todos os CVE IDs disponíveis no dataset para autocomplete"""
+    all_cves = cve_dataset.get_all_cve_ids()
+    return jsonify(sorted(list(all_cves)))
 
 
 @app.route('/api/server_cves')
@@ -133,42 +140,24 @@ def get_server_cves():
 @app.route('/api/analyze_cve', methods=['POST'])
 def analyze_cve():
     """
-    Rota de Inteligência: Recebe um CVE ID, consulta a NVD,
-    extrai features e corre o modelo de ML para prever o EPSS.
+    Rota de Inteligência: Zero-Day Analysis com Integração AAUTIA
+    1. Check if CVE exists in dataset
+    2. If not, fetch from NVD
+    3. Predict EPSS using trained ML model
+    4. Add to dataset if new
     """
     data = request.json
-    cve_id = data.get('cve_id')
+    cve_id = data.get('cve_id', '').strip().upper()
     
     if not cve_id:
         return jsonify({"success": False, "error": "CVE ID obrigatório"})
     
-    print(f"\n🔍 [AI] A analisar {cve_id}...")
+    print(f"\n🔍 [API] Análise de Zero-Day: {cve_id}")
     
-    # 1. Fetch de dados brutos (NVD API)
-    cve_data = intelligence_engine.fetch_nvd_data(cve_id)
+    # Execute complete analysis workflow
+    result = intelligence_engine.analyze_zero_day(cve_id)
     
-    if not cve_data:
-        return jsonify({
-            "success": False, 
-            "error": "CVE não encontrado na NVD ou erro de conexão."
-        })
-    
-    # 2. Predição via Modelo ML (Random Forest)
-    predicted_epss = intelligence_engine.predict_epss(cve_data)
-    
-    print(f"   🤖 Previsão EPSS: {predicted_epss:.4f}")
-
-    # 3. Retornar resposta ao Frontend
-    response = {
-        "success": True,
-        "cve_id": cve_data['cve_id'],
-        "software": cve_data['affected_software'],
-        "base_severity": cve_data.get('base_severity', 'MEDIUM'),
-        "predicted_epss": round(predicted_epss, 4),
-        "description": cve_data.get('description', '')[:150] + "..." # Truncar descrição
-    }
-    
-    return jsonify(response)
+    return jsonify(result)
 
 @app.route('/api/emergency', methods=['POST'])
 def trigger_emergency():

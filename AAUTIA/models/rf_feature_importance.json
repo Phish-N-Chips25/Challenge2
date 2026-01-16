@@ -1,0 +1,64 @@
+{
+  "top_features": [
+    {
+      "feature": "cisa_kev",
+      "importance": 0.3064188658516051
+    },
+    {
+      "feature": "days_since_publication",
+      "importance": 0.23674984279693045
+    },
+    {
+      "feature": "num_affected_versions",
+      "importance": 0.08783384976332786
+    },
+    {
+      "feature": "num_affected_software",
+      "importance": 0.07021040439141524
+    },
+    {
+      "feature": "base_score",
+      "importance": 0.055132507992472324
+    },
+    {
+      "feature": "month_published",
+      "importance": 0.049184156264575424
+    },
+    {
+      "feature": "exploitability_score",
+      "importance": 0.03634889437868704
+    },
+    {
+      "feature": "year_published",
+      "importance": 0.030793577511864945
+    },
+    {
+      "feature": "base_severity_encoded",
+      "importance": 0.017776254227612545
+    },
+    {
+      "feature": "quarter_published",
+      "importance": 0.01617901389640805
+    },
+    {
+      "feature": "attack_vector_NETWORK",
+      "importance": 0.011913804693182073
+    },
+    {
+      "feature": "impact_score",
+      "importance": 0.010852465555907423
+    },
+    {
+      "feature": "confidentiality_impact_HIGH",
+      "importance": 0.008715069578266043
+    },
+    {
+      "feature": "privileges_required_NONE",
+      "importance": 0.007597531436190975
+    },
+    {
+      "feature": "user_interaction_REQUIRED",
+      "importance": 0.006944802799934195
+    }
+  ]
+}

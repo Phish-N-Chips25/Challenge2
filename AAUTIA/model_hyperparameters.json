@@ -1,20 +1,35 @@
 {
-  "Random Forest": {
-    "n_estimators": 66,
-    "max_depth": "unlimited",
-    "min_samples_split": 2,
-    "min_samples_leaf": 1,
-    "max_features": 0.4733646204726344,
-    "random_state": 12032022
+  "ElasticNet": {
+    "alpha": 1.1099001648454448e-05,
+    "copy_X": true,
+    "fit_intercept": true,
+    "l1_ratio": 0.025610294628699154,
+    "max_iter": 10000,
+    "positive": false,
+    "precompute": false,
+    "random_state": 42,
+    "selection": "cyclic",
+    "tol": 0.0001,
+    "warm_start": false
   },
-  "XGBoost": {
-    "n_estimators": 159,
-    "max_depth": 0,
-    "learning_rate": 0.02627617080614561,
-    "subsample": 0.9139232955333052,
-    "colsample_bytree": 0.8609388729903706,
-    "reg_alpha": 0.1910741946618848,
-    "reg_lambda": 10.456019749270524
+  "K-Nearest Neighbors": {
+    "n_neighbors": 129,
+    "weights": "distance",
+    "algorithm": "auto",
+    "leaf_size": 30,
+    "p": 2
+  },
+  "Lasso": {
+    "alpha": 1.0258740374781596e-05,
+    "copy_X": true,
+    "fit_intercept": true,
+    "max_iter": 10000,
+    "positive": false,
+    "precompute": false,
+    "random_state": 42,
+    "selection": "cyclic",
+    "tol": 0.0001,
+    "warm_start": false
   },
   "LightGBM": {
     "n_estimators": 1527,
@@ -26,11 +41,78 @@
     "reg_alpha": 0.0009765625,
     "reg_lambda": 0.468650021517557
   },
-  "K-Nearest Neighbors": {
-    "n_neighbors": 129,
-    "weights": "distance",
-    "algorithm": "auto",
-    "leaf_size": 30,
-    "p": 2
+  "Linear Regression": {
+    "copy_X": true,
+    "fit_intercept": true,
+    "n_jobs": null,
+    "positive": false,
+    "tol": 1e-06
+  },
+  "Polynomial Regression": {
+    "memory": null,
+    "steps": [
+      [
+        "poly",
+        "PolynomialFeatures(include_bias=False)"
+      ],
+      [
+        "ridge",
+        "Ridge(alpha=0.7072114131472232, random_state=42)"
+      ]
+    ],
+    "transform_input": null,
+    "verbose": false,
+    "poly": "PolynomialFeatures(include_bias=False)",
+    "ridge": "Ridge(alpha=0.7072114131472232, random_state=42)",
+    "poly__degree": 2,
+    "poly__include_bias": false,
+    "poly__interaction_only": false,
+    "poly__order": "C",
+    "ridge__alpha": 0.7072114131472232,
+    "ridge__copy_X": true,
+    "ridge__fit_intercept": true,
+    "ridge__max_iter": null,
+    "ridge__positive": false,
+    "ridge__random_state": 42,
+    "ridge__solver": "auto",
+    "ridge__tol": 0.0001
+  },
+  "Random Forest": {
+    "n_estimators": 66,
+    "max_depth": "unlimited",
+    "min_samples_split": 2,
+    "min_samples_leaf": 1,
+    "max_features": 0.4733646204726344,
+    "random_state": 12032022
+  },
+  "SGD Regressor": {
+    "alpha": 0.0006112528366028754,
+    "average": false,
+    "early_stopping": false,
+    "epsilon": 0.42373993335362464,
+    "eta0": 0.0015937211126259218,
+    "fit_intercept": true,
+    "l1_ratio": 0.15,
+    "learning_rate": "invscaling",
+    "loss": "squared_error",
+    "max_iter": 1000,
+    "n_iter_no_change": 5,
+    "penalty": "l2",
+    "power_t": 0.25,
+    "random_state": 42,
+    "shuffle": true,
+    "tol": 0.001,
+    "validation_fraction": 0.1,
+    "verbose": 0,
+    "warm_start": false
+  },
+  "XGBoost": {
+    "n_estimators": 159,
+    "max_depth": 0,
+    "learning_rate": 0.02627617080614561,
+    "subsample": 0.9139232955333052,
+    "colsample_bytree": 0.8609388729903706,
+    "reg_alpha": 0.1910741946618848,
+    "reg_lambda": 10.456019749270524
   }
 }

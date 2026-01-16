@@ -3,6 +3,8 @@ Test Trained Models on Current Dataset
 Evaluate model performance by comparing predictions against actual EPSS scores
 """
 
+import os
+import glob
 import pandas as pd
 import numpy as np
 import joblib
@@ -83,6 +85,119 @@ def extract_model_parameters(model, model_name):
     return important_params
 
 
+def discover_models():
+    """
+    Find available model pickle files in the repo.
+    Looks in current directory and ./models for *.pkl files.
+    Returns list of tuples: (model_path, display_name, uses_scaled_features)
+    """
+    candidates = []
+    search_paths = ['.', './models']
+    seen = set()
+
+    def display_name_from_filename(fname: str) -> str:
+        base = os.path.basename(fname).lower()
+        if 'random' in base or 'rf_' in base:
+            return 'Random Forest'
+        if 'xgb' in base or 'xgboost' in base:
+            return 'XGBoost'
+        if 'lgb' in base or 'lightgbm' in base:
+            return 'LightGBM'
+        if 'knn' in base or 'kneighbor' in base:
+            return 'K-Nearest Neighbors'
+        if 'svm' in base and 'linear' in base:
+            return 'SVM (Linear)'
+        if 'svm' in base and 'rbf' in base:
+            return 'SVM (RBF)'
+        if 'svm' in base and 'poly' in base:
+            return 'SVM (Poly)'
+        if 'svm' in base and 'sigmoid' in base:
+            return 'SVM (Sigmoid)'
+        if 'linreg' in base or 'linear_regression' in base:
+            return 'Linear Regression'
+        if 'elasticnet' in base:
+            return 'ElasticNet'
+        if 'lasso' in base:
+            return 'Lasso'
+        if 'sgd' in base:
+            return 'SGD Regressor'
+        # Check for polynomial regression (but not SVM poly)
+        if 'poly' in base and 'svm' not in base:
+            return 'Polynomial Regression'
+        # Fallback to filename
+        return os.path.splitext(os.path.basename(fname))[0]
+
+    def needs_scaled(name: str) -> bool:
+        name_lower = name.lower()
+        # Distance/linear methods generally need scaling
+        return any(key in name_lower for key in [
+            'knn', 'svm', 'linear regression', 'elasticnet', 'lasso', 'sgd', 'polynomial'
+        ])
+
+    for path in search_paths:
+        for f in glob.glob(os.path.join(path.replace('\\', '/'), '*.pkl')):
+            norm = os.path.normpath(f)
+            if norm in seen:
+                continue
+            name = display_name_from_filename(norm)
+            scaled = needs_scaled(name)
+            candidates.append((norm, name, scaled))
+            seen.add(norm)
+
+    # Prefer unique display names; if duplicates, keep first occurrence
+    unique = []
+    seen_names = set()
+    for m in candidates:
+        if m[1] in seen_names:
+            continue
+        seen_names.add(m[1])
+        unique.append(m)
+
+    return unique
+
+
+def load_params_json_fallback(model_display_name: str) -> dict | None:
+    """
+    Attempt to load hyperparameters from models/*.json when get_params is not informative.
+    Returns dict or None if not found.
+    """
+    mapping = {
+        'Random Forest': 'rf_params.json',
+        'XGBoost': 'xgb_params.json',
+        'LightGBM': 'lgb_params.json',
+        'K-Nearest Neighbors': 'knn_params.json',
+        'Linear Regression': 'linreg_params.json',
+        'ElasticNet': 'elasticnet_params.json',
+        'Lasso': 'lasso_params.json',
+        'SGD Regressor': 'sgd_params.json',
+        'Polynomial Regression': 'poly_params.json',
+        'SVM (RBF)': 'svm_params.json',
+        'SVM (Poly)': 'svm_params.json',
+        'SVM (Sigmoid)': 'svm_params.json',
+        'SVM (Linear)': 'svm_params.json',
+    }
+    fname = mapping.get(model_display_name)
+    if not fname:
+        return None
+    path = os.path.join('models', fname)
+    if not os.path.exists(path):
+        # Also check root
+        path = fname
+        if not os.path.exists(path):
+            return None
+    try:
+        with open(path, 'r') as f:
+            data = json.load(f)
+        # Some files store under 'model_params' or 'params'
+        if isinstance(data, dict):
+            for key in ['model_params', 'params']:
+                if key in data and isinstance(data[key], dict):
+                    return data[key]
+        return data
+    except Exception:
+        return None
+
+
 def evaluate_model(model_path, X_test, actual_scores, model_name, use_scaled=False):
     """
     Evaluate a single model on test data.
@@ -103,10 +218,29 @@ def evaluate_model(model_path, X_test, actual_scores, model_name, use_scaled=Fal
     
     # Load model directly and make predictions
     model = joblib.load(model_path)
+    
+    # Handle special case: Polynomial Regression saved as tuple (poly_features, ridge_model)
+    if isinstance(model, tuple) and len(model) == 2:
+        from sklearn.pipeline import Pipeline
+        poly_features, ridge_model = model
+        model = Pipeline([
+            ('poly', poly_features),
+            ('ridge', ridge_model)
+        ])
+    
     predictions = model.predict(X_test)
     
-    # Extract hyperparameters
-    hyperparameters = extract_model_parameters(model, model_name)
+    # Extract hyperparameters (fallback to JSON if needed)
+    try:
+        hyperparameters = extract_model_parameters(model, model_name)
+    except Exception:
+        hyperparameters = None
+    if not hyperparameters or (isinstance(hyperparameters, dict) and not hyperparameters):
+        hp_json = load_params_json_fallback(model_name)
+        if hp_json:
+            hyperparameters = hp_json
+        else:
+            hyperparameters = {}
     
     # Calculate metrics
     mae = mean_absolute_error(actual_scores, predictions)
@@ -213,8 +347,21 @@ def create_comparison_report(results):
     # Save to CSV
     comparison_df.to_csv('model_comparison_results.csv', index=False)
     print(f"\n Comparison saved to: model_comparison_results.csv")
+        # Save to JSON
+    results_json = []
+    for r in results:
+        results_json.append({
+            'model': r['model'],
+            'mae': r['mae'],
+            'rmse': r['rmse'],
+            'r2': r['r2'],
+            'within_10_percent': r['within_10%']
+        })
     
-    # Identify best model
+    with open('model_comparison_results.json', 'w') as f:
+        json.dump(results_json, f, indent=2)
+    print(f"📁 Comparison saved to: model_comparison_results.json")
+        # Identify best model
     best_model = comparison_df.iloc[0]['Model']
     best_r2 = comparison_df.iloc[0]['R² Score']
     print(f"\n Best Model: {best_model} (R² = {best_r2:.6f})")
@@ -256,13 +403,20 @@ def main():
     print(f"\n Validation set: {len(X_test_unscaled):,} CVEs")
     print(f"  (Exact same validation set from training)")
     
-    # Models to test (with their feature scaling requirements)
-    models = [
-        ('rf_epss_model.pkl', 'Random Forest', X_test_unscaled),
-        ('xgb_epss_model.pkl', 'XGBoost', X_test_unscaled),
-        ('lgb_epss_model.pkl', 'LightGBM', X_test_unscaled),
-        ('knn_epss_model.pkl', 'K-Nearest Neighbors', X_test_scaled)
-    ]
+    # Discover models dynamically
+    discovered = discover_models()
+    if not discovered:
+        print("\n No model .pkl files found in current folder or ./models")
+    else:
+        print("\n🔎 Discovered models:")
+        for p, n, s in discovered:
+            print(f"  - {n} ({'scaled' if s else 'unscaled'}) @ {p}")
+
+    # Prepare test inputs per model
+    models = []
+    for model_path, name, use_scaled in discovered:
+        X_test = X_test_scaled if use_scaled else X_test_unscaled
+        models.append((model_path, name, X_test))
     
     # Test each model
     results = []
@@ -299,7 +453,8 @@ def main():
     print(f" MODEL TESTING COMPLETE!")
     print(f"{'='*80}")
     print("\nGenerated files:")
-    print("  - model_comparison_results.csv")
+    print("  - model_comparison_results.csv")    
+    print("  - model_comparison_results.json")    
     print("  - model_hyperparameters.json")
     print("  - model_predictions_comparison.png")
     # Error distribution analysis
@@ -320,7 +475,9 @@ def main():
     print(" MODEL TESTING COMPLETE!")
     print(f"{'='*80}")
     print("\nGenerated files:")
-    print("  - model_comparison_results.csv")
+    print("  - model_comparison_results.csv")    
+    print("  - model_comparison_results.json")
+    print("  - model_hyperparameters.json")    
     print("  - model_predictions_comparison.png")
 
 

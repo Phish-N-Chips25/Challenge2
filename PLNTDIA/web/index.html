@@ -1,754 +1,1337 @@
 <!DOCTYPE html>
 <html lang="pt">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dashboard de Patching Inteligente</title>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 20px; }
-        .container { max-width: 1600px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        
-        h1 { text-align: center; color: #1a202c; margin-bottom: 20px; }
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f2f5;
+        margin: 0;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
 
-        /* --- ESTILOS NOVOS PARA EMERGÊNCIA --- */
-        .btn-emergency {
-            background-color: #e53e3e; color: white; border: none; padding: 10px 20px;
-            border-radius: 8px; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px;
-            box-shadow: 0 2px 5px rgba(229, 62, 62, 0.4); transition: transform 0.1s;
-            font-size: 14px;
+      h1 {
+        text-align: center;
+        color: #1a202c;
+        margin-bottom: 20px;
+      }
+
+      /* --- ESTILOS NOVOS PARA EMERGÊNCIA --- */
+      .btn-emergency {
+        background-color: #e53e3e;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 5px rgba(229, 62, 62, 0.4);
+        transition: transform 0.1s;
+        font-size: 14px;
+      }
+      .btn-emergency:hover {
+        background-color: #c53030;
+        transform: scale(1.02);
+      }
+      .pulse {
+        animation: pulse-animation 2s infinite;
+      }
+      @keyframes pulse-animation {
+        0% {
+          box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7);
         }
-        .btn-emergency:hover { background-color: #c53030; transform: scale(1.02); }
-        .pulse { animation: pulse-animation 2s infinite; }
-        @keyframes pulse-animation {
-            0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(229, 62, 62, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+        70% {
+          box-shadow: 0 0 0 10px rgba(229, 62, 62, 0);
         }
+        100% {
+          box-shadow: 0 0 0 0 rgba(229, 62, 62, 0);
+        }
+      }
 
-        /* Formulário Modal */
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; color: #2d3748; font-size: 14px; }
-        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid #cbd5e0; border-radius: 6px; box-sizing: border-box; }
-        .btn-submit { width: 100%; padding: 12px; background-color: #e53e3e; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; }
-        .btn-submit:hover { background-color: #c53030; }
+      /* Formulário Modal */
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #2d3748;
+        font-size: 14px;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        box-sizing: border-box;
+      }
+      .btn-submit {
+        width: 100%;
+        padding: 12px;
+        background-color: #e53e3e;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 15px;
+      }
+      .btn-submit:hover {
+        background-color: #c53030;
+      }
 
-        /* Filtro (Existente) */
-        .filters { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
-        .filters-left { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
-        .filters-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
-        .field { display: grid; grid-template-columns: 1fr; gap: 6px; }
-        .filters label { font-size: 14px; font-weight: 600; color: #4a5568; }
-        .filters input { width: 240px; padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; }
-        .filters select { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 13px; }
-        .filters button { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 13px; font-weight: 600; color: #4a5568; }
-        .filters button:hover { background: #f7fafc; }
-        .filters .button-link { padding: 8px 10px; border: 1px solid #e2e8f0; border-radius: 8px; background: white; cursor: pointer; font-size: 13px; font-weight: 600; color: #4a5568; text-decoration: none; display: inline-block; }
-        .filters .button-link:hover { background: #f7fafc; }
-        
-        /* Legenda */
-        .legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 25px; flex-wrap: wrap; }
-        .legend-item { display: flex; align-items: center; font-size: 14px; font-weight: 600; color: #4a5568; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
-        
-        /* Cores */
-        .prod { background-color: #e53e3e; }
-        .uat { background-color: #dd6b20; }
-        .dev { background-color: #38a169; } 
-        .risk { background-color: #000; border: 2px solid red; }
+      /* Filtro (Existente) */
+      .filters {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .filters-left {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .filters-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+      .field {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 6px;
+      }
+      .filters label {
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+      .filters input {
+        width: 240px;
+        padding: 8px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+      .filters select {
+        padding: 8px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        font-size: 13px;
+      }
+      .filters button {
+        padding: 8px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: white;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+      .filters button:hover {
+        background: #f7fafc;
+      }
+      .filters .button-link {
+        padding: 8px 10px;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        background: white;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        color: #4a5568;
+        text-decoration: none;
+        display: inline-block;
+      }
+      .filters .button-link:hover {
+        background: #f7fafc;
+      }
 
-        /* Estilo do Calendário */
-        #calendar { max-height: 85vh; }
-        .fc-event { cursor: pointer; border: none; font-size: 11px; }
+      /* Legenda */
+      .legend {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a5568;
+      }
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+      }
 
-        /* Gráfico */
-        .chart-container { margin-top: 18px; }
-        .chart-title { margin: 0 0 10px 0; color: #1a202c; font-size: 16px; font-weight: 700; }
-        .bar-chart { border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; overflow-x: auto; }
-        .bar-chart-inner { display: flex; align-items: flex-end; gap: 12px; min-height: 260px; }
-        .bar-item { display: grid; grid-template-rows: 1fr auto auto; gap: 6px; width: 54px; flex: 0 0 auto; }
-        .bar { width: 100%; border-radius: 8px; background: #4a5568; }
-        .bar-label { font-size: 11px; color: #4a5568; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .bar-count { font-size: 11px; color: #718096; text-align: center; font-weight: 700; }
-        .chart-empty { color: #718096; font-size: 14px; padding: 8px 2px; }
-        
-        /* Modal Customizado */
-        .modal { display: none; position: fixed; z-index: 9999; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: white; margin: 5% auto; padding: 25px; border-radius: 8px; width: 450px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
-        .close { float: right; font-size: 24px; font-weight: bold; cursor: pointer; color: #aaa; }
-        .close:hover { color: black; }
-        .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 12px; color: white; font-weight: bold; }
+      /* Cores */
+      .prod {
+        background-color: #e53e3e;
+      }
+      .uat {
+        background-color: #dd6b20;
+      }
+      .dev {
+        background-color: #38a169;
+      }
+      .risk {
+        background-color: #000;
+        border: 2px solid red;
+      }
+
+      /* Estilo do Calendário */
+      #calendar {
+        max-height: 85vh;
+      }
+      .fc-event {
+        cursor: pointer;
+        border: none;
+        font-size: 11px;
+      }
+
+      /* Gráfico */
+      .chart-container {
+        margin-top: 18px;
+      }
+      .chart-title {
+        margin: 0 0 10px 0;
+        color: #1a202c;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .bar-chart {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px;
+        overflow-x: auto;
+      }
+      .bar-chart-inner {
+        display: flex;
+        align-items: flex-end;
+        gap: 12px;
+        min-height: 260px;
+      }
+      .bar-item {
+        display: grid;
+        grid-template-rows: 1fr auto auto;
+        gap: 6px;
+        width: 54px;
+        flex: 0 0 auto;
+      }
+      .bar {
+        width: 100%;
+        border-radius: 8px;
+        background: #4a5568;
+      }
+      .bar-label {
+        font-size: 11px;
+        color: #4a5568;
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .bar-count {
+        font-size: 11px;
+        color: #718096;
+        text-align: center;
+        font-weight: 700;
+      }
+      .chart-empty {
+        color: #718096;
+        font-size: 14px;
+        padding: 8px 2px;
+      }
+
+      /* Modal Customizado */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+      .modal-content {
+        background-color: white;
+        margin: 5% auto;
+        padding: 25px;
+        border-radius: 8px;
+        width: 450px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+      .close {
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #aaa;
+      }
+      .close:hover {
+        color: black;
+      }
+      .tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        color: white;
+        font-weight: bold;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🗓️ Plano de Patching Otimizado (AI)</h1>
 
-<div class="container">
-    <h1>🗓️ Plano de Patching Otimizado (AI)</h1>
-
-    <div class="filters">
+      <div class="filters">
         <div class="filters-left">
-            <div class="field">
-                <label for="serverFilter">Filtrar por servidor (número):</label>
-                <input id="serverFilter" type="text" list="serverTitles" placeholder="Ex: 12" autocomplete="off" />
-                <datalist id="serverTitles"></datalist>
-            </div>
-            <div class="field">
-                <label for="techFilter">Colaborador:</label>
-                <input id="techFilter" type="text" list="techNames" placeholder="Ex: Rui Costa" autocomplete="off" />
-                <datalist id="techNames"></datalist>
-            </div>
-            <div class="field">
-                <label for="levelFilter">Nível:</label>
-                <select id="levelFilter">
-                    <option value="">Todos níveis</option>
-                    <option value="Junior">Junior</option>
-                    <option value="Mid">Mid</option>
-                    <option value="Senior">Senior</option>
-                </select>
-            </div>
-            <div class="field">
-                <button id="clearFilter" type="button">Limpar</button>
-            </div>
+          <div class="field">
+            <label for="serverFilter">Filtrar por servidor (número):</label>
+            <input
+              id="serverFilter"
+              type="text"
+              list="serverTitles"
+              placeholder="Ex: 12"
+              autocomplete="off"
+            />
+            <datalist id="serverTitles"></datalist>
+          </div>
+          <div class="field">
+            <label for="techFilter">Colaborador:</label>
+            <input
+              id="techFilter"
+              type="text"
+              list="techNames"
+              placeholder="Ex: Rui Costa"
+              autocomplete="off"
+            />
+            <datalist id="techNames"></datalist>
+          </div>
+          <div class="field">
+            <label for="levelFilter">Nível:</label>
+            <select id="levelFilter">
+              <option value="">Todos níveis</option>
+              <option value="Junior">Junior</option>
+              <option value="Mid">Mid</option>
+              <option value="Senior">Senior</option>
+            </select>
+          </div>
+          <div class="field">
+            <button id="clearFilter" type="button">Limpar</button>
+          </div>
         </div>
         <div class="filters-right">
-            <button class="btn-emergency pulse" onclick="openEmergencyModal()">
-                🚨 Simular Zero-Day
-            </button>
-            <a class="button-link" href="servidores_cves.html">Servidores ↔ CVEs</a>
-            <a class="button-link" href="failures.html" style="margin-top: 5px;">Ver Falhas</a>
-            <a class="button-link" href="colaboradores.html">Ver Colaboradores</a>
+          <button class="btn-emergency pulse" onclick="openEmergencyModal()">
+            🚨 Simular Zero-Day
+          </button>
+          <a class="button-link" href="servidores_cves.html"
+            >Servidores ↔ CVEs</a
+          >
+          <a class="button-link" href="failures.html" style="margin-top: 5px"
+            >Ver Falhas</a
+          >
+          <a class="button-link" href="colaboradores.html">Ver Colaboradores</a>
         </div>
-    </div>
-    <div class="legend">
-        <div class="legend-item" tabindex="0" aria-label="DEV: Ambiente de desenvolvimento">
-            <span class="dot dev"></span>DEV
-            <div class="tooltip">DEV — Ambiente de desenvolvimento: alterações e testes internos.</div>
+      </div>
+      <div class="legend">
+        <div
+          class="legend-item"
+          tabindex="0"
+          aria-label="DEV: Ambiente de desenvolvimento"
+        >
+          <span class="dot dev"></span>DEV
+          <div class="tooltip">
+            DEV — Ambiente de desenvolvimento: alterações e testes internos.
+          </div>
         </div>
-        <div class="legend-item" tabindex="0" aria-label="UAT: Ambiente de validação">
-            <span class="dot uat"></span>UAT
-            <div class="tooltip">UAT — Ambiente de validação: testes pelos utilizadores e homologação.</div>
+        <div
+          class="legend-item"
+          tabindex="0"
+          aria-label="UAT: Ambiente de validação"
+        >
+          <span class="dot uat"></span>UAT
+          <div class="tooltip">
+            UAT — Ambiente de validação: testes pelos utilizadores e
+            homologação.
+          </div>
         </div>
-        <div class="legend-item" tabindex="0" aria-label="PROD: Ambiente de produção">
-            <span class="dot prod"></span>PROD
-            <div class="tooltip">PROD — Ambiente de produção: sistemas em uso pelos utilizadores finais.</div>
+        <div
+          class="legend-item"
+          tabindex="0"
+          aria-label="PROD: Ambiente de produção"
+        >
+          <span class="dot prod"></span>PROD
+          <div class="tooltip">
+            PROD — Ambiente de produção: sistemas em uso pelos utilizadores
+            finais.
+          </div>
         </div>
-        <div class="legend-item" tabindex="0" aria-label="Risco: Indica possível violação ou alta criticidade">
-            <span class="dot risk"></span>⚠️ Risco
-            <div class="tooltip">Risco — Indica evento de alta criticidade ou possível violação de segurança.</div>
-    </div>
-    </div>
+        <div
+          class="legend-item"
+          tabindex="0"
+          aria-label="Risco: Indica possível violação ou alta criticidade"
+        >
+          <span class="dot risk"></span>⚠️ Risco
+          <div class="tooltip">
+            Risco — Indica evento de alta criticidade ou possível violação de
+            segurança.
+          </div>
+        </div>
+      </div>
 
-    <style>
-    /* Tooltip simples e acessível */
-    .legend { display:flex; justify-content:center; gap:20px; margin-bottom:25px; flex-wrap:wrap; }
-    .legend-item { position:relative; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:#4a5568; cursor:default; outline:none; }
-    .legend-item .tooltip { display:none; position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:#111; color:#fff; padding:8px 10px; border-radius:6px; white-space:nowrap; font-size:12px; box-shadow:0 6px 18px rgba(0,0,0,0.15); z-index:10000; }
-    .legend-item:hover .tooltip,
-    .legend-item:focus .tooltip { display:block; }
-    .legend-item .tooltip::after { content:""; position:absolute; top:100%; left:50%; transform:translateX(-50%); border-width:6px; border-style:solid; border-color:#111 transparent transparent transparent; }
-    </style>
+      <style>
+        /* Tooltip simples e acessível */
+        .legend {
+          display: flex;
+          justify-content: center;
+          gap: 20px;
+          margin-bottom: 25px;
+          flex-wrap: wrap;
+        }
+        .legend-item {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 14px;
+          font-weight: 600;
+          color: #4a5568;
+          cursor: default;
+          outline: none;
+        }
+        .legend-item .tooltip {
+          display: none;
+          position: absolute;
+          bottom: calc(100% + 8px);
+          left: 50%;
+          transform: translateX(-50%);
+          background: #111;
+          color: #fff;
+          padding: 8px 10px;
+          border-radius: 6px;
+          white-space: nowrap;
+          font-size: 12px;
+          box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+          z-index: 10000;
+        }
+        .legend-item:hover .tooltip,
+        .legend-item:focus .tooltip {
+          display: block;
+        }
+        .legend-item .tooltip::after {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          transform: translateX(-50%);
+          border-width: 6px;
+          border-style: solid;
+          border-color: #111 transparent transparent transparent;
+        }
+      </style>
 
-    <div id='calendar'></div>
+      <div id="calendar"></div>
 
-    <div class="chart-container">
+      <div class="chart-container">
         <h2 id="chartTitle" class="chart-title">Agendamentos por servidor</h2>
         <div class="bar-chart">
-            <div id="barChart" class="bar-chart-inner"></div>
+          <div id="barChart" class="bar-chart-inner"></div>
         </div>
+      </div>
     </div>
-</div>
 
-<div id="eventModal" class="modal">
-    <div class="modal-content">
+    <div id="eventModal" class="modal">
+      <div class="modal-content">
         <span class="close" onclick="closeModal('eventModal')">&times;</span>
         <div id="modalContent"></div>
+      </div>
     </div>
-</div>
 
-<div id="emergencyModal" class="modal">
-    <div class="modal-content" style="border-top: 5px solid #e53e3e;">
-        <span class="close" onclick="closeModal('emergencyModal')">&times;</span>
-        <h2 style="color: #e53e3e; margin-top:0;">🚨 Injetar Zero-Day</h2>
-        <p style="font-size: 13px; color: #718096; margin-bottom: 20px;">
-            Isto irá ativar o algoritmo de preempção. Tarefas de menor prioridade poderão ser canceladas e reagendadas.
+    <div id="emergencyModal" class="modal">
+      <div
+        class="modal-content"
+        style="border-top: 5px solid #e53e3e; max-width: 500px"
+      >
+        <span class="close" onclick="closeModal('emergencyModal')"
+          >&times;</span
+        >
+        <h2 style="color: #e53e3e; margin-top: 0">🚨 Injetar Zero-Day</h2>
+        <p style="font-size: 13px; color: #718096; margin-bottom: 20px">
+          Introduza o CVE a ser analisado. O sistema irá:<br />
+          1. Consultar NVD para metadados<br />
+          2. Executar 9 modelos ML de previsão EPSS<br />
+          3. Permitir-lhe escolher a previsão desejada
         </p>
 
-        <form id="emergencyForm" onsubmit="submitEmergency(event)">
-            <div class="form-group">
-                <label>ID do CVE:</label>
-                <div style="display: flex; gap: 10px;">
-                    <input type="text" id="em_cve" placeholder="Ex: CVE-2024-3094" required style="flex: 1;">
-                    
-                    <button type="button" class="btn-emergency" style="padding: 10px; width: auto;" onclick="analyzeCVE()">
-                        🔍 Analisar (AI)
-                    </button>
-                </div>
-                <small style="color: #718096; font-weight: bold; margin-top: 5px; display: block;" id="analysisStatus"></small>
-            </div>
+        <form id="emergencyForm" onsubmit="startCVEAnalysis(event)">
+          <div class="form-group">
+            <label>ID do CVE:</label>
+            <input
+              type="text"
+              id="em_cve"
+              placeholder="Ex: CVE-2024-3094"
+              required
+            />
+            <small
+              style="color: #718096; margin-top: 5px; display: block"
+              id="analysisStatus"
+            ></small>
+          </div>
 
-            <div class="form-group">
-                <label>Software Afetado:</label>
-                <input type="text" id="em_software_text" placeholder="O software detetado pela AI aparecerá aqui..." readonly style="background-color: #edf2f7; color: #4a5568; margin-bottom: 8px; border: 1px dashed #cbd5e0;">
-                
-                <select id="em_software" required style="background-color: #fff;">
-                    <option value="" disabled selected>⬇️ Confirme o software do inventário...</option>
-                </select>
-            </div>
+          <div class="form-group">
+            <label>Operadores Necessários:</label>
+            <input
+              type="number"
+              id="em_ops"
+              value="2"
+              min="1"
+              max="10"
+              required
+            />
+          </div>
 
-            <div class="form-group">
-                <label>EPSS Score (Predição ML):</label>
-                <input type="number" step="0.0001" id="em_epss" placeholder="0.00" min="0" max="1" required>
-            </div>
-
-            <div class="form-group">
-                <label>Operadores Necessários:</label>
-                <input type="number" id="em_ops" value="2" min="1" max="10" required>
-            </div>
-
-            <button type="submit" class="btn-submit" id="btnSubmitEm">🚀 Executar Patch de Emergência</button>
+          <button type="submit" class="btn-submit" id="btnAnalyzeEm">
+            🔍 Analisar CVE (AI)
+          </button>
         </form>
+      </div>
     </div>
-</div>
 
-<script>
-    // Variáveis Globais
-    var calendar = null;
-    var allEvents = [];
-    var techLevelByName = new Map();
+    <!-- Modal 2: Prediction Selection -->
+    <div id="predictionModal" class="modal">
+      <div
+        class="modal-content"
+        style="border-top: 5px solid #3182ce; max-width: 700px"
+      >
+        <span class="close" onclick="closePredictionModal()">&times;</span>
+        <h2 style="color: #3182ce; margin-top: 0">
+          🤖 Seleção de Previsão EPSS
+        </h2>
+        <p style="font-size: 13px; color: #718096; margin-bottom: 20px">
+          Escolha qual previsão deseja usar para o patch de emergência:
+        </p>
 
-    // Funções de Modal (Genéricas)
-    function openEmergencyModal() {
-        document.getElementById('emergencyModal').style.display = 'block';
-    }
-    function closeModal(id) {
-        document.getElementById(id).style.display = 'none';
-    }
-    window.onclick = function(event) {
-        if (event.target.classList.contains('modal')) {
-            event.target.style.display = "none";
+        <div
+          id="predictionsList"
+          style="max-height: 400px; overflow-y: auto; margin-bottom: 20px"
+        ></div>
+
+        <form
+          id="predictionForm"
+          onsubmit="submitEmergencyWithPrediction(event)"
+        >
+          <div class="form-group">
+            <label>Software Afetado:</label>
+            <input
+              type="text"
+              id="em_software_text"
+              placeholder="Software detetado pela IA"
+              readonly
+              style="
+                background-color: #edf2f7;
+                color: #4a5568;
+                margin-bottom: 8px;
+                border: 1px dashed #cbd5e0;
+              "
+            />
+
+            <select id="em_software" required style="background-color: #fff">
+              <option value="" disabled selected>
+                ⬇️ Selecione o software do inventário...
+              </option>
+            </select>
+          </div>
+
+          <div
+            class="form-group"
+            style="
+              background-color: #edf2f7;
+              padding: 12px;
+              border-radius: 6px;
+              margin-bottom: 15px;
+            "
+          >
+            <label style="margin-bottom: 8px; display: block"
+              >EPSS Score Selecionado:</label
+            >
+            <input
+              type="number"
+              step="0.0001"
+              id="em_epss"
+              placeholder="0.0000"
+              min="0"
+              max="1"
+              readonly
+              style="
+                background-color: white;
+                font-weight: bold;
+                font-size: 16px;
+              "
+            />
+            <small
+              style="color: #4a5568; margin-top: 5px; display: block"
+              id="selectedModelName"
+            ></small>
+          </div>
+
+          <button type="submit" class="btn-submit" id="btnSubmitEm">
+            🚀 Executar Patch de Emergência
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Variáveis Globais
+      var calendar = null;
+      var allEvents = [];
+      var techLevelByName = new Map();
+
+      // Funções de Modal (Genéricas)
+      function openEmergencyModal() {
+        document.getElementById("emergencyModal").style.display = "block";
+      }
+      function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+      }
+      window.onclick = function (event) {
+        if (event.target.classList.contains("modal")) {
+          event.target.style.display = "none";
         }
-    }
+      };
 
-    // --- LÓGICA DE INJEÇÃO (ATUALIZADA) ---
-    // --- FUNÇÃO DE INTELIGÊNCIA ARTIFICIAL ---
+      // --- LÓGICA DE INJEÇÃO (ATUALIZADA) ---
+      // --- FUNÇÃO DE INTELIGÊNCIA ARTIFICIAL ---
 
-    function analyzeCVE() {
-        const cveId = document.getElementById('em_cve').value.trim();
-        const statusEl = document.getElementById('analysisStatus');
-        const btn = document.querySelector('#emergencyForm .btn-emergency'); // Seleciona o botão de lupa
-        
+      var cveAnalysisResult = null; // Store analysis result for Phase 2
+
+      function startCVEAnalysis(e) {
+        e.preventDefault();
+        const cveId = document.getElementById("em_cve").value.trim();
+        const statusEl = document.getElementById("analysisStatus");
+        const btn = document.getElementById("btnAnalyzeEm");
+
         if (!cveId) {
-            alert("Por favor, introduza um ID de CVE primeiro (ex: CVE-2024-3094).");
-            return;
+          alert("Por favor, introduza um ID de CVE (ex: CVE-2024-3094).");
+          return;
         }
 
         // Estado de Carregamento
-        statusEl.innerHTML = "⏳ A consultar NVD e a correr Modelo ML...";
-        statusEl.style.color = "#3182ce"; // Azul
+        statusEl.innerHTML = "⏳ A consultar NVD e a executar 9 modelos ML...";
+        statusEl.style.color = "#3182ce";
         btn.disabled = true;
         btn.style.opacity = "0.7";
 
-        fetch('/api/analyze_cve', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ cve_id: cveId })
+        fetch("/api/analyze_cve", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cve_id: cveId }),
         })
-        .then(res => res.json())
-        .then(data => {
+          .then((res) => res.json())
+          .then((data) => {
             if (data.success) {
-                // 1. Preencher EPSS e Software Texto
-                document.getElementById('em_epss').value = data.predicted_epss;
-                document.getElementById('em_software_text').value = data.software || "Software não especificado na NVD";
-                
-                // 2. Tentar selecionar automaticamente o software na lista (Fuzzy Match)
-                const select = document.getElementById('em_software');
-                const detected = (data.software || "").toLowerCase();
-                let found = false;
-                
-                // Procura na lista de inventário se algum item contém o texto detetado (ou vice-versa)
-                for (let i = 0; i < select.options.length; i++) {
-                    const optText = select.options[i].text.toLowerCase();
-                    const optVal = select.options[i].value.toLowerCase();
-                    
-                    // Lógica de match flexível
-                    if (optVal && (detected.includes(optVal) || optVal.includes(detected) || detected.includes(optText))) {
-                        select.selectedIndex = i;
-                        found = true;
-                        break;
-                    }
-                }
-                
-                // 3. Feedback Visual
-                statusEl.innerHTML = `✅ <b>Sucesso!</b> Severidade NVD: ${data.base_severity} | Risco ML: ${(data.predicted_epss * 100).toFixed(2)}%`;
-                statusEl.style.color = "#38a169"; // Verde
-                
-                if (!found) {
-                    alert(`⚠️ AVISO: A AI detetou "${data.software}", mas não encontrei correspondência exata no teu inventário.\n\nPor favor, seleciona manualmente o software mais apropriado na lista.`);
-                }
-
+              // Store result and show prediction selection modal
+              cveAnalysisResult = data;
+              showPredictionModal(data);
             } else {
-                statusEl.innerHTML = "❌ " + data.error;
-                statusEl.style.color = "#e53e3e"; // Vermelho
+              statusEl.innerHTML = "❌ " + data.error;
+              statusEl.style.color = "#e53e3e";
             }
-        })
-        .catch(err => {
+          })
+          .catch((err) => {
             console.error(err);
             statusEl.innerHTML = "❌ Erro de comunicação com o servidor.";
             statusEl.style.color = "#e53e3e";
-        })
-        .finally(() => {
+          })
+          .finally(() => {
             btn.disabled = false;
             btn.style.opacity = "1";
-        });
-    }
+          });
+      }
 
-    
-    function submitEmergency(e) {
+      function showPredictionModal(data) {
+        // Hide first modal, show second modal
+        closeModal("emergencyModal");
+        document.getElementById("predictionModal").style.display = "block";
+
+        // Fill software info
+        document.getElementById("em_software_text").value =
+          data.software || "Software não especificado na NVD";
+
+        // Try to auto-select software
+        const select = document.getElementById("em_software");
+        const detected = (data.software || "").toLowerCase();
+        for (let i = 0; i < select.options.length; i++) {
+          const optText = select.options[i].text.toLowerCase();
+          const optVal = select.options[i].value.toLowerCase();
+          if (
+            optVal &&
+            (detected.includes(optVal) ||
+              optVal.includes(detected) ||
+              detected.includes(optText))
+          ) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+
+        // Render predictions
+        const predList = document.getElementById("predictionsList");
+        const predictions = data.individual_predictions || {};
+        let html = "";
+
+        // Ensemble (weighted average)
+        html += `<div style="background-color: #fef5e7; border-left: 4px solid #f39c12; padding: 12px; margin-bottom: 10px; border-radius: 4px; cursor: pointer;" onclick="selectPrediction('ensemble', ${
+          data.epss_score
+        })">
+                    <div style="font-weight: bold; color: #d68910; margin-bottom: 4px;">⭐ Ensemble (Média Ponderada)</div>
+                    <div style="font-size: 20px; color: #f39c12; font-weight: bold; margin-bottom: 4px;">${data.epss_score.toFixed(
+                      4
+                    )}</div>
+                    <div style="font-size: 12px; color: #7d6608;">9 modelos combinados baseado em performance</div>
+                    <div id="ensemble-selected" style="margin-top: 8px; display: none; color: #27ae60; font-weight: bold;">✅ SELECIONADO</div>
+                </div>`;
+
+        // Individual models
+        const modelColors = {
+          lightgbm: "#3498db",
+          random_forest: "#2ecc71",
+          xgboost: "#e74c3c",
+          polynomial: "#9b59b6",
+          elasticnet: "#f39c12",
+          lasso: "#1abc9c",
+          linear_regression: "#34495e",
+          knn: "#e91e63",
+          sgd: "#795548",
+        };
+
+        Object.entries(predictions).forEach(([modelName, score]) => {
+          const displayScore = Math.max(0, Math.min(1, score)); // Clip to [0,1]
+          const color = modelColors[modelName] || "#95a5a6";
+          const displayName = modelName.replace("_", " ").toUpperCase();
+
+          html += `<div style="background-color: #f8f9fa; border-left: 4px solid ${color}; padding: 12px; margin-bottom: 8px; border-radius: 4px; cursor: pointer;" onclick="selectPrediction('${modelName}', ${displayScore})">
+                        <div style="font-weight: bold; color: ${color}; margin-bottom: 4px;">🔹 ${displayName}</div>
+                        <div style="font-size: 18px; color: ${color}; font-weight: bold;">${displayScore.toFixed(
+            4
+          )}</div>
+                        <div id="${modelName}-selected" style="margin-top: 8px; display: none; color: #27ae60; font-weight: bold;">✅ SELECIONADO</div>
+                    </div>`;
+        });
+
+        predList.innerHTML = html;
+
+        // Default: select ensemble
+        selectPrediction("ensemble", data.epss_score);
+      }
+
+      function selectPrediction(modelName, score) {
+        // Clear all selections
+        document
+          .querySelectorAll('[id$="-selected"]')
+          .forEach((el) => (el.style.display = "none"));
+
+        // Highlight selected
+        const selectedEl = document.getElementById(modelName + "-selected");
+        if (selectedEl) selectedEl.style.display = "block";
+
+        // Update EPSS input
+        document.getElementById("em_epss").value = score.toFixed(4);
+
+        // Update label
+        const displayName =
+          modelName === "ensemble"
+            ? "⭐ Ensemble"
+            : modelName.replace("_", " ").toUpperCase();
+        document.getElementById(
+          "selectedModelName"
+        ).innerHTML = `Modelo: <b>${displayName}</b> (EPSS: ${score.toFixed(
+          4
+        )})`;
+      }
+
+      function closePredictionModal() {
+        document.getElementById("predictionModal").style.display = "none";
+        cveAnalysisResult = null;
+      }
+
+      function submitEmergencyWithPrediction(e) {
         e.preventDefault();
-        const btn = document.getElementById('btnSubmitEm');
+        const btn = document.getElementById("btnSubmitEm");
         const originalText = btn.innerText;
         btn.innerText = "⏳ A processar...";
         btn.disabled = true;
 
         const payload = {
-            cve_id: document.getElementById('em_cve').value,
-            software: document.getElementById('em_software').value,
-            epss: document.getElementById('em_epss').value,
-            operators: document.getElementById('em_ops').value
+          cve_id: document.getElementById("em_cve").value,
+          software: document.getElementById("em_software").value,
+          epss: document.getElementById("em_epss").value,
+          operators: document.getElementById("em_ops").value,
         };
 
-        fetch('/api/emergency', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+        fetch("/api/emergency", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
         })
-        .then(res => res.json())
-        .then(data => {
+          .then((res) => res.json())
+          .then((data) => {
             if (data.success) {
-                // Mensagem formatada com Salvas vs Sacrificadas
-                let msg = `✅ SUCESSO! Zero-Day Agendado.\n\n`;
-                msg += `♻️ Tarefas Reagendadas (Salvas): ${data.rescheduled_count}\n`;
-                msg += `💀 Tarefas Sacrificadas (Removidas): ${data.sacrificed_count}\n\n`;
-                msg += `(Consulte o Relatório de Falhas para detalhes)`;
-                
-                alert(msg);
-                closeModal('emergencyModal');
-                fetchAndRenderEvents(); 
+              // Mensagem formatada com Salvas vs Sacrificadas
+              let msg = `✅ SUCESSO! Zero-Day Agendado.\n\n`;
+              msg += `♻️ Tarefas Reagendadas (Salvas): ${data.rescheduled_count}\n`;
+              msg += `💀 Tarefas Sacrificadas (Removidas): ${data.sacrificed_count}\n\n`;
+              msg += `(Consulte o Relatório de Falhas para detalhes)`;
+
+              alert(msg);
+              closePredictionModal();
+              fetchAndRenderEvents();
             } else {
-                alert("❌ ERRO: Não foi possível agendar o Zero-Day.\n\nMotivo: Sem janelas disponíveis ou recursos insuficientes mesmo após tentativa de preempção.");
+              alert(
+                "❌ ERRO: Não foi possível agendar o Zero-Day.\n\nMotivo: Sem janelas disponíveis ou recursos insuficientes mesmo após tentativa de preempção."
+              );
             }
-        })
-        .catch(err => {
+          })
+          .catch((err) => {
             console.error(err);
             alert("Erro de comunicação com o servidor.");
-        })
-        .finally(() => {
+          })
+          .finally(() => {
             btn.innerText = originalText;
             btn.disabled = false;
-        });
-    }
+          });
+      }
 
-    // --- FUNÇÃO PARA CARREGAR DADOS DO BACKEND ---
-    function fetchAndRenderEvents() {
+      // --- FUNÇÃO PARA CARREGAR DADOS DO BACKEND ---
+      function fetchAndRenderEvents() {
         // Usa o endpoint /schedule.json que o Flask serve (ou o ficheiro estático se for direto)
-        fetch('schedule.json')
-            .then(response => response.json())
-            .then(data => {
-                var events = Array.isArray(data) ? data : (data && Array.isArray(data.events) ? data.events : []);
-                allEvents = events;
-                
-                // Atualizar filtros e gráficos
-                populateServerTitlesDatalist(allEvents);
-                
-                // Se o calendário já existe, apenas atualizamos a fonte
-                if (calendar) {
-                    calendar.removeAllEvents();
-                    calendar.addEventSource(allEvents);
-                    applyAllFilters(); // Reaplica filtros se houver algum selecionado
-                } else {
-                    // Se não existe, inicializa (apenas na primeira vez)
-                    initCalendar(allEvents);
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao carregar dados:', error);
-            });
-    }
+        fetch("schedule.json")
+          .then((response) => response.json())
+          .then((data) => {
+            var events = Array.isArray(data)
+              ? data
+              : data && Array.isArray(data.events)
+              ? data.events
+              : [];
+            allEvents = events;
 
-    function initCalendar(events) {
-        var calendarEl = document.getElementById('calendar');
-        var initialDate = new Date(); 
+            // Atualizar filtros e gráficos
+            populateServerTitlesDatalist(allEvents);
+
+            // Se o calendário já existe, apenas atualizamos a fonte
+            if (calendar) {
+              calendar.removeAllEvents();
+              calendar.addEventSource(allEvents);
+              applyAllFilters(); // Reaplica filtros se houver algum selecionado
+            } else {
+              // Se não existe, inicializa (apenas na primeira vez)
+              initCalendar(allEvents);
+            }
+          })
+          .catch((error) => {
+            console.error("Erro ao carregar dados:", error);
+          });
+      }
+
+      function initCalendar(events) {
+        var calendarEl = document.getElementById("calendar");
+        var initialDate = new Date();
 
         if (events.length > 0) {
-            var sorted = [...events].sort((a, b) => new Date(a.start) - new Date(b.start));
-            initialDate = sorted[0].start;
+          var sorted = [...events].sort(
+            (a, b) => new Date(a.start) - new Date(b.start)
+          );
+          initialDate = sorted[0].start;
         }
 
         calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'timeGridWeek',
-            initialDate: initialDate,
-            headerToolbar: {
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-            },
-            locale: 'pt',
-            slotMinTime: "00:00:00",
-            slotMaxTime: "24:00:00",
-            firstDay: 1, 
-            allDaySlot: false,
-            slotDuration: '01:00:00',
-            expandRows: true,
-            events: events,
-            
-            eventClick: function(info) {
-                var props = info.event.extendedProps;
-                var descLines = (props.description || '').split('\n');
-                
-                var content = `
-                    <h2 style="margin-top:0">${info.event.title} <span class="tag" style="background:${info.event.backgroundColor}">${props.environment}</span></h2>
+          initialView: "timeGridWeek",
+          initialDate: initialDate,
+          headerToolbar: {
+            left: "prev,next today",
+            center: "title",
+            right: "dayGridMonth,timeGridWeek,timeGridDay",
+          },
+          locale: "pt",
+          slotMinTime: "00:00:00",
+          slotMaxTime: "24:00:00",
+          firstDay: 1,
+          allDaySlot: false,
+          slotDuration: "01:00:00",
+          expandRows: true,
+          events: events,
+
+          eventClick: function (info) {
+            var props = info.event.extendedProps;
+            var descLines = (props.description || "").split("\n");
+
+            var content = `
+                    <h2 style="margin-top:0">${
+                      info.event.title
+                    } <span class="tag" style="background:${
+              info.event.backgroundColor
+            }">${props.environment}</span></h2>
                     <p><strong>🕒 Início:</strong> ${info.event.start.toLocaleString()}</p>
                     <p><strong>🕒 Fim:</strong> ${info.event.end.toLocaleString()}</p>
                     <hr>
-                    <p><strong>${descLines[0] || ''}</strong></p> 
-                    <p><strong>${descLines[1] || ''}</strong></p> 
-                    <p><strong>${descLines[2] || ''}</strong></p> 
-                    <p>Prioridade: ${props.priority ?? ''}</p>
-                    ${props.rto_violation ? '<p style="color:red; font-weight:bold; border:1px solid red; padding:5px; border-radius:4px;">⚠️ Violação de RTO (Soft Constraint)</p>' : ''}
+                    <p><strong>${descLines[0] || ""}</strong></p> 
+                    <p><strong>${descLines[1] || ""}</strong></p> 
+                    <p><strong>${descLines[2] || ""}</strong></p> 
+                    <p>Prioridade: ${props.priority ?? ""}</p>
+                    ${
+                      props.rto_violation
+                        ? '<p style="color:red; font-weight:bold; border:1px solid red; padding:5px; border-radius:4px;">⚠️ Violação de RTO (Soft Constraint)</p>'
+                        : ""
+                    }
                 `;
-                
-                document.getElementById('modalContent').innerHTML = content;
-                document.getElementById('eventModal').style.display = "block";
-            },
-            
-            eventDidMount: function(info) {
-                info.el.title = info.event.extendedProps.description;
-            }
+
+            document.getElementById("modalContent").innerHTML = content;
+            document.getElementById("eventModal").style.display = "block";
+          },
+
+          eventDidMount: function (info) {
+            info.el.title = info.event.extendedProps.description;
+          },
         });
-        
+
         calendar.render();
         applyAllFilters();
-    }
+      }
 
-    // --- INICIALIZAÇÃO ---
-    document.addEventListener('DOMContentLoaded', function() {
+      // --- INICIALIZAÇÃO ---
+      document.addEventListener("DOMContentLoaded", function () {
         // 1. Carregar Colaboradores (csv)
         loadTechs();
-        
+
         // 2. Carregar e Renderizar Eventos (json)
         fetchAndRenderEvents();
 
         // Configurar Event Listeners dos Filtros (Mantendo a tua lógica original)
         setupFilters();
-    });
+      });
 
-    // --- FUNÇÕES DE SUPORTE (MANTIDAS DO TEU CÓDIGO ORIGINAL) ---
-    // Agrupei aqui para manter o código limpo, mas a lógica é a mesma que tinhas
-    
-    var serverFilterInput = document.getElementById('serverFilter');
-    var techFilterInput = document.getElementById('techFilter');
-    var levelFilterSelect = document.getElementById('levelFilter');
-    var clearFilterBtn = document.getElementById('clearFilter');
-    var serverTitlesDatalist = document.getElementById('serverTitles');
-    var techNamesDatalist = document.getElementById('techNames');
-    var barChartEl = document.getElementById('barChart');
-    var chartTitleEl = document.getElementById('chartTitle');
+      // --- FUNÇÕES DE SUPORTE (MANTIDAS DO TEU CÓDIGO ORIGINAL) ---
+      // Agrupei aqui para manter o código limpo, mas a lógica é a mesma que tinhas
 
-    function setupFilters() {
-        serverFilterInput.addEventListener('input', applyAllFilters);
-        techFilterInput.addEventListener('input', function(){
-            if (!normalize(levelFilterSelect.value)) {
-                var lvl = getLevelForName(techFilterInput.value);
-                if (lvl) {
-                    levelFilterSelect.value = lvl;
-                    updateTechNamesDatalistForLevel();
-                    var eventsByLevel = allEvents.filter(function(e){ return eventMatchesLevel(e, lvl); });
-                    populateServerTitlesDatalist(eventsByLevel);
-                }
+      var serverFilterInput = document.getElementById("serverFilter");
+      var techFilterInput = document.getElementById("techFilter");
+      var levelFilterSelect = document.getElementById("levelFilter");
+      var clearFilterBtn = document.getElementById("clearFilter");
+      var serverTitlesDatalist = document.getElementById("serverTitles");
+      var techNamesDatalist = document.getElementById("techNames");
+      var barChartEl = document.getElementById("barChart");
+      var chartTitleEl = document.getElementById("chartTitle");
+
+      function setupFilters() {
+        serverFilterInput.addEventListener("input", applyAllFilters);
+        techFilterInput.addEventListener("input", function () {
+          if (!normalize(levelFilterSelect.value)) {
+            var lvl = getLevelForName(techFilterInput.value);
+            if (lvl) {
+              levelFilterSelect.value = lvl;
+              updateTechNamesDatalistForLevel();
+              var eventsByLevel = allEvents.filter(function (e) {
+                return eventMatchesLevel(e, lvl);
+              });
+              populateServerTitlesDatalist(eventsByLevel);
             }
-            applyAllFilters();
+          }
+          applyAllFilters();
         });
-        levelFilterSelect.addEventListener('change', function(){
-            updateTechNamesDatalistForLevel();
-            var lvl = normalize(levelFilterSelect.value);
-            var eventsByLevel = lvl ? allEvents.filter(function(e){ return eventMatchesLevel(e, lvl); }) : allEvents;
-            populateServerTitlesDatalist(eventsByLevel);
-            applyAllFilters();
+        levelFilterSelect.addEventListener("change", function () {
+          updateTechNamesDatalistForLevel();
+          var lvl = normalize(levelFilterSelect.value);
+          var eventsByLevel = lvl
+            ? allEvents.filter(function (e) {
+                return eventMatchesLevel(e, lvl);
+              })
+            : allEvents;
+          populateServerTitlesDatalist(eventsByLevel);
+          applyAllFilters();
         });
-        clearFilterBtn.addEventListener('click', function() {
-            serverFilterInput.value = '';
-            techFilterInput.value = '';
-            levelFilterSelect.value = '';
-            updateTechNamesDatalistForLevel();
-            populateServerTitlesDatalist(allEvents);
-            applyAllFilters();
-            serverFilterInput.focus();
+        clearFilterBtn.addEventListener("click", function () {
+          serverFilterInput.value = "";
+          techFilterInput.value = "";
+          levelFilterSelect.value = "";
+          updateTechNamesDatalistForLevel();
+          populateServerTitlesDatalist(allEvents);
+          applyAllFilters();
+          serverFilterInput.focus();
         });
-    }
+      }
 
-    function loadTechs() {
-        fetch('../data/team.csv')
-            .then(function(r){ if(!r.ok) throw new Error('HTTP '+r.status); return r.text(); })
-            .then(function(txt){
-                var items = parseCSVTeam(txt);
-                var names = [];
-                techLevelByName.clear();
-                for (var i = 0; i < items.length; i++) {
-                    names.push(items[i].name);
-                    techLevelByName.set(items[i].name, items[i].level);
-                }
-                populateTechNamesDatalist(names);
-            })
-            .catch(err => console.warn('Aviso: team.csv não carregado', err));
-    }
+      function loadTechs() {
+        fetch("../data/team.csv")
+          .then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.text();
+          })
+          .then(function (txt) {
+            var items = parseCSVTeam(txt);
+            var names = [];
+            techLevelByName.clear();
+            for (var i = 0; i < items.length; i++) {
+              names.push(items[i].name);
+              techLevelByName.set(items[i].name, items[i].level);
+            }
+            populateTechNamesDatalist(names);
+          })
+          .catch((err) => console.warn("Aviso: team.csv não carregado", err));
+      }
 
-    // --- UTILS (As tuas funções auxiliares originais) ---
-    function normalize(text) { return (text || '').toString().trim().toLowerCase(); }
-    function extractServerNumber(text) { var match = (text || '').toString().match(/(\d+)/); return match ? match[1] : null; }
-    function serverGroupLabel(serverNumber) { return `Servidores - ${serverNumber}`; }
-    function normalizeEnv(value) {
+      // --- UTILS (As tuas funções auxiliares originais) ---
+      function normalize(text) {
+        return (text || "").toString().trim().toLowerCase();
+      }
+      function extractServerNumber(text) {
+        var match = (text || "").toString().match(/(\d+)/);
+        return match ? match[1] : null;
+      }
+      function serverGroupLabel(serverNumber) {
+        return `Servidores - ${serverNumber}`;
+      }
+      function normalizeEnv(value) {
         var env = normalize(value);
-        if (env === 'production') env = 'prod';
-        if (env === 'uat') return 'uat';
-        if (env === 'dev') return 'dev';
-        if (env === 'prod') return 'prod';
+        if (env === "production") env = "prod";
+        if (env === "uat") return "uat";
+        if (env === "dev") return "dev";
+        if (env === "prod") return "prod";
         return env;
-    }
-    function envDisplay(envKey) {
-        if (envKey === 'dev') return 'DEV';
-        if (envKey === 'uat') return 'UAT';
-        if (envKey === 'prod') return 'PROD';
-        return (envKey || '').toString().toUpperCase();
-    }
-    function envColor(envKey) {
-        if (envKey === 'dev') return '#38a169';
-        if (envKey === 'uat') return '#dd6b20';
-        if (envKey === 'prod') return '#e53e3e';
-        return '#4a5568';
-    }
-    function parseTechs(description) {
-        var lines = (description || '').toString().split('\n');
+      }
+      function envDisplay(envKey) {
+        if (envKey === "dev") return "DEV";
+        if (envKey === "uat") return "UAT";
+        if (envKey === "prod") return "PROD";
+        return (envKey || "").toString().toUpperCase();
+      }
+      function envColor(envKey) {
+        if (envKey === "dev") return "#38a169";
+        if (envKey === "uat") return "#dd6b20";
+        if (envKey === "prod") return "#e53e3e";
+        return "#4a5568";
+      }
+      function parseTechs(description) {
+        var lines = (description || "").toString().split("\n");
         for (var i = 0; i < lines.length; i++) {
-            var line = lines[i].trim();
-            if (line.toLowerCase().startsWith('techs:')) {
-                var raw = line.split(':').slice(1).join(':');
-                return raw.split(/[,;]/).map(s => s.trim()).filter(Boolean);
-            }
+          var line = lines[i].trim();
+          if (line.toLowerCase().startsWith("techs:")) {
+            var raw = line.split(":").slice(1).join(":");
+            return raw
+              .split(/[,;]/)
+              .map((s) => s.trim())
+              .filter(Boolean);
+          }
         }
         return [];
-    }
-    function eventHasTech(eventObj, nameQuery) {
+      }
+      function eventHasTech(eventObj, nameQuery) {
         var nq = normalize(nameQuery);
         if (!nq) return true;
-        var desc = (eventObj.extendedProps?.description) || eventObj.description;
+        var desc = eventObj.extendedProps?.description || eventObj.description;
         var techs = parseTechs(desc);
         var nqLower = nq.toLowerCase();
         for (var i = 0; i < techs.length; i++) {
-            if (techs[i].toLowerCase().includes(nqLower)) return true;
+          if (techs[i].toLowerCase().includes(nqLower)) return true;
         }
         return false;
-    }
-    function eventMatchesLevel(eventObj, levelQuery) {
+      }
+      function eventMatchesLevel(eventObj, levelQuery) {
         var lq = normalize(levelQuery);
         if (!lq) return true;
-        var desc = (eventObj.extendedProps?.description) || eventObj.description;
+        var desc = eventObj.extendedProps?.description || eventObj.description;
         var techs = parseTechs(desc);
         for (var i = 0; i < techs.length; i++) {
-            var lvl = techLevelByName.get(techs[i]) || techLevelByName.get(techs[i].trim());
-            if (normalize(lvl).toLowerCase() === lq.toLowerCase()) return true;
+          var lvl =
+            techLevelByName.get(techs[i]) ||
+            techLevelByName.get(techs[i].trim());
+          if (normalize(lvl).toLowerCase() === lq.toLowerCase()) return true;
         }
         return false;
-    }
-    function getLevelForName(name) {
+      }
+      function getLevelForName(name) {
         var n = normalize(name).toLowerCase();
-        if (!n) return '';
+        if (!n) return "";
         for (var pair of techLevelByName.entries()) {
-            if (pair[0].toLowerCase() === n) return pair[1];
+          if (pair[0].toLowerCase() === n) return pair[1];
         }
-        return '';
-    }
-    function parseCSVTeam(text) {
+        return "";
+      }
+      function parseCSVTeam(text) {
         // (A tua função original de parsing CSV)
-        var lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+        var lines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
         if (lines.length === 0) return [];
-        var headers = lines[0].split(',').map(h => h.trim());
-        var idxName = headers.indexOf('tech_name');
-        var idxLevel = headers.indexOf('level');
+        var headers = lines[0].split(",").map((h) => h.trim());
+        var idxName = headers.indexOf("tech_name");
+        var idxLevel = headers.indexOf("level");
         var res = [];
         for (var i = 1; i < lines.length; i++) {
-            // Parser simples de CSV que ignora virgulas dentro de aspas
-            var cols = [], cur = '', inQ = false, line = lines[i];
-            for (var j = 0; j < line.length; j++) {
-                var ch = line[j];
-                if (ch === '"') {
-                    if (inQ && line[j+1] === '"') { cur += '"'; j++; } else { inQ = !inQ; }
-                } else if (ch === ',' && !inQ) {
-                    cols.push(cur); cur = '';
-                } else { cur += ch; }
+          // Parser simples de CSV que ignora virgulas dentro de aspas
+          var cols = [],
+            cur = "",
+            inQ = false,
+            line = lines[i];
+          for (var j = 0; j < line.length; j++) {
+            var ch = line[j];
+            if (ch === '"') {
+              if (inQ && line[j + 1] === '"') {
+                cur += '"';
+                j++;
+              } else {
+                inQ = !inQ;
+              }
+            } else if (ch === "," && !inQ) {
+              cols.push(cur);
+              cur = "";
+            } else {
+              cur += ch;
             }
-            cols.push(cur);
-            var name = (idxName >= 0 ? (cols[idxName]||'').trim() : '');
-            var level = (idxLevel >= 0 ? (cols[idxLevel]||'').trim() : '');
-            if (name) res.push({ name: name, level: level });
+          }
+          cols.push(cur);
+          var name = idxName >= 0 ? (cols[idxName] || "").trim() : "";
+          var level = idxLevel >= 0 ? (cols[idxLevel] || "").trim() : "";
+          if (name) res.push({ name: name, level: level });
         }
         return res;
-    }
+      }
 
-    // --- LÓGICA DE FILTRAGEM (Mantida) ---
-    function applyAllFilters() {
+      // --- LÓGICA DE FILTRAGEM (Mantida) ---
+      function applyAllFilters() {
         if (!calendar) return;
         var query = normalize(serverFilterInput.value);
         var queryNumber = extractServerNumber(query);
         var filtered = allEvents;
 
         if (query.length > 0) {
-            if (queryNumber) {
-                filtered = allEvents.filter(e => extractServerNumber(e && e.title) === queryNumber);
-            } else {
-                filtered = allEvents.filter(e => normalize(e.title).includes(query));
-            }
+          if (queryNumber) {
+            filtered = allEvents.filter(
+              (e) => extractServerNumber(e && e.title) === queryNumber
+            );
+          } else {
+            filtered = allEvents.filter((e) =>
+              normalize(e.title).includes(query)
+            );
+          }
         }
 
         var techQuery = normalize(techFilterInput.value);
         var levelQuery = normalize(levelFilterSelect.value);
-        filtered = filtered.filter(function(e){
-            return eventHasTech(e, techQuery) && eventMatchesLevel(e, levelQuery);
+        filtered = filtered.filter(function (e) {
+          return eventHasTech(e, techQuery) && eventMatchesLevel(e, levelQuery);
         });
 
         calendar.removeAllEvents();
         calendar.addEventSource(filtered);
         renderBarChart(filtered, queryNumber);
-    }
+      }
 
-    function populateServerTitlesDatalist(sourceEvents) {
+      function populateServerTitlesDatalist(sourceEvents) {
         if (!serverTitlesDatalist) return;
-        serverTitlesDatalist.innerHTML = '';
+        serverTitlesDatalist.innerHTML = "";
         var base = Array.isArray(sourceEvents) ? sourceEvents : allEvents;
-        var numbers = Array.from(new Set(base.map(e => extractServerNumber(e && e.title)).filter(Boolean))).sort((a, b) => Number(a) - Number(b));
+        var numbers = Array.from(
+          new Set(
+            base.map((e) => extractServerNumber(e && e.title)).filter(Boolean)
+          )
+        ).sort((a, b) => Number(a) - Number(b));
         for (var i = 0; i < numbers.length; i++) {
-            var opt = document.createElement('option');
-            opt.value = serverGroupLabel(numbers[i]);
-            serverTitlesDatalist.appendChild(opt);
+          var opt = document.createElement("option");
+          opt.value = serverGroupLabel(numbers[i]);
+          serverTitlesDatalist.appendChild(opt);
         }
-    }
-    function populateTechNamesDatalist(names) {
+      }
+      function populateTechNamesDatalist(names) {
         if (!techNamesDatalist) return;
-        techNamesDatalist.innerHTML = '';
-        var uniq = Array.from(new Set(names.filter(Boolean))).sort((a,b) => a.localeCompare(b, 'pt', { sensitivity: 'base' }));
+        techNamesDatalist.innerHTML = "";
+        var uniq = Array.from(new Set(names.filter(Boolean))).sort((a, b) =>
+          a.localeCompare(b, "pt", { sensitivity: "base" })
+        );
         for (var i = 0; i < uniq.length; i++) {
-            var opt = document.createElement('option');
-            opt.value = uniq[i];
-            techNamesDatalist.appendChild(opt);
+          var opt = document.createElement("option");
+          opt.value = uniq[i];
+          techNamesDatalist.appendChild(opt);
         }
-    }
-    function updateTechNamesDatalistForLevel() {
+      }
+      function updateTechNamesDatalistForLevel() {
         var lvl = normalize(levelFilterSelect.value);
-        if (!lvl) { populateTechNamesDatalist(Array.from(techLevelByName.keys())); return; }
+        if (!lvl) {
+          populateTechNamesDatalist(Array.from(techLevelByName.keys()));
+          return;
+        }
         var names = [];
         for (var pair of techLevelByName.entries()) {
-            if (normalize(pair[1]).toLowerCase() === lvl.toLowerCase()) names.push(pair[0]);
+          if (normalize(pair[1]).toLowerCase() === lvl.toLowerCase())
+            names.push(pair[0]);
         }
         populateTechNamesDatalist(names);
-    }
+      }
 
-    // --- GRÁFICO (Mantido) ---
-    function renderBarChart(events, queryNumber) {
+      // --- GRÁFICO (Mantido) ---
+      function renderBarChart(events, queryNumber) {
         if (!barChartEl) return;
-        barChartEl.innerHTML = '';
+        barChartEl.innerHTML = "";
         if (queryNumber) {
-            if (chartTitleEl) chartTitleEl.textContent = `Agendamentos por tipo — ${serverGroupLabel(queryNumber)}`;
-            var envKeys = ['dev', 'uat', 'prod'];
-            var envCounts = new Map(envKeys.map(k => [k, 0]));
-            for (var i = 0; i < events.length; i++) {
-                var props = events[i].extendedProps || {};
-                var envKey = normalizeEnv(props.environment);
-                if (envKey) envCounts.set(envKey, (envCounts.get(envKey)||0) + 1);
-            }
-            var entries = envKeys.map(k => [k, envCounts.get(k) || 0]);
-            var maxCount = Math.max(...entries.map(e => e[1]));
-            var maxBarHeight = 200; 
+          if (chartTitleEl)
+            chartTitleEl.textContent = `Agendamentos por tipo — ${serverGroupLabel(
+              queryNumber
+            )}`;
+          var envKeys = ["dev", "uat", "prod"];
+          var envCounts = new Map(envKeys.map((k) => [k, 0]));
+          for (var i = 0; i < events.length; i++) {
+            var props = events[i].extendedProps || {};
+            var envKey = normalizeEnv(props.environment);
+            if (envKey) envCounts.set(envKey, (envCounts.get(envKey) || 0) + 1);
+          }
+          var entries = envKeys.map((k) => [k, envCounts.get(k) || 0]);
+          var maxCount = Math.max(...entries.map((e) => e[1]));
+          var maxBarHeight = 200;
 
-            for (var j = 0; j < entries.length; j++) {
-                var envKey2 = entries[j][0];
-                var count2 = entries[j][1];
-                var item2 = document.createElement('div'); item2.className = 'bar-item';
-                var bar2 = document.createElement('div'); bar2.className = 'bar';
-                bar2.style.backgroundColor = envColor(envKey2);
-                bar2.style.height = (maxCount === 0) ? '8px' : Math.max(8, Math.round((count2 / maxCount) * maxBarHeight)) + 'px';
-                bar2.title = envDisplay(envKey2) + ': ' + count2;
-                var label2 = document.createElement('div'); label2.className = 'bar-label'; label2.textContent = envDisplay(envKey2);
-                var countEl2 = document.createElement('div'); countEl2.className = 'bar-count'; countEl2.textContent = count2;
-                item2.appendChild(bar2); item2.appendChild(label2); item2.appendChild(countEl2);
-                barChartEl.appendChild(item2);
-            }
-            return;
+          for (var j = 0; j < entries.length; j++) {
+            var envKey2 = entries[j][0];
+            var count2 = entries[j][1];
+            var item2 = document.createElement("div");
+            item2.className = "bar-item";
+            var bar2 = document.createElement("div");
+            bar2.className = "bar";
+            bar2.style.backgroundColor = envColor(envKey2);
+            bar2.style.height =
+              maxCount === 0
+                ? "8px"
+                : Math.max(8, Math.round((count2 / maxCount) * maxBarHeight)) +
+                  "px";
+            bar2.title = envDisplay(envKey2) + ": " + count2;
+            var label2 = document.createElement("div");
+            label2.className = "bar-label";
+            label2.textContent = envDisplay(envKey2);
+            var countEl2 = document.createElement("div");
+            countEl2.className = "bar-count";
+            countEl2.textContent = count2;
+            item2.appendChild(bar2);
+            item2.appendChild(label2);
+            item2.appendChild(countEl2);
+            barChartEl.appendChild(item2);
+          }
+          return;
         }
 
-        if (chartTitleEl) chartTitleEl.textContent = 'Agendamentos por servidor';
+        if (chartTitleEl)
+          chartTitleEl.textContent = "Agendamentos por servidor";
         var counts = new Map();
         for (var k = 0; k < events.length; k++) {
-            var title = (events[k] && events[k].title) ? events[k].title.toString().trim() : '';
-            if (!title) continue;
-            var serverNumber = extractServerNumber(title) || title;
-            counts.set(serverNumber, (counts.get(serverNumber) || 0) + 1);
+          var title =
+            events[k] && events[k].title
+              ? events[k].title.toString().trim()
+              : "";
+          if (!title) continue;
+          var serverNumber = extractServerNumber(title) || title;
+          counts.set(serverNumber, (counts.get(serverNumber) || 0) + 1);
         }
         var entries = Array.from(counts.entries());
         if (entries.length === 0) {
-            var empty = document.createElement('div'); empty.className = 'chart-empty'; empty.textContent = 'Sem agendamentos.';
-            barChartEl.appendChild(empty); return;
+          var empty = document.createElement("div");
+          empty.className = "chart-empty";
+          empty.textContent = "Sem agendamentos.";
+          barChartEl.appendChild(empty);
+          return;
         }
-        entries.sort((a, b) => (b[1] - a[1]) || a[0].localeCompare(b[0], 'pt', { sensitivity: 'base' }));
-        var maxCount = Math.max(...entries.map(e => e[1]));
+        entries.sort(
+          (a, b) =>
+            b[1] - a[1] ||
+            a[0].localeCompare(b[0], "pt", { sensitivity: "base" })
+        );
+        var maxCount = Math.max(...entries.map((e) => e[1]));
         var maxBarHeight = 200;
 
         for (var j = 0; j < entries.length; j++) {
-            var key = entries[j][0]; var count = entries[j][1];
-            var name = extractServerNumber(key) ? serverGroupLabel(key) : key;
-            var item = document.createElement('div'); item.className = 'bar-item';
-            var bar = document.createElement('div'); bar.className = 'bar';
-            bar.style.height = Math.max(8, Math.round((count / maxCount) * maxBarHeight)) + 'px';
-            bar.title = name + ': ' + count;
-            var label = document.createElement('div'); label.className = 'bar-label'; label.textContent = name; label.title = name;
-            var countEl = document.createElement('div'); countEl.className = 'bar-count'; countEl.textContent = count;
-            item.appendChild(bar); item.appendChild(label); item.appendChild(countEl);
-            barChartEl.appendChild(item);
+          var key = entries[j][0];
+          var count = entries[j][1];
+          var name = extractServerNumber(key) ? serverGroupLabel(key) : key;
+          var item = document.createElement("div");
+          item.className = "bar-item";
+          var bar = document.createElement("div");
+          bar.className = "bar";
+          bar.style.height =
+            Math.max(8, Math.round((count / maxCount) * maxBarHeight)) + "px";
+          bar.title = name + ": " + count;
+          var label = document.createElement("div");
+          label.className = "bar-label";
+          label.textContent = name;
+          label.title = name;
+          var countEl = document.createElement("div");
+          countEl.className = "bar-count";
+          countEl.textContent = count;
+          item.appendChild(bar);
+          item.appendChild(label);
+          item.appendChild(countEl);
+          barChartEl.appendChild(item);
         }
-    }
+      }
 
+      // --- Carregar Lista de Software do Backend ---
+      function loadSoftwareInventory() {
+        fetch("/api/software_inventory")
+          .then((res) => res.json())
+          .then((data) => {
+            const select = document.getElementById("em_software");
+            select.innerHTML =
+              '<option value="" disabled selected>Selecione o software...</option>';
 
-    // --- Carregar Lista de Software do Backend ---
-    function loadSoftwareInventory() {
-        fetch('/api/software_inventory')
-            .then(res => res.json())
-            .then(data => {
-                const select = document.getElementById('em_software');
-                select.innerHTML = '<option value="" disabled selected>Selecione o software...</option>';
-                
-                data.forEach(softName => {
-                    const opt = document.createElement('option');
-                    opt.value = softName;
-                    opt.innerText = softName;
-                    select.appendChild(opt);
-                });
-            })
-            .catch(err => {
-                console.error("Erro ao carregar software:", err);
-                document.getElementById('em_software').innerHTML = '<option>Erro ao carregar lista</option>';
+            data.forEach((softName) => {
+              const opt = document.createElement("option");
+              opt.value = softName;
+              opt.innerText = softName;
+              select.appendChild(opt);
             });
-    }
+          })
+          .catch((err) => {
+            console.error("Erro ao carregar software:", err);
+            document.getElementById("em_software").innerHTML =
+              "<option>Erro ao carregar lista</option>";
+          });
+      }
 
-    // --- Atualizar a Inicialização ---
-    document.addEventListener('DOMContentLoaded', function() {
+      // --- Atualizar a Inicialização ---
+      document.addEventListener("DOMContentLoaded", function () {
         loadTechs();
         fetchAndRenderEvents();
         setupFilters();
-        
+
         loadSoftwareInventory(); // <--- ADICIONAR ESTA CHAMADA AQUI
-    });
-
-</script>
-
-</body>
+      });
+    </script>
+  </body>
 </html>

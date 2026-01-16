@@ -1,0 +1,10 @@
+{
+  "best_fit_intercept": true,
+  "params": {
+    "copy_X": true,
+    "fit_intercept": true,
+    "n_jobs": null,
+    "positive": false,
+    "tol": 1e-06
+  }
+}
